@@ -11,7 +11,7 @@ const sequelize = new Sequelize(database, user, password, {
 const dataModel = {};
 dataModel.Sequelize = Sequelize;
 dataModel.sequelize = sequelize;
-dataModel.User = require("./users/users.model")(sequelize, DataTypes);
+dataModel.User = require("./users/model/users.model")(sequelize, DataTypes);
 const dbConnection = async function () {
   try {
     await sequelize.authenticate();
