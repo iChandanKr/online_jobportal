@@ -1,7 +1,7 @@
 const UserService = require("./users.services");
 
 const registerUser = async (req, res) => {
-
+  req.body.role = 'jobseeker';
   try {
     const createdUser = await UserService.createUserService(req.body);
     res.status(201).json({
