@@ -1,4 +1,4 @@
-const { createUserDb } = require("./users.repo");
+const { createUserDb } = require("../repo/users.repo");
 class UserService {
   static createUserService = async (userData) => {
     const response =  await createUserDb(userData);

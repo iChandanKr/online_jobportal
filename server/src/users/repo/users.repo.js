@@ -1,4 +1,4 @@
-const { dataModel } = require("../dbConnection");
+const { dataModel } = require("../../dbConnection");
 const { User, Role, UserRole, sequelize } = dataModel;
 
 const createUserDb = async (userData) => {

@@ -1,4 +1,4 @@
-const UserService = require("./users.services");
+const UserService = require("../services/users.services");
 
 const registerUser = async (req, res) => {
   req.body.role = 'jobseeker';
