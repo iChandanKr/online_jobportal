@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 module.exports = (sequelize, DataTypes) => {
     const user = sequelize.define(
       "User",
@@ -6,8 +7,6 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.UUID,
           defaultValue: DataTypes.UUIDV4,
           primaryKey: true,
-          unique: true,
-          allowNull: false,
         },
         firstName: {
           type: DataTypes.STRING(50),
@@ -72,11 +71,6 @@ module.exports = (sequelize, DataTypes) => {
             len: { args: [10, 10], msg: "Contact must have exactly 10 digits" },
           },
         },
-        role: {
-          type: DataTypes.ENUM,
-          values: ["admin", "employer", "jobseeker"],
-          defaultValue: "jobseeker",
-        },
         city: {
           type: DataTypes.STRING(100),
           allowNull: false,
@@ -106,6 +100,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       {
         tableName: "user",
+        hooks:{
+          beforeCreate:async(user)=>{
+            user.password = await bcrypt.hash(user.password,10);
+            user.confirmPassword = undefined;
+          }
+        }
       }
     );
     return user;
