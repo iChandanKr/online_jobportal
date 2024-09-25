@@ -1,45 +1,79 @@
-import { Component } from '@angular/core';
-import { FormGroup,FormBuilder,Validators,ReactiveFormsModule} from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Component, inject } from "@angular/core";
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  ReactiveFormsModule,
+  AbstractControl,
+  AsyncValidatorFn,
+} from "@angular/forms";
+import { RouterLink } from "@angular/router";
+import { JobseekerSignupService } from "../../../app/services/jobseeker-signup.service";
+import { map, of } from "rxjs";
+function isPasswordMatch(
+  controlName1: string,
+  controlName2: string
+): AsyncValidatorFn {
+  return (control: AbstractControl) => {
+    return of(control).pipe(
+      map(() => {
+        const val1 = control.get(controlName1)?.value;
+        const val2 = control.get(controlName2)?.value;
 
+        if (val1 === val2) {
+          return null;
+        }
+        return { valuesNotEqual: true };
+      })
+    );
+  };
+}
 @Component({
-  selector: 'app-signup',
+  selector: "app-signup",
   standalone: true,
-  imports: [ReactiveFormsModule,RouterLink],
-  templateUrl: './signup.component.html',
-  styleUrl: './signup.component.css'
+  imports: [ReactiveFormsModule, RouterLink],
+  templateUrl: "./signup.component.html",
+  styleUrl: "./signup.component.css",
 })
 export class SignupComponent {
-  signupForm:FormGroup;
+  signupForm: FormGroup;
+  private jobSeekerSignupService = inject(JobseekerSignupService);
+  constructor(private formBuilder: FormBuilder) {
+    this.signupForm = this.formBuilder.group({
+      firstName: ["", Validators.required],
+      lastName: ["", Validators.required],
+      email: ["", [Validators.required, Validators.email]],
+      dob: ["", Validators.required],
+      contact: ["", [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
 
-  constructor(private fb:FormBuilder){
-    this.signupForm=this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      role: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', Validators.required],
-      dob: ['', Validators.required],
-      contact: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
-      city: ['', Validators.required],
-      pinCode: ['', Validators.required],
-      state: ['', Validators.required],
-      country: ['', Validators.required],
-
-    })
+      password: ["", [Validators.required, Validators.minLength(8)]],
+      confirmPassword: [
+        "",
+        Validators.required,
+        isPasswordMatch("password", "confirmPassword"),
+      ],
+      city: ["", Validators.required],
+      pinCode: ["", Validators.required],
+      state: ["", Validators.required],
+      country: ["", Validators.required],
+    });
   }
 
-  onSubmit(){
-    if(this.signupForm.valid){
-      console.log('Signup details:',this.signupForm.value);
-      this.signupForm.reset()
+  onSubmit() {
+    if (this.signupForm.invalid) {
+      console.log("hello");
+      return;
     }
 
+    console.log("Signup details:", this.signupForm.value);
+    this.jobSeekerSignupService.signupJobseeker(this.signupForm.value).subscribe({
+      next:(data)=>{
+        console.log(data);
+      },
+      error:(er)=>{
+        console.log(er);
+      }
+    });
+    this.signupForm.reset();
   }
-
-  }
-
-
-
-
+}
