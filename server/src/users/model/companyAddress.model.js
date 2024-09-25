@@ -1,4 +1,3 @@
-const bcrypt = require("bcrypt");
 module.exports = (sequelize, DataTypes) => {
   const companyAddress = sequelize.define(
     "CompanyAddress",
@@ -29,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(100),
         allowNull: false,
       },
-      pinCode: {
+      pincode: {
         type: DataTypes.STRING(6),
         allowNull: false,
         isNumeric: {

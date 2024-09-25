@@ -1,19 +1,8 @@
-const bcrypt = require("bcrypt");
 module.exports = (sequelize, DataTypes) => {
   const branch = sequelize.define(
     "Branch",
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey: true,
-      },
-      company_id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey: true,
-      },
-      address_id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,

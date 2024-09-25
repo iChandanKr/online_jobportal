@@ -1,4 +1,3 @@
-const bcrypt = require("bcrypt");
 module.exports = (sequelize, DataTypes) => {
   const company = sequelize.define(
     "Company",
@@ -15,6 +14,13 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         set(value) {
           this.setDataValue("name", value?.trim());
+        },
+      },
+      companyIndustry: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+        set(value) {
+          this.setDataValue("companyIndustry", value?.trim());
         },
       },
       email: {

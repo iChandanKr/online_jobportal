@@ -1,9 +1,9 @@
-const UserService = require("../services/users.services");
+const JobseekerService = require("../services/jobSeeker.services");
 
-const registerUser = async (req, res) => {
+const registerJobseeker = async (req, res) => {
   req.body.role = 'jobseeker';
   try {
-    const createdUser = await UserService.createUserService(req.body);
+    const createdUser = await JobseekerService.createUserService(req.body);
     res.status(201).json({
       status: "success",
       message: "User Created successfully",
@@ -19,5 +19,5 @@ const registerUser = async (req, res) => {
 };
 
 module.exports = {
-  registerUser,
+  registerJobseeker,
 };
