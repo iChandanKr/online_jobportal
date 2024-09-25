@@ -11,18 +11,74 @@ const sequelize = new Sequelize(database, user, password, {
 const dataModel = {};
 dataModel.Sequelize = Sequelize;
 dataModel.sequelize = sequelize;
-dataModel.User = require("./users/model/users.model")(sequelize, DataTypes);
-dataModel.Role = require("./users/model/usersRole.model")(sequelize, DataTypes);
-dataModel.UserRole = require("./users/model/userRoleJoining.model")(
+dataModel.Jobseeker = require("./users/model/jobseeker.model")(
+  sequelize,
+  DataTypes
+);
+dataModel.Role = require("./users/model/role.model")(sequelize, DataTypes);
+dataModel.UserRole = require("./users/model/userRole.model")(
+  sequelize,
+  DataTypes
+);
+dataModel.Company = require("./users/model/company.model")(
+  sequelize,
+  DataTypes
+);
+dataModel.Branch = require("./users/model/branch.model")(sequelize, DataTypes);
+dataModel.CompanyAddress = require("./users/model/companyAddress.model")(
+  sequelize,
+  DataTypes
+);
+dataModel.Employer = require("./users/model/employer.model")(
   sequelize,
   DataTypes
 );
 // ----------- Relationships of models-------------------
 
-// ================= User-Role (:many to many)===================
-dataModel.User.belongsToMany(dataModel.Role, { through: dataModel.UserRole });
-dataModel.Role.belongsToMany(dataModel.User, { through: dataModel.UserRole });
+// ================= Role-UserRole:(one to many)===================
+dataModel.Role.hasMany(dataModel.UserRole, {
+  foreignKey: {
+    name: "roleId",
+    allowNull: false,
+  },
+  constraints: false,
+});
+dataModel.UserRole.belongsTo(dataModel.Role, {
+  foreignKey: {
+    name: "roleId",
+    allowNull: false,
+  },
+  constraints: false,
+});
+// =============== Company-Branch:(one to many) ==================
+dataModel.Company.hasMany(dataModel.Branch, {
+  foreignKey: "companyId",
+  constraints: false,
+});
+dataModel.Branch.belongsTo(dataModel.Company, {
+  foreignKey: "companyId",
+  constraints: false,
+});
 
+// =============== CompanyAddress-Branch:(one to one) ==================
+dataModel.CompanyAddress.hasOne(dataModel.Branch, {
+  foreignKey: "addressId",
+  constraints: false,
+});
+dataModel.Branch.belongsTo(dataModel.CompanyAddress, {
+  foreignKey: "addressId",
+  constraints: false,
+});
+
+// =============== Branch-Employer:(one to many) ========================
+dataModel.Branch.hasMany(dataModel.Employer, {
+  foreignKey: "branchId",
+  constraints: false,
+});
+dataModel.Employer.belongsTo(dataModel.Branch, {
+  foreignKey: "branchId",
+  constraints: false,
+});
 
 const dbConnection = async function () {
   try {

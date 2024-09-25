@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 module.exports = (sequelize, DataTypes) => {
-    const user = sequelize.define(
-      "User",
+    const jobseeker = sequelize.define(
+      "Jobseeker",
       {
         id: {
           type: DataTypes.UUID,
@@ -108,6 +108,6 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     );
-    return user;
+    return jobseeker;
   };
   
