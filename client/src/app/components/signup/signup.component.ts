@@ -15,13 +15,20 @@ function isPasswordMatch(
   controlName2: string
 ): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const val1 = control.get(controlName1)?.value;
-    const val2 = control.get(controlName2)?.value;
-    console.log(val1);
-    console.log("vasdfsdfsdfs", val2);
-    if (val1 === val2) {
+    const val1 = control.get(controlName1);
+    const val2 = control.get(controlName2);
+    if (!val1 || !val2) {
       return null;
     }
+    if (val2.errors && !val2.errors['valuesNotEqual']) {
+      return null;
+    }
+
+    if (val1?.value === val2?.value) {
+      val2.setErrors(null);
+      return null;
+    }
+    val2.setErrors({ valuesNotEqual: true });
     return { valuesNotEqual: true };
   };
 }
@@ -44,13 +51,13 @@ export class SignupComponent {
         dob: ["", Validators.required],
         contact: ["", [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
         password: ["", [Validators.required, Validators.minLength(8)]],
-        confirmPassword: ["", Validators.required,Validators.minLength(8)],
+        confirmPassword: ["", Validators.required],
         city: ["", Validators.required],
         pinCode: ["", Validators.required],
         state: ["", Validators.required],
         country: ["", Validators.required],
       },
-      { validators: [isPasswordMatch("password", "confirmPassword")] }
+      { validators: isPasswordMatch("password", "confirmPassword") }
     );
   }
 

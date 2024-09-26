@@ -66,6 +66,9 @@
             formControlName="confirmPassword"
             class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
           />
+          @if(signupForm.hasError('valuesNotEqual') && signupForm.get('confirmPassword')?.touched){
+            <p class="text-red-500">passwords do not match</p>
+          }
         </div>
       </div>
 
