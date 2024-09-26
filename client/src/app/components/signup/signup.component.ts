@@ -17,8 +17,8 @@ function isPasswordMatch(
   return (control: AbstractControl): ValidationErrors | null => {
     const val1 = control.get(controlName1)?.value;
     const val2 = control.get(controlName2)?.value;
-    console.log(val1);
-    console.log("vasdfsdfsdfs", val2);
+    // console.log(val1);
+    // console.log("vasdfsdfsdfs", val2);
     if (val1 === val2) {
       return null;
     }

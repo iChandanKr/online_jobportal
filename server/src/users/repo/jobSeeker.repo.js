@@ -29,6 +29,13 @@ const createJobseekerDb = async (JobseekerData) => {
   }
   return result;
 };
+
+
+const findJobseekerDB = async(id)=>{
+ return await Jobseeker.findOne({where:{id}});
+
+}
 module.exports = {
   createJobseekerDb,
+  findJobseekerDB,
 };
