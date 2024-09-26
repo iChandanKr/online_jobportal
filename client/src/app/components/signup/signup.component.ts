@@ -15,9 +15,11 @@ function isPasswordMatch(
   controlName2: string
 ): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
+
     const val1 = control.get(controlName1);
     const val2 = control.get(controlName2);
     if (!val1 || !val2) {
+
       return null;
     }
     if (val2.errors && !val2.errors['valuesNotEqual']) {
