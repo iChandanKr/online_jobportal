@@ -1,20 +1,21 @@
 <div class="flex items-center justify-center min-h-screen bg-gray-200">
   <div class="bg-white p-10 rounded-lg shadow-lg w-128 mt-8 mb-8">
-    <h2 class="text-3xl font-semibold text-center mb-8">Sign Up</h2>
+    <h2 class="text-3xl font-medium text-center mb-8">Sign Up</h2>
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div>
+        <div class="control">
           <label for="firstName" class="block text-sm font-medium text-gray-700"
             >First Name:</label
           >
           <input
             type="text"
             id="firstName"
+            name="firstName"
             formControlName="firstName"
             class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
           />
         </div>
-        <div>
+        <div class="control">
           <label for="lastName" class="block text-sm font-medium text-gray-700"
             >Last Name:</label
           >
@@ -27,7 +28,7 @@
         </div>
       </div>
 
-      <div class="mb-6">
+      <div class="mb-6 control">
         <label for="email" class="block text-sm font-medium text-gray-700"
           >Email:</label
         >
@@ -40,18 +41,19 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div>
+        <div class="control">
           <label for="password" class="block text-sm font-medium text-gray-700"
             >Password:</label
           >
           <input
             type="password"
             id="password"
+            name="password"
             formControlName="password"
             class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
           />
         </div>
-        <div>
+        <div class="control">
           <label
             for="confirmPassword"
             class="block text-sm font-medium text-gray-700"
@@ -60,13 +62,14 @@
           <input
             type="password"
             id="confirmPassword"
+            name="confirmPassword"
             formControlName="confirmPassword"
             class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
           />
         </div>
       </div>
 
-      <div class="mb-6">
+      <div class="mb-6 control">
         <label for="dob" class="block text-sm font-medium text-gray-700"
           >Date of Birth:</label
         >
@@ -78,7 +81,7 @@
         />
       </div>
 
-      <div class="mb-6">
+      <div class="mb-6 control">
         <label for="contact" class="block text-sm font-medium text-gray-700"
           >Contact Number:</label
         >
@@ -91,7 +94,7 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div>
+        <div class="control">
           <label for="city" class="block text-sm font-medium text-gray-700"
             >City:</label
           >
@@ -102,7 +105,7 @@
             class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
           />
         </div>
-        <div>
+        <div class="control">
           <label for="pinCode" class="block text-sm font-medium text-gray-700"
             >Pin Code:</label
           >
@@ -116,7 +119,7 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div>
+        <div class="control">
           <label for="state" class="block text-sm font-medium text-gray-700"
             >State:</label
           >
@@ -127,7 +130,7 @@
             class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
           />
         </div>
-        <div>
+        <div class="control">
           <label for="country" class="block text-sm font-medium text-gray-700"
             >Country:</label
           >
@@ -143,6 +146,9 @@
       <button
         type="submit"
         class="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition duration-200"
+        [disabled]="
+          !signupForm.valid || !signupForm.touched || !signupForm.dirty
+        "
       >
         Sign Up
       </button>
