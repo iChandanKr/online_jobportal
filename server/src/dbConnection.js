@@ -84,7 +84,7 @@ const dbConnection = async function () {
   try {
     await sequelize.authenticate();
     console.log("Connection has been established successfully.");
-    await dataModel.sequelize.sync({ force: true });
+    await dataModel.sequelize.sync({ force: false });
   } catch (error) {
     console.error("Unable to coasasnnect to the database:", error);
   }
