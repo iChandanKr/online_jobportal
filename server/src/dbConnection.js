@@ -7,14 +7,11 @@ const sequelize = new Sequelize(database, user, password, {
   dialect: "postgres",
   logging: false,
 });
-
+const insertDefaultRoles = require('./users/model/insertDefaultData');
 const dataModel = {};
 dataModel.Sequelize = Sequelize;
 dataModel.sequelize = sequelize;
-dataModel.Jobseeker = require("./users/model/jobseeker.model")(
-  sequelize,
-  DataTypes
-);
+dataModel.User = require("./users/model/user.model")(sequelize, DataTypes);
 dataModel.Role = require("./users/model/role.model")(sequelize, DataTypes);
 dataModel.UserRole = require("./users/model/userRole.model")(
   sequelize,
@@ -35,20 +32,12 @@ dataModel.Employer = require("./users/model/employer.model")(
 );
 // ----------- Relationships of models-------------------
 
-// ================= Role-UserRole:(one to many)===================
-dataModel.Role.hasMany(dataModel.UserRole, {
-  foreignKey: {
-    name: "roleId",
-    allowNull: false,
-  },
-  constraints: false,
+// ================= User-Role:(many to many)===================
+dataModel.User.belongsToMany(dataModel.Role, {
+  through: dataModel.UserRole,
 });
-dataModel.UserRole.belongsTo(dataModel.Role, {
-  foreignKey: {
-    name: "roleId",
-    allowNull: false,
-  },
-  constraints: false,
+dataModel.Role.belongsToMany(dataModel.User, {
+  through: dataModel.UserRole,
 });
 // =============== Company-Branch:(one to many) ==================
 dataModel.Company.hasMany(dataModel.Branch, {
@@ -84,7 +73,9 @@ const dbConnection = async function () {
   try {
     await sequelize.authenticate();
     console.log("Connection has been established successfully.");
-    await dataModel.sequelize.sync({ force: false });
+    await dataModel.sequelize.sync({ force: true });
+    console.log("All models has been synchronized successfully.");
+   await insertDefaultRoles(dataModel.Role);
   } catch (error) {
     console.error("Unable to coasasnnect to the database:", error);
   }

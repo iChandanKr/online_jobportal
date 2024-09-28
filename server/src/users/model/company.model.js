@@ -48,6 +48,10 @@ module.exports = (sequelize, DataTypes) => {
           len: { args: [10, 10], msg: "Contact must have exactly 10 digits" },
         },
       },
+      totalEmployees:{
+        type: DataTypes.INTEGER,
+        allowNull:false
+      }
     },
     {
       tableName: "company",
