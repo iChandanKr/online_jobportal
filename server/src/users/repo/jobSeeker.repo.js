@@ -5,14 +5,14 @@ const createJobseekerDb = async (userData) => {
   let result;
   try {
     result = await sequelize.transaction(async (t) => {
-      const roleId = await Role.findOne({
+      const role = await Role.findOne({
         where: { role: userData.role },
       });
       const newUser = await User.create(userData, {
         transaction: t,
       });
       await UserRole.create(
-        { UserId: newUser.dataValues?.id, RoleId: roleId.dataValues?.id },
+        { UserId: newUser.dataValues?.id, RoleId: role.dataValues?.id },
         { transaction: t }
       );
       return newUser;
