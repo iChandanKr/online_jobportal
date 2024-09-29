@@ -1,6 +1,6 @@
 // -------- JOINING TABLE OF ROLE AND USERS----------------
 const User = require("./user.model");
-const Role = require("./userRole.model");
+const Role = require("./role.model");
 module.exports = (sequelize, DataTypes) => {
   const userRole = sequelize.define(
     "UserRole",
