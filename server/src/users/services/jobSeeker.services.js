@@ -2,11 +2,31 @@ const {
   createJobseekerDb,
   findJobseekerDB,
 } = require("../repo/jobSeeker.repo");
+const{generateAccessToken} = require('../../utils/tokenGenerator');
+const { dataModel } = require("../../dbConnection");
+const CustomError = require("../../utils/customError");
+const AuthService = require("../../auth/auth.services");
+const { sequelize } = dataModel;
+// const {generateAccessToken,generateRefreshToken} = require('../../utils/tokenGenerator');
 class JobseekerService {
   static createUserService = async (userData) => {
-    const response = await createJobseekerDb(userData);
-    delete response.dataValues.password;
-    return response;
+    let result;
+    try {
+      result = sequelize.transaction(async (t) => {
+        const response = await createJobseekerDb(userData, t);
+        delete response.dataValues.password;
+        const userId = response.dataValues?.id;
+        const refreshTokenDetails = await AuthService.createSessionService(userId,t);
+
+        const accessToken = generateAccessToken(userId);
+        response.dataValues.accessToken = accessToken;
+        response.dataValues.refreshToken = refreshTokenDetails.dataValues?.refreshToken;
+        return response;
+      });
+    } catch (error) {
+      throw new CustomError(error.message, 500);
+    }
+    return result;
   };
 
   static findJobseekerService = async (id) => {
