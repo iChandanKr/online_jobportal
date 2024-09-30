@@ -30,6 +30,10 @@ dataModel.Employer = require("./users/model/employer.model")(
   sequelize,
   DataTypes
 );
+dataModel.RefreshToken = require("./auth/refreshToken.model")(
+  sequelize,
+  DataTypes
+);
 // ----------- Relationships of models-------------------
 
 // ================= User-Role:(many to many)===================
@@ -42,16 +46,39 @@ dataModel.Role.belongsToMany(dataModel.User, {
 
 // ================== User-Employer:(one to one )=================
 dataModel.User.hasOne(dataModel.Employer, {
-  foreignKey: "userId",
+  foreignKey: {
+    name: "userId",
+    allowNull: false,
+  },
   constraints: false,
   as: "Profession_Details",
 });
 dataModel.Employer.belongsTo(dataModel.User, {
-  foreignKey: "userId",
+  foreignKey: {
+    name: "userId",
+    allowNull: false,
+  },
   constraints: false,
 });
 
-// =============== Company-Branch:(one to many) ==================
+// // ================== User-RefreshToken:(one to many )=============
+dataModel.User.hasMany(dataModel.RefreshToken, {
+  foreignKey: {
+    name: "userId",
+    allowNull: false,
+  },
+  constraints: false,
+  as:"refreshToken"
+});
+dataModel.RefreshToken.belongsTo(dataModel.User, {
+  foreignKey: {
+    name: "userId",
+    allowNull: false,
+  },
+  constraints: false,
+});
+
+// =============== Company-Branch:(one to many) ========================
 dataModel.Company.hasMany(dataModel.Branch, {
   foreignKey: {
     name: "companyId",

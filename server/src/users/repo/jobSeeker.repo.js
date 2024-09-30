@@ -1,26 +1,18 @@
 const { dataModel } = require("../../dbConnection");
-const { Role, UserRole, sequelize, User } = dataModel;
+const { Role, UserRole, User } = dataModel;
 
-const createJobseekerDb = async (userData) => {
-  let result;
-  try {
-    result = await sequelize.transaction(async (t) => {
-      const role = await Role.findOne({
-        where: { role: userData.role },
-      });
-      const newUser = await User.create(userData, {
-        transaction: t,
-      });
-      await UserRole.create(
-        { UserId: newUser.dataValues?.id, RoleId: role.dataValues?.id },
-        { transaction: t }
-      );
-      return newUser;
-    });
-  } catch (error) {
-    throw error.message;
-  }
-  return result;
+const createJobseekerDb = async (userData, t) => {
+  const role = await Role.findOne({
+    where: { role: userData.role },
+  });
+  const newUser = await User.create(userData, {
+    transaction: t,
+  });
+  await UserRole.create(
+    { UserId: newUser.dataValues?.id, RoleId: role.dataValues?.id },
+    { transaction: t }
+  );
+  return newUser;
 };
 
 const findJobseekerDB = async (id) => {
