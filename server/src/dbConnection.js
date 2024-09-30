@@ -146,7 +146,7 @@ const dbConnection = async function () {
   try {
     await sequelize.authenticate();
     console.log("Connection has been established successfully.");
-    await dataModel.sequelize.sync({ force: true });
+    await dataModel.sequelize.sync({ force: false });
     console.log("All models has been synchronized successfully.");
     await insertDefaultRoles(dataModel.Role);
   } catch (error) {
