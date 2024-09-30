@@ -1,78 +1,84 @@
 const { dataModel } = require("../../dbConnection");
-const { Company, Employer, CompanyAddress, Branch, Role, UserRole, sequelize } =
+const { Company, Employer, User, CompanyAddress, Branch, Role, UserRole } =
   dataModel;
 
-const createEmployerDb = async (employerData) => {
-  let roleId;
-  let result;
-  try {
-    result = await sequelize.transaction(async (t) => {
-      const existingRole = await Role.findOne({
-        where: { role: employerData.role },
-      });
-      if (!existingRole) {
-        const res = await Role.create(
-          { role: employerData.role },
-          { transaction: t }
-        );
-        roleId = res.dataValues.id;
-      } else {
-        roleId = existingRole.dataValues.id;
-      }
-      const newCompany = await Company.create(
+const createEmployerDb = async (employerData, t) => {
+  const role = await Role.findOne({
+    where: { role: employerData.role },
+  });
+  const newCompany = await Company.create(
+    {
+      name: employerData.companyName,
+      companyIndustry: employerData.companyIndustry,
+      email: employerData.companyEmail,
+      contact: employerData.companyContact,
+      totalEmployees: employerData.totalEmployees,
+      foundedDate: employerData.foundedDate,
+    },
+    { transaction: t }
+  );
+  const address = await CompanyAddress.create(
+    {
+      line1: employerData.addressLine1,
+      line2: employerData.addressLine2,
+      city: employerData.companyCity,
+      state: employerData.companyState,
+      pincode: employerData.companyPincode,
+      country: employerData.companyCountry,
+    },
+    {
+      transaction: t,
+    }
+  );
+  const branch = await Branch.create(
+    {
+      companyId: newCompany.dataValues.id,
+      addressId: address.dataValues.id,
+      branchName: employerData.branchName,
+    },
+    {
+      transaction: t,
+    }
+  );
+  const newEmployer = await User.create(
+    {
+      firstName: employerData.firstName,
+      lastName: employerData.lastName,
+      email: employerData.email,
+      dob: employerData.dob,
+      password: employerData.password,
+      confirmPassword: employerData.confirmPassword,
+      contact: employerData.contact,
+      city: employerData.city,
+      pinCode: employerData.pinCode,
+      state: employerData.state,
+      country: employerData.country,
+      Profession_Details: {
+        department: employerData.department,
+        designation: employerData.designation,
+        branchId: branch.dataValues?.id,
+        companyId: newCompany.dataValues?.id,
+      },
+    },
+    {
+      include: [
         {
-          name: employerData.companyName,
-          companyIndustry: employerData.companyIndustry,
-          email: employerData.companyEmail,
-          contact: employerData.companyContact,
+          model: Employer,
+          as: "Profession_Details",
         },
-        { transaction: t }
-      );
-      const address = await CompanyAddress.create(
-        {
-          line1: employerData.addressLine1,
-          line2: employerData.addressLine2,
-          city: employerData.city,
-          state: employerData.state,
-          pincode: employerData.pincode,
-          country: employerData.country,
-        },
-        {
-          transaction: t,
-        }
-      );
-      const branch = await Branch.create({
-        companyId: newCompany.dataValues.id,
-        addressId: address.dataValues.id,
-        branchName: employerData.branchName,
-      });
-      const newEmployer = await Employer.create(
-        {
-          firstName: employerData.firstName,
-          lastName: employerData.lastName,
-          email: employerData.email,
-          password: employerData.password,
-          confirmPassword: employerData.confirmPassword,
-          contact: employerData.contact,
-          department: employerData.department,
-          designation: employerData.designation,
-          branchId: branch.dataValues.id,
-        },
-        {
-          transaction: t,
-        }
-      );
-      await UserRole.create(
-        { userId: newEmployer.dataValues.id, roleId },
-        { transaction: t }
-      );
-      return newEmployer;
-    });
-  } catch (error) {
-    throw error.message;
-  }
-  return result;
+      ],
+      transaction: t,
+    }
+  );
+
+  await UserRole.create(
+    { UserId: newEmployer.dataValues?.id, RoleId: role.dataValues?.id },
+    { transaction: t }
+  );
+
+  return newEmployer;
 };
+
 module.exports = {
   createEmployerDb,
 };

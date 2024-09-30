@@ -1,18 +1,18 @@
 const EmployerService = require("../services/employer.services");
-
+const responseObj = require('../../utils/response');
 const registerEmployer = async (req, res) => {
   req.body.role = "employer";
   try {
     const createdEmployer = await EmployerService.createEmployerService(
       req.body
     );
-    res.status(201).json({
-      status: "success",
-      message: "Employer Created successfully",
-      data: createdEmployer,
-    });
+    const { accessToken, refreshToken } = createdEmployer.dataValues;
+    res.cookie("accessToken", accessToken);
+    res.cookie("refreshToken", refreshToken);
+  
+    responseObj(res,201,"Employer Created successfully",createdEmployer);
   } catch (err) {
-    res.status(400).json({
+    res.status(500).json({
       status: "fail",
       message: "Don't able to create Employer!!",
       error: err,

@@ -1,34 +1,24 @@
 const { dataModel } = require("../../dbConnection");
-const { Jobseeker, Role, UserRole, sequelize } = dataModel;
+const { Role, UserRole, User } = dataModel;
 
-const createJobseekerDb = async (JobseekerData) => {
-  let roleId;
-  let result;
-  try {
-    result = await sequelize.transaction(async (t) => {
-      const existingRole = await Role.findOne({
-        where: { role: JobseekerData.role },
-      });
-      if (!existingRole) {
-        const res = await Role.create(JobseekerData.role, { transaction: t });
-        roleId = res.dataValues.id;
-      } else {
-        roleId = existingRole.dataValues.id;
-      }
-      const newJobseeker = await Jobseeker.create(JobseekerData, {
-        transaction: t,
-      });
-      await UserRole.create(
-        { userId: newJobseeker.dataValues.id, roleId },
-        { transaction: t }
-      );
-      return newJobseeker;
-    });
-  } catch (error) {
-    throw error.message;
-  }
-  return result;
+const createJobseekerDb = async (userData, t) => {
+  const role = await Role.findOne({
+    where: { role: userData.role },
+  });
+  const newUser = await User.create(userData, {
+    transaction: t,
+  });
+  await UserRole.create(
+    { UserId: newUser.dataValues?.id, RoleId: role.dataValues?.id },
+    { transaction: t }
+  );
+  return newUser;
+};
+
+const findJobseekerDB = async (id) => {
+  return await User.findOne({ where: { id } });
 };
 module.exports = {
   createJobseekerDb,
+  findJobseekerDB,
 };
