@@ -7,27 +7,26 @@ const createSessionHandler = require("./shared/createSessionHandler");
 
 // ---------- LOGIN-----------------
 const userLogin = async (req, res, next) => {
-  console.log(req.body);
   try {
     const userLoginService = await AuthService.loginService(
       req,
       req.body,
       next
     );
-    console.log(userLoginService);
     if (!userLoginService) {
       throw new CustomError("something wrong", 500);
     } else {
-      const data = await createSessionHandler(
+      const sendRes = await createSessionHandler(
         sequelize,
         userLoginService.userId,
         next
       );
-      console.log(data);
+      res.cookie('refreshToken',sendRes.refreshToken);
+      res.cookie('access-token',sendRes.accessToken)
+      res.status(200).json({
+        data: sendRes,
+      });
     }
-    res.status(200).json({
-      data: userLoginService,
-    });
   } catch (error) {
     next(error);
   }

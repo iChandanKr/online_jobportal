@@ -12,7 +12,6 @@ const CustomError = require("../utils/customError");
 class AuthService {
   static loginService = async (req, inputDetails, next) => {
     const { email, password, role } = inputDetails;
-    console.log(email, password, role);
     if (!email || !password) {
       return next(
         new CustomError("Please Enter Email and Password to login!", 400)
@@ -26,13 +25,14 @@ class AuthService {
         user.dataValues?.password
       );
       if (isPasswordMatched) {
-        console.log(role, "slkdfjjjjjjjjffffffffff");
         const userRoleDetails = await roleDetails(role);
         if (userRoleDetails) {
           const verifyUserRole = await verifyUserRoleDB(
             userRoleDetails.dataValues?.id,
             user.dataValues?.id
           );
+          console.log(verifyUserRole);
+          
           if (verifyUserRole) {
             req.userRole = userRoleDetails.dataValues?.role;
             return { userId: user.dataValues?.id };
