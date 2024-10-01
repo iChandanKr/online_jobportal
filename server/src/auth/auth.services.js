@@ -3,6 +3,8 @@ const {
   findUserByEmail,
   roleDetails,
   verifyUserRoleDB,
+  findUserById,
+  stopSessionDB,
 } = require("./auth.repo");
 const {
   generateRefreshToken,
@@ -31,9 +33,9 @@ class AuthService {
             userRoleDetails.dataValues?.id,
             user.dataValues?.id
           );
-          console.log(verifyUserRole);
-          
+
           if (verifyUserRole) {
+            // set user role to request after login successful;
             req.userRole = userRoleDetails.dataValues?.role;
             return { userId: user.dataValues?.id };
           } else {
@@ -54,6 +56,20 @@ class AuthService {
       }
     } else {
       return next(new CustomError("Invalid login credentials", 400));
+    }
+  };
+
+  //  logout service
+  static logoutService = async (req, res) => {
+    const { user, currentRefreshToken: refreshToken } = req;
+    const userDetails = await findUserById(user.id);
+    const ans = await stopSessionDB(userDetails.dataValues?.id, refreshToken);
+    if (ans >= 1) {
+      res.clearCookie("accessToken");
+      res.clearCookie("refreshToken");
+      return ans;
+    }else{
+      throw new CustomError('You are not loggedIn',400)
     }
   };
 

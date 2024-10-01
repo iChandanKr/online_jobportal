@@ -97,6 +97,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(70),
         allowNull: false,
       },
+      passwordChangedAt: {
+        type: DataTypes.DATE,
+        defaultValue:Date.now()
+      },
     },
     {
       tableName: "user",
@@ -110,6 +114,16 @@ module.exports = (sequelize, DataTypes) => {
   );
   user.prototype.comparePassword = async function (password, storedPassword) {
     return await bcrypt.compare(password, storedPassword);
+  };
+  user.prototype.isPasswordChanged = async function (JWTTimestamp) {
+    if (this.passwordChangedAt) {
+      const passwordChangedTimestamp = parseInt(
+        this.passwordChangedAt.getTime() / 1000,
+        10
+      );
+      return JWTTimestamp < passwordChangedTimestamp;
+    }
+    return false;
   };
   return user;
 };

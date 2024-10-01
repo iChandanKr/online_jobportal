@@ -9,8 +9,12 @@ const findUserByEmail = async (email) => {
   });
 };
 
+const findUserById = async (id) => {
+  return await User.findByPk(id);
+};
+
 const roleDetails = async (role) => {
- return await Role.findOne({ where: { role } });
+  return await Role.findOne({ where: { role } });
 };
 
 const verifyUserRoleDB = async (roleId, userId) => {
@@ -27,9 +31,20 @@ const createSessionDB = async (user_id, refreshToken, t) => {
     }
   );
 };
+
+const stopSessionDB = async (id, refreshToken) => {
+  return await RefreshToken.destroy({
+    where: {
+      userId: id,
+      refreshToken,
+    },
+  });
+};
 module.exports = {
   createSessionDB,
   findUserByEmail,
   roleDetails,
   verifyUserRoleDB,
+  findUserById,
+  stopSessionDB,
 };

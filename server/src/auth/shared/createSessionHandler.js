@@ -8,10 +8,13 @@ module.exports = async (sequelize, id, next) => {
   try {
     result = await sequelize.transaction(async (t) => {
       const sessionDetails = await AuthService.createSessionService(id, t);
+      if (!sessionDetails) {
+        throw new CustomError("Don't able to create session", 500);
+      }
       return sessionDetails.dataValues;
     });
   } catch (error) {
-    next(new CustomError(error.message, 500));
+    next(error);
   }
   if (result) {
     accessToken = generateAccessToken(id);

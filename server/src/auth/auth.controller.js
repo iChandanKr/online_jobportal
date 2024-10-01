@@ -4,6 +4,7 @@ const { sequelize } = dataModel;
 const CustomError = require("../utils/customError");
 const { generateAccessToken } = require("../utils/tokenGenerator");
 const createSessionHandler = require("./shared/createSessionHandler");
+const resObj = require("../utils/response");
 
 // ---------- LOGIN-----------------
 const userLogin = async (req, res, next) => {
@@ -13,19 +14,28 @@ const userLogin = async (req, res, next) => {
       req.body,
       next
     );
-    if (!userLoginService) {
-      throw new CustomError("something wrong", 500);
-    } else {
+    if (userLoginService) {
       const sendRes = await createSessionHandler(
         sequelize,
         userLoginService.userId,
         next
       );
-      res.cookie('refreshToken',sendRes.refreshToken);
-      res.cookie('access-token',sendRes.accessToken)
-      res.status(200).json({
-        data: sendRes,
-      });
+      res.cookie("refreshToken", sendRes.refreshToken);
+      res.cookie("accessToken", sendRes.accessToken);
+      resObj(res, 200, "You have been loggedin successfully!", sendRes);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+// --------------LOGOUT-------------
+
+const logoutUser = async (req, res, next) => {
+  try {
+    const logoutUserService = await AuthService.logoutService(req, res);
+    if (logoutUserService >= 1) {
+      resObj(res, 200, "You are loggedOut successfully!");
     }
   } catch (error) {
     next(error);
@@ -55,4 +65,4 @@ const createSession = async (req, res, next) => {
   });
 };
 
-module.exports = { createSession, userLogin };
+module.exports = { createSession, userLogin, logoutUser };
