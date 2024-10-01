@@ -99,7 +99,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       passwordChangedAt: {
         type: DataTypes.DATE,
-        defaultValue:Date.now()
       },
     },
     {
