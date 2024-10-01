@@ -65,6 +65,20 @@
         />
       </div>
       <div class="mb-4">
+        <label class="block mb-1">Designation</label>
+        <input
+          formControlName="designation"
+          class="border rounded px-3 py-2 w-full"
+        />
+      </div>
+      <div class="mb-4">
+        <label class="block mb-1">Department</label>
+        <input
+          formControlName="department"
+          class="border rounded px-3 py-2 w-full"
+        />
+      </div>
+      <div class="mb-4">
         <label class="block mb-1">City:</label>
         <input formControlName="city" class="border rounded px-3 py-2 w-full" />
       </div>
@@ -98,7 +112,7 @@
     @if(currentStep===1){
 
     <fieldset formGroupName="addressDetails">
-      <legend class="text-lg font-medium">Section 2: Address</legend>
+      <legend class="text-lg font-medium">Section 2: Company Address</legend>
       <div class="mb-4">
         <label class="block mb-1">Line 1:</label>
         <input
@@ -192,16 +206,6 @@
           class="border rounded px-3 py-2 w-full"
         />
       </div>
-    </fieldset>
-    }
-
-    <!-- Section 4: Company Branch Details -->
-    @if(currentStep===3){
-
-    <fieldset formGroupName="branchDetails">
-      <legend class="text-lg font-medium">
-        Section 4: Company Branch Details
-      </legend>
       <div class="mb-4">
         <label class="block mb-1">Company Branch Name:</label>
         <input
@@ -211,6 +215,8 @@
       </div>
     </fieldset>
     }
+
+   
     <!-- Step Navigation -->
     <div class="flex justify-between mb-4">
       <button

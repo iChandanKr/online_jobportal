@@ -4,7 +4,9 @@ const resObj = require("../../utils/response");
 const registerJobseeker = async (req, res) => {
   req.body.role = "jobseeker";
   try {
+    
     const createdUser = await JobseekerService.createUserService(req.body);
+
     const { accessToken, refreshToken } = createdUser.dataValues;
     res.cookie("accessToken", accessToken);
     res.cookie("refreshToken", refreshToken);

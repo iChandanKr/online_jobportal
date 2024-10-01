@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { EmployerSignupService } from '../../services/employer-signup.service';
+
 
 @Component({
   selector: 'app-employer-signup',
@@ -11,9 +13,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 export class EmployerSignupComponent implements OnInit {
   employerSignup: FormGroup;
   currentStep = 0;
-  maxStep = 4;
+  maxStep = 3;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,private employerSignupService:EmployerSignupService) {
     this.employerSignup = this.formBuilder.group({
       employerDetails: this.formBuilder.group({
         firstName: ['', Validators.required],
@@ -41,19 +43,19 @@ export class EmployerSignupComponent implements OnInit {
       }),
 
       companyDetails: this.formBuilder.group({
-        designation: ['', Validators.required],
-        department: ['', Validators.required],
+       
         companyName: ['', Validators.required],
         totalEmployees: ['', Validators.required],
         foundedDate: ['', Validators.required],
         companyIndustry: ['', Validators.required],
         companyEmail: ['', [Validators.required, Validators.email]],
         companyContact: ['', Validators.required],
+        branchName:['',Validators.required]
       }),
 
-      branchDetails: this.formBuilder.group({
-        branchName: ['', Validators.required]
-      })
+      // branchDetails: this.formBuilder.group({
+      //   branchName: ['', Validators.required]
+      // })
     });
   }
 
@@ -61,43 +63,56 @@ export class EmployerSignupComponent implements OnInit {
     this.loadFormData();
   }
 
-  // isBrowser(): boolean {
-  //   return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
-  // }
+
 
   loadFormData() {
-    // if (this.isBrowser()) {
-      const storedEmployerDetails = localStorage.getItem('employerDetails');
-      const storedAddressDetails = localStorage.getItem('addressDetails');
-      const storedCompanyDetails = localStorage.getItem('companyDetails');
-      const storedBranchDetails = localStorage.getItem('branchDetails');
 
-      if (storedEmployerDetails) {
-        this.employerSignup.get('employerDetails')?.setValue(JSON.parse(storedEmployerDetails));
-      }
-      if (storedAddressDetails) {
-        this.employerSignup.get('addressDetails')?.setValue(JSON.parse(storedAddressDetails));
-      }
-      if (storedCompanyDetails) {
-        this.employerSignup.get('companyDetails')?.setValue(JSON.parse(storedCompanyDetails));
-      }
-      if (storedBranchDetails) {
-        this.employerSignup.get('branchDetails')?.setValue(JSON.parse(storedBranchDetails));
-      }
+    const storedEmployerDetails = localStorage.getItem('employerDetails');
+    const storedAddressDetails = localStorage.getItem('addressDetails');
+    const storedCompanyDetails = localStorage.getItem('companyDetails');
+    
+
+    if (storedEmployerDetails) {
+      this.employerSignup.get('employerDetails')?.setValue(JSON.parse(storedEmployerDetails));
+    }
+    if (storedAddressDetails) {
+      this.employerSignup.get('addressDetails')?.setValue(JSON.parse(storedAddressDetails));
+    }
+    if (storedCompanyDetails) {
+      this.employerSignup.get('companyDetails')?.setValue(JSON.parse(storedCompanyDetails));
     }
     
-  
+  }
+
+
 
   onSubmit() {
+    
     if (this.employerSignup.valid) {
-      console.log(this.employerSignup.value);
-      // if (this.isBrowser()) {
-        // Clear all stored data upon successful submission
-        localStorage.removeItem('employerDetails');
-        localStorage.removeItem('addressDetails');
-        localStorage.removeItem('companyDetails');
-        localStorage.removeItem('branchDetails');
-      // }
+      // console.log(this.employerSignup.value);
+      const combinedDetails={
+        ...this.employerSignup.get('employerDetails')?.value,
+        ...this.employerSignup.get('addressDetails')?.value,
+        ...this.employerSignup.get('companyDetails')?.value
+        
+      }
+      // console.log(combinedDetails);
+      this.employerSignupService.signupEmployer(combinedDetails).subscribe({
+        next:(data)=>{
+          console.log(data);
+          
+        },
+        error:(er)=>{
+          console.log(er);
+          
+        }
+      })
+      
+      localStorage.removeItem('employerDetails');
+      localStorage.removeItem('addressDetails');
+      localStorage.removeItem('companyDetails');
+      // this.employerSignup.reset()
+
     }
   }
 
@@ -118,16 +133,16 @@ export class EmployerSignupComponent implements OnInit {
   }
 
   saveFormData() {
-    // if (this.isBrowser()) {
-      const employerDetails = this.employerSignup.get('employerDetails')?.value;
-      const addressDetails = this.employerSignup.get('addressDetails')?.value;
-      const companyDetails = this.employerSignup.get('companyDetails')?.value;
-      const branchDetails = this.employerSignup.get('branchDetails')?.value;
 
-      localStorage.setItem('employerDetails', JSON.stringify(employerDetails));
-      localStorage.setItem('addressDetails', JSON.stringify(addressDetails));
-      localStorage.setItem('companyDetails', JSON.stringify(companyDetails));
-      localStorage.setItem('branchDetails', JSON.stringify(branchDetails));
-    }
+    const employerDetails = this.employerSignup.get('employerDetails')?.value;
+    const addressDetails = this.employerSignup.get('addressDetails')?.value;
+    const companyDetails = this.employerSignup.get('companyDetails')?.value;
+    
+
+    localStorage.setItem('employerDetails', JSON.stringify(employerDetails));
+    localStorage.setItem('addressDetails', JSON.stringify(addressDetails));
+    localStorage.setItem('companyDetails', JSON.stringify(companyDetails));
+  
   }
+}
 

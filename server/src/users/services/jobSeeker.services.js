@@ -14,16 +14,21 @@ class JobseekerService {
     try {
       result = sequelize.transaction(async (t) => {
         const response = await createJobseekerDb(userData, t);
+        // console.log(response);
+        
         delete response.dataValues.password;
         const userId = response.dataValues?.id;
+        
         const refreshTokenDetails = await AuthService.createSessionService(userId,t);
-
+        
         const accessToken = generateAccessToken(userId);
         response.dataValues.accessToken = accessToken;
         response.dataValues.refreshToken = refreshTokenDetails.dataValues?.refreshToken;
         return response;
       });
     } catch (error) {
+      // console.log("aaa");
+      
       throw new CustomError(error.message, 500);
     }
     return result;
