@@ -22,21 +22,30 @@ export class EmployerSignupComponent implements OnInit {
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', Validators.required],
         contact: ['', Validators.required],
+        dob: ['', Validators.required],
+        city: ['', Validators.required],
+        pinCode: ['', Validators.required],
+        state: ['', Validators.required],
+        country: ['', Validators.required],
         department: ['', Validators.required],
         designation: ['', Validators.required]
       }),
 
       addressDetails: this.formBuilder.group({
-        line1: ['', Validators.required],
-        line2: [''],
-        city: ['', Validators.required],
-        state: ['', Validators.required],
-        pincode: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
-        country: ['', Validators.required]
+        addressLine1: ['', Validators.required],
+        addressLine2: [''],
+        companyCity: ['', Validators.required],
+        companyState: ['', Validators.required],
+        companyPincode: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
+        companyCountry: ['', Validators.required]
       }),
 
       companyDetails: this.formBuilder.group({
+        designation: ['', Validators.required],
+        department: ['', Validators.required],
         companyName: ['', Validators.required],
+        totalEmployees: ['', Validators.required],
+        foundedDate: ['', Validators.required],
         companyIndustry: ['', Validators.required],
         companyEmail: ['', [Validators.required, Validators.email]],
         companyContact: ['', Validators.required],
@@ -52,12 +61,12 @@ export class EmployerSignupComponent implements OnInit {
     this.loadFormData();
   }
 
-  isBrowser() {
-    return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
-  }
+  // isBrowser(): boolean {
+  //   return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+  // }
 
   loadFormData() {
-    if (this.isBrowser()) {
+    // if (this.isBrowser()) {
       const storedEmployerDetails = localStorage.getItem('employerDetails');
       const storedAddressDetails = localStorage.getItem('addressDetails');
       const storedCompanyDetails = localStorage.getItem('companyDetails');
@@ -76,18 +85,19 @@ export class EmployerSignupComponent implements OnInit {
         this.employerSignup.get('branchDetails')?.setValue(JSON.parse(storedBranchDetails));
       }
     }
-  }
+    
+  
 
   onSubmit() {
     if (this.employerSignup.valid) {
       console.log(this.employerSignup.value);
-      if (this.isBrowser()) {
+      // if (this.isBrowser()) {
         // Clear all stored data upon successful submission
         localStorage.removeItem('employerDetails');
         localStorage.removeItem('addressDetails');
         localStorage.removeItem('companyDetails');
         localStorage.removeItem('branchDetails');
-      }
+      // }
     }
   }
 
@@ -108,7 +118,7 @@ export class EmployerSignupComponent implements OnInit {
   }
 
   saveFormData() {
-    if (this.isBrowser()) {
+    // if (this.isBrowser()) {
       const employerDetails = this.employerSignup.get('employerDetails')?.value;
       const addressDetails = this.employerSignup.get('addressDetails')?.value;
       const companyDetails = this.employerSignup.get('companyDetails')?.value;
@@ -118,9 +128,6 @@ export class EmployerSignupComponent implements OnInit {
       localStorage.setItem('addressDetails', JSON.stringify(addressDetails));
       localStorage.setItem('companyDetails', JSON.stringify(companyDetails));
       localStorage.setItem('branchDetails', JSON.stringify(branchDetails));
-
-      console.log(this.employerSignup);
-      
     }
   }
-}
+
