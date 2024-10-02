@@ -43,8 +43,7 @@ function isPasswordMatch(
 })
 export class SignupComponent {
   signupForm: FormGroup;
-  private jobSeekerSignupService = inject(JobseekerSignupService);
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,private jobSeekerSignupService:JobseekerSignupService ) {
     this.signupForm = this.formBuilder.group(
       {
         firstName: ["", Validators.required],

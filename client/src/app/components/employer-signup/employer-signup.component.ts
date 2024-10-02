@@ -1,21 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { EmployerSignupService } from '../../services/employer-signup.service';
-
 
 @Component({
   selector: 'app-employer-signup',
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './employer-signup.component.html',
-  styleUrls: ['./employer-signup.component.css']
+  styleUrls: ['./employer-signup.component.css'],
 })
 export class EmployerSignupComponent implements OnInit {
   employerSignup: FormGroup;
   currentStep = 0;
   maxStep = 3;
 
-  constructor(private formBuilder: FormBuilder,private employerSignupService:EmployerSignupService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private employerSignupService: EmployerSignupService
+  ) {
     this.employerSignup = this.formBuilder.group({
       employerDetails: this.formBuilder.group({
         firstName: ['', Validators.required],
@@ -30,7 +37,7 @@ export class EmployerSignupComponent implements OnInit {
         state: ['', Validators.required],
         country: ['', Validators.required],
         department: ['', Validators.required],
-        designation: ['', Validators.required]
+        designation: ['', Validators.required],
       }),
 
       addressDetails: this.formBuilder.group({
@@ -38,19 +45,21 @@ export class EmployerSignupComponent implements OnInit {
         addressLine2: [''],
         companyCity: ['', Validators.required],
         companyState: ['', Validators.required],
-        companyPincode: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
-        companyCountry: ['', Validators.required]
+        companyPincode: [
+          '',
+          [Validators.required, Validators.pattern(/^\d{6}$/)],
+        ],
+        companyCountry: ['', Validators.required],
       }),
 
       companyDetails: this.formBuilder.group({
-       
         companyName: ['', Validators.required],
         totalEmployees: ['', Validators.required],
         foundedDate: ['', Validators.required],
         companyIndustry: ['', Validators.required],
         companyEmail: ['', [Validators.required, Validators.email]],
         companyContact: ['', Validators.required],
-        branchName:['',Validators.required]
+        branchName: ['', Validators.required],
       }),
 
       // branchDetails: this.formBuilder.group({
@@ -63,56 +72,50 @@ export class EmployerSignupComponent implements OnInit {
     this.loadFormData();
   }
 
-
-
   loadFormData() {
-
     const storedEmployerDetails = localStorage.getItem('employerDetails');
     const storedAddressDetails = localStorage.getItem('addressDetails');
     const storedCompanyDetails = localStorage.getItem('companyDetails');
-    
 
     if (storedEmployerDetails) {
-      this.employerSignup.get('employerDetails')?.setValue(JSON.parse(storedEmployerDetails));
+      this.employerSignup
+        .get('employerDetails')
+        ?.setValue(JSON.parse(storedEmployerDetails));
     }
     if (storedAddressDetails) {
-      this.employerSignup.get('addressDetails')?.setValue(JSON.parse(storedAddressDetails));
+      this.employerSignup
+        .get('addressDetails')
+        ?.setValue(JSON.parse(storedAddressDetails));
     }
     if (storedCompanyDetails) {
-      this.employerSignup.get('companyDetails')?.setValue(JSON.parse(storedCompanyDetails));
+      this.employerSignup
+        .get('companyDetails')
+        ?.setValue(JSON.parse(storedCompanyDetails));
     }
-    
   }
 
-
-
   onSubmit() {
-    
     if (this.employerSignup.valid) {
       // console.log(this.employerSignup.value);
-      const combinedDetails={
+      const combinedDetails = {
         ...this.employerSignup.get('employerDetails')?.value,
         ...this.employerSignup.get('addressDetails')?.value,
-        ...this.employerSignup.get('companyDetails')?.value
-        
-      }
+        ...this.employerSignup.get('companyDetails')?.value,
+      };
       // console.log(combinedDetails);
       this.employerSignupService.signupEmployer(combinedDetails).subscribe({
-        next:(data)=>{
+        next: (data) => {
           console.log(data);
-          
         },
-        error:(er)=>{
+        error: (er) => {
           console.log(er);
-          
-        }
-      })
-      
+        },
+      });
+
       localStorage.removeItem('employerDetails');
       localStorage.removeItem('addressDetails');
       localStorage.removeItem('companyDetails');
       // this.employerSignup.reset()
-
     }
   }
 
@@ -133,16 +136,12 @@ export class EmployerSignupComponent implements OnInit {
   }
 
   saveFormData() {
-
     const employerDetails = this.employerSignup.get('employerDetails')?.value;
     const addressDetails = this.employerSignup.get('addressDetails')?.value;
     const companyDetails = this.employerSignup.get('companyDetails')?.value;
-    
 
     localStorage.setItem('employerDetails', JSON.stringify(employerDetails));
     localStorage.setItem('addressDetails', JSON.stringify(addressDetails));
     localStorage.setItem('companyDetails', JSON.stringify(companyDetails));
-  
   }
 }
-
