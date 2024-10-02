@@ -10,6 +10,11 @@ module.exports = (sequelize, DataTypes) => {
       branchName: {
         type: DataTypes.STRING(150),
         allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "please Enter Branch Name",
+          },
+        },
         set(value) {
           this.setDataValue("branchName", value?.trim());
         },

@@ -53,7 +53,7 @@ const createSession = async (req, res, next) => {
       await AuthService.createSessionService(id, t);
     });
   } catch (error) {
-    next(new CustomError(error.message, 500));
+    next(error);
   }
   if (result) {
     accessToken = generateAccessToken(id);
