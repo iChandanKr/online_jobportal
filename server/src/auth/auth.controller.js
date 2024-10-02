@@ -53,8 +53,6 @@ const createSession = async (req, res, next) => {
       await AuthService.createSessionService(id, t);
     });
   } catch (error) {
-    console.log('inside controller catch');
-    
     next(error);
   }
   if (result) {
