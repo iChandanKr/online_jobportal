@@ -10,6 +10,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       firstName: {
         type: DataTypes.STRING(50),
+        validate: {
+          notEmpty: {
+            msg: "please Enter your Name",
+          },
+        },
         allowNull: false,
         set(value) {
           this.setDataValue("firstName", value?.trim());
@@ -23,6 +28,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       dob: {
         type: DataTypes.DATEONLY,
+        validate: {
+          notEmpty: {
+            msg: "please Enter your DOB",
+          },
+        },
         allowNull: false,
       },
       email: {
@@ -33,6 +43,9 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: {
             args: true,
             msg: "Please enter a valid email address!",
+          },
+          notEmpty: {
+            msg: "please Enter your Name",
           },
         },
         set(value) {
@@ -74,10 +87,20 @@ module.exports = (sequelize, DataTypes) => {
       city: {
         type: DataTypes.STRING(100),
         allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "please Enter your City",
+          },
+        },
       },
       state: {
         type: DataTypes.STRING(100),
         allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "please Enter your State",
+          },
+        },
       },
       pinCode: {
         type: DataTypes.STRING(6),
@@ -96,6 +119,11 @@ module.exports = (sequelize, DataTypes) => {
       country: {
         type: DataTypes.STRING(70),
         allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "please Enter your Country",
+          },
+        },
       },
       passwordChangedAt: {
         type: DataTypes.DATE,

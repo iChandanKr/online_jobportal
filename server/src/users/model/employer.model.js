@@ -12,10 +12,20 @@ module.exports = (sequelize, DataTypes) => {
       department: {
         type: DataTypes.STRING(80),
         allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "please Enter Department",
+          },
+        },
       },
       designation: {
         type: DataTypes.STRING(80),
         allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "please Enter Designation",
+          },
+        },
       },
       userId: {
         type: DataTypes.UUID,

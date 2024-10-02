@@ -10,22 +10,37 @@ module.exports = (sequelize, DataTypes) => {
       line1: {
         type: DataTypes.STRING(100),
         allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "please Enter Address",
+          },
+        },
         set(value) {
           this.setDataValue("line1", value?.trim());
         },
       },
       line2: {
-        type: DataTypes.STRING(150),    
+        type: DataTypes.STRING(150),
         set(value) {
           this.setDataValue("line2", value?.trim());
         },
       },
       city: {
         type: DataTypes.STRING(100),
+        validate: {
+          notEmpty: {
+            msg: "please Enter Company's City",
+          },
+        },
         allowNull: false,
       },
       state: {
         type: DataTypes.STRING(100),
+        validate: {
+          notEmpty: {
+            msg: "please Enter Company's State",
+          },
+        },
         allowNull: false,
       },
       pincode: {
@@ -44,6 +59,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       country: {
         type: DataTypes.STRING(70),
+        validate: {
+          notEmpty: {
+            msg: "please Enter Company's Country",
+          },
+        },
         allowNull: false,
       },
     },

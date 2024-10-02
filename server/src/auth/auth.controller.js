@@ -53,7 +53,9 @@ const createSession = async (req, res, next) => {
       await AuthService.createSessionService(id, t);
     });
   } catch (error) {
-    next(new CustomError(error.message, 500));
+    console.log('inside controller catch');
+    
+    next(error);
   }
   if (result) {
     accessToken = generateAccessToken(id);

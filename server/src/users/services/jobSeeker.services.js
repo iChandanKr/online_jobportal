@@ -24,7 +24,7 @@ class JobseekerService {
         return response;
       });
     } catch (error) {
-      throw new CustomError(error.message, 500);
+      throw new CustomError(error.message, 400);
     }
     return result;
   };
