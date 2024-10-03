@@ -1,22 +1,17 @@
-# Created by https://www.toptal.com/developers/gitignore/api/angular
-# Edit at https://www.toptal.com/developers/gitignore?templates=angular
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
-### Angular ###
 # Compiled output
-dist/
-tmp/
-out-tsc/
-bazel-out/
-app/**/*.js
-app/**/*.js.map
+/dist
+/tmp
+/out-tsc
+/bazel-out
 
-# Dependencies
-node_modules/
-bower_components/
+# Node
+/node_modules
 npm-debug.log
 yarn-error.log
 
-# IDEs and Editors
+# IDEs and editors
 .idea/
 .project
 .classpath
@@ -34,16 +29,14 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
+/.angular/cache
 .sass-cache/
-connect.lock/
-coverage/
-libpeerconnection.log/
-testem.log/
-typings/
-.angular/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
 
-# End of https://www.toptal.com/developers/gitignore/api/angular
-
-# System Files
+# System files
 .DS_Store
 Thumbs.db
