@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING(150),
         allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "please Enter Company Name",
+          },
+        },
         unique: true,
         set(value) {
           this.setDataValue("name", value?.trim());
@@ -19,6 +24,11 @@ module.exports = (sequelize, DataTypes) => {
       companyIndustry: {
         type: DataTypes.STRING(100),
         allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "please Enter Company Industry",
+          },
+        },
         set(value) {
           this.setDataValue("companyIndustry", value?.trim());
         },
@@ -31,6 +41,9 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: {
             args: true,
             msg: "Please enter a valid email address!",
+          },
+          notEmpty: {
+            msg: "please Enter Email",
           },
         },
         set(value) {
@@ -51,10 +64,16 @@ module.exports = (sequelize, DataTypes) => {
       totalEmployees: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        notEmpty: {
+          msg: "Please Enter Total Employees ",
+        },
       },
       foundedDate: {
         type: DataTypes.DATEONLY,
         allowNull: false,
+        notEmpty: {
+          msg: "Please Enter Company Foundation Date",
+        },
       },
     },
     {

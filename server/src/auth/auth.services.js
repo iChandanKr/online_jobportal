@@ -14,9 +14,10 @@ const CustomError = require("../utils/customError");
 class AuthService {
   static loginService = async (req, inputDetails, next) => {
     const { email, password, role } = inputDetails;
-    if (!email || !password) {
-      return next(
-        new CustomError("Please Enter Email and Password to login!", 400)
+    if (!email || !password || !role) {
+      throw new CustomError(
+        "Please Enter Email, Password & role to login!",
+        400
       );
     }
     // check if user exists
@@ -39,23 +40,19 @@ class AuthService {
             req.userRole = userRoleDetails.dataValues?.role;
             return { userId: user.dataValues?.id };
           } else {
-            return next(
-              new CustomError(
-                "You don't have permission to login through entered role ",
-                403
-              )
+            throw new CustomError(
+              "You don't have permission to login through entered role ",
+              403
             );
           }
         } else {
-          return next(
-            new CustomError("Pleae Enter the correct credentials...", 400)
-          );
+          new CustomError("Pleae Enter the correct credentials...", 400);
         }
       } else {
-        return next(new CustomError("Invalid login credentials", 400));
+        throw new CustomError("Invalid login credentials", 400);
       }
     } else {
-      return next(new CustomError("Invalid login credentials", 400));
+      throw new CustomError("Invalid login credentials", 400);
     }
   };
 
@@ -68,8 +65,8 @@ class AuthService {
       res.clearCookie("accessToken");
       res.clearCookie("refreshToken");
       return ans;
-    }else{
-      throw new CustomError('You are not loggedIn',400)
+    } else {
+      throw new CustomError("You are not loggedIn", 400);
     }
   };
 
