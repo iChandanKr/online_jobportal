@@ -1,11 +1,9 @@
 const JobseekerService = require("../services/jobSeeker.services");
 const resObj = require("../../utils/response");
-const CustomError = require("../../utils/customError");
 
-const registerJobseeker = async (req, res,next) => {
+const registerJobseeker = async (req, res, next) => {
   req.body.role = "jobseeker";
   try {
-    
     const createdUser = await JobseekerService.createUserService(req.body);
 
     const { accessToken, refreshToken } = createdUser.dataValues;
@@ -13,12 +11,7 @@ const registerJobseeker = async (req, res,next) => {
     res.cookie("refreshToken", refreshToken);
     resObj(res, 201, "User Created successfully", createdUser);
   } catch (err) {
-    // res.status(400).json({
-    //   status: "fail",
-    //   message: "Don't able to create user!!",
-    //   error: err,
-    // });
-    next(err)
+    next(err);
   }
 };
 
