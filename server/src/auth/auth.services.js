@@ -12,7 +12,7 @@ const {
 } = require("../utils/tokenGenerator");
 const CustomError = require("../utils/customError");
 class AuthService {
-  static loginService = async (req, inputDetails, next) => {
+  static loginService = async (req, inputDetails) => {
     const { email, password, role } = inputDetails;
     if (!email || !password || !role) {
       throw new CustomError(
