@@ -1,14 +1,22 @@
 <mat-toolbar class="mat-elevation-z4" color="primary">
-  <button mat-button>
+  <button
+    mat-icon-button
+    (click)="collapsed.set(!collapsed())"
+    aria-label="Example icon-button with menu icon"
+  >
     <mat-icon>menu</mat-icon>
   </button>
+  <span>Job Portal</span>
+  <span class="example-spacer"></span>
+  <button mat-icon-button matTooltip="Logout" matTooltipPosition="left">
+    <mat-icon>logout</mat-icon>
+  </button>
 </mat-toolbar>
-
 <mat-sidenav-container>
-  <mat-sidenav opened mode="side" [style.width]="'250px'">
-    <app-custom-sidenav />
+  <mat-sidenav opened mode="side" [style.width]="sideNavWidth()">
+    <app-custom-sidenav [sideNavCollapsed]="collapsed()" />
   </mat-sidenav>
-  <mat-sidenav-content class="content">
+  <mat-sidenav-content class="content" [style.margin-left]="sideNavWidth()">
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

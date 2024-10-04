@@ -1,3 +1,7 @@
+:host *{
+  transition: all 500ms ease-in-out;
+}
+
 .sidenav-header {
   padding-top: 24px;
   text-align: center;
@@ -20,3 +24,6 @@
     font-size: 0.8rem;
   }
 }
+
+
+
