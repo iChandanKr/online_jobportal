@@ -11,14 +11,16 @@ export class JobseekerSignupService {
   constructor(private httpClient: HttpClient) {}
 
   signupJobseeker(body: JobSeeker): Observable<any> {
-    return this.httpClient.post(this.apiUrl, body, {
+    return this.httpClient.post(this.apiUrl, body,{
       headers: this.getHeaders(),
+      withCredentials:true,
     });
   }
 
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
       'Content-type': 'application/json',
+
     });
   }
 

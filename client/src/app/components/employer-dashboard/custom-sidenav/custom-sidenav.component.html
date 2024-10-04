@@ -1,0 +1,31 @@
+<div class="sidenav-header">
+  <img
+    src="avatar.png"
+    [width]="profilePicSize()"
+    [height]="profilePicSize()"
+    alt="image"
+  />
+  @if (!sideNavCollapsed()) {
+  <div class="header-text">
+    <h6>Welcome</h6>
+    <p>Chandan Kumar</p>
+  </div>
+  }
+</div>
+<mat-nav-list>
+  @for (item of menuItem(); track $index) {
+  <a
+    mat-list-item
+    [routerLink]="item.route"
+    routerLinkActive
+    #rla="routerLinkActive"
+    [activated]="rla.isActive"
+  >
+    <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+    @if (!sideNavCollapsed()) {
+
+    <span>{{ item.label }}</span>
+    }
+  </a>
+  }
+</mat-nav-list>

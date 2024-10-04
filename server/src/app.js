@@ -10,9 +10,9 @@ const globalErrorHandler = require("./utils/globalErrorHandler");
 app.use(express.json());
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:4200",
     credentials: true,
-    exposedHeaders: ["Authorization"],
+    // exposedHeaders: ["Authorization"],
   })
 );
 app.use(cookieParser());
