@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { NgModule } from '@angular/core';
 import {
   FormBuilder,
@@ -18,7 +18,11 @@ import { LoginService } from '../../services/login.service';
 export class LoginComponent {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private loginService: LoginService,private router:Router) {
+  constructor(
+    private fb: FormBuilder,
+    private loginService: LoginService,
+    private router: Router
+  ) {
     this.loginForm = this.fb.group({
       role: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -33,13 +37,19 @@ export class LoginComponent {
       this.loginService.loginByRole(this.loginForm.value).subscribe({
         next: (data) => {
           console.log(data);
-          this.router.navigate(['/employer'])
+          this.router.navigate(['/employer']);
           this.loginForm.reset();
         },
         error: (err) => {
           console.log(err);
         },
       });
+      effect(() => this.loginService.isLogin.set(true));
+
+      console.log(
+        this.loginService.isLogin(),
+        'lskdflskdjflsdkfjlskdfslkdfjls'
+      );
     }
   }
 }

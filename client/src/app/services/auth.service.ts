@@ -11,7 +11,6 @@ export class AuthService {
     const decodedToken = jwtDecode(refreshToken);
     // decodedToken.exp return seconds to convert it into milliseconds
     const expirationDate = decodedToken.exp! * 1000;
-    console.log(decodedToken);
     return Date.now() >= expirationDate;
   }
 

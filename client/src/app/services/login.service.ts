@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Login } from '../model/login.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class LoginService {
+  isLogin = signal<boolean>(false);
   private readonly apiUrl = 'http://localhost:3000/api/v1/users/login';
   constructor(private httpClient: HttpClient) {}
 
