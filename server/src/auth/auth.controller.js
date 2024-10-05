@@ -1,7 +1,6 @@
 const AuthService = require("./auth.services");
 const { dataModel } = require("../dbConnection");
 const { sequelize } = dataModel;
-const CustomError = require("../utils/customError");
 const { generateAccessToken } = require("../utils/tokenGenerator");
 const createSessionHandler = require("./shared/createSessionHandler");
 const resObj = require("../utils/response");
@@ -37,7 +36,7 @@ const logoutUser = async (req, res, next) => {
     if (logoutUserService >= 1) {
       resObj(res, 200, "You are loggedOut successfully!");
     }
-  } catch (error) {
+  } catch (error) {    
     next(error);
   }
 };

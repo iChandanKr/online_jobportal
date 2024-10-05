@@ -5,6 +5,7 @@ const {
   verifyUserRoleDB,
   findUserById,
   stopSessionDB,
+  findRefreshTokenDb,
 } = require("./auth.repo");
 const {
   generateRefreshToken,
@@ -12,7 +13,7 @@ const {
 } = require("../utils/tokenGenerator");
 const CustomError = require("../utils/customError");
 class AuthService {
-  static loginService = async (req, inputDetails, next) => {
+  static loginService = async (req, inputDetails) => {
     const { email, password, role } = inputDetails;
     if (!email || !password || !role) {
       throw new CustomError(
@@ -69,11 +70,16 @@ class AuthService {
       throw new CustomError("You are not loggedIn", 400);
     }
   };
+  static findRefreshTokenService = async (refreshToken) =>
+    await findRefreshTokenDb(refreshToken);
+
+  static deleteRefreshTokenService = async (id, refreshToken) =>
+    await stopSessionDB(id, refreshToken);
 
   static createSessionService = async (user_id, t) => {
     // const accessToken = generateAccessToken(user_id);
     const refreshToken = generateRefreshToken(user_id);
-    
+
     return await createSessionDB(user_id, refreshToken, t);
   };
 }

@@ -8,7 +8,13 @@
   </button>
   <span>Job Portal</span>
   <span class="example-spacer"></span>
-  <button mat-icon-button matTooltip="Logout" matTooltipPosition="left">
+
+  <button
+    mat-icon-button
+    matTooltip="Logout"
+    matTooltipPosition="left"
+    (click)="onLogout()"
+  >
     <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>

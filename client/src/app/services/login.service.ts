@@ -12,6 +12,7 @@ export class LoginService {
   loginByRole(body: Login): Observable<any> {
     return this.httpClient.post(this.apiUrl, body, {
       headers: this.getHeaders(),
+      withCredentials:true,
     });
   }
   getHeaders(): HttpHeaders {
