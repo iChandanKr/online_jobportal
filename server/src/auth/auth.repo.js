@@ -40,6 +40,10 @@ const stopSessionDB = async (id, refreshToken) => {
     },
   });
 };
+
+const findRefreshTokenDb = async (refreshToken) => {
+  return await RefreshToken.findOne({ where: { refreshToken } });
+};
 module.exports = {
   createSessionDB,
   findUserByEmail,
@@ -47,4 +51,5 @@ module.exports = {
   verifyUserRoleDB,
   findUserById,
   stopSessionDB,
+  findRefreshTokenDb
 };

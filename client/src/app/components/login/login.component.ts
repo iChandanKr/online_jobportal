@@ -6,7 +6,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 @Component({
   selector: 'app-login',
@@ -18,11 +18,11 @@ import { LoginService } from '../../services/login.service';
 export class LoginComponent {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private loginService: LoginService) {
+  constructor(private fb: FormBuilder, private loginService: LoginService,private router:Router) {
     this.loginForm = this.fb.group({
       role: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       remember: [false],
     });
   }
@@ -33,6 +33,7 @@ export class LoginComponent {
       this.loginService.loginByRole(this.loginForm.value).subscribe({
         next: (data) => {
           console.log(data);
+          this.router.navigate(['/employer'])
           this.loginForm.reset();
         },
         error: (err) => {

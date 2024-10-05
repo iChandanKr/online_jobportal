@@ -8,12 +8,12 @@ import { PostJobComponent } from './components/employer-dashboard/pages/post-job
 import { JobsComponent } from './components/employer-dashboard/pages/jobs/jobs.component';
 import { ProfileComponent } from './components/employer-dashboard/pages/profile/profile.component';
 import { ApplicationsComponent } from './components/employer-dashboard/pages/applications/applications.component';
-
+import { authGuard } from './guards/auth.guard';
 export const routes: Routes = [
   {
-    path:'',
-    redirectTo:'signup',
-    pathMatch:'full'
+    path: '',
+    redirectTo: 'signup',
+    pathMatch: 'full',
   },
   {
     path: 'login',
@@ -31,6 +31,7 @@ export const routes: Routes = [
     path: 'employer',
     title: 'employer',
     component: EmployerDashboardComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: 'dashboard',
@@ -56,6 +57,11 @@ export const routes: Routes = [
         path: 'applications',
         title: 'Applications',
         component: ApplicationsComponent,
+      },
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
       },
     ],
   },
