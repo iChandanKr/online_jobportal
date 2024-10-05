@@ -5,7 +5,8 @@ const AuthService = require("../../auth/auth.services");
 const CustomError = require("../../utils/customError");
 const {generateAccessToken} = require('../../utils/tokenGenerator')
 class EmployerService {
-  static createEmployerService = async (employerData) => {
+  static createEmployerService = 
+  async (employerData) => {
     let result;
     try {
       result = sequelize.transaction(async (t) => {
