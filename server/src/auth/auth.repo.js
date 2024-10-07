@@ -51,5 +51,5 @@ module.exports = {
   verifyUserRoleDB,
   findUserById,
   stopSessionDB,
-  findRefreshTokenDb
+  findRefreshTokenDb,
 };

@@ -39,7 +39,12 @@ class AuthService {
           if (verifyUserRole) {
             // set user role to request after login successful;
             req.userRole = userRoleDetails.dataValues?.role;
-            return { userId: user.dataValues?.id };
+            delete user.dataValues?.password;
+            delete user.dataValues?.passwordChangedAt;
+            delete user.dataValues?.createdAt;
+            delete user.dataValues?.updatedAt;
+            user.dataValues.role = req.userRole;
+            return user.dataValues;
           } else {
             throw new CustomError(
               "You don't have permission to login through entered role ",

@@ -16,14 +16,14 @@ const userLogin = async (req, res, next) => {
     if (userLoginService) {
       const sendRes = await createSessionHandler(
         sequelize,
-        userLoginService.userId,
+        userLoginService.id,
         next
       );
       res.cookie("refreshToken", sendRes.refreshToken);
       res.cookie("accessToken", sendRes.accessToken);
-      resObj(res, 200, "You have been loggedin successfully!", sendRes);
+      resObj(res, 200, "You have been loggedin successfully!", {...userLoginService,...sendRes});
     }
-  } catch (error) {
+  } catch (error) { 
     next(error);
   }
 };
