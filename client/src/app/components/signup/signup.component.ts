@@ -63,10 +63,7 @@ export class SignupComponent {
   }
 
   onSubmit() {
-    if (this.signupForm.invalid) {
-      console.log("hello");
-      return;
-    }
+    
 
     console.log("Signup details:", this.signupForm.value);
     this.jobSeekerSignupService
@@ -74,11 +71,12 @@ export class SignupComponent {
       .subscribe({
         next: (data) => {
           console.log(data);
+        
+          this.signupForm.reset();
         },
         error: (er) => {
           console.log(er);
         },
       });
-    this.signupForm.reset();
   }
 }

@@ -79,6 +79,19 @@ const createEmployerDb = async (employerData, t) => {
   return newEmployer;
 };
 
+const updateEmployerDb=async(id,employerData,t)=>{
+  const employer=await User.findOne(id,{transaction:t})
+
+  if(!employer){
+    throw new Error("Employer not found")
+  }
+
+  await employer.update({
+    
+  })
+}
+
 module.exports = {
   createEmployerDb,
+  updateEmployerDb
 };
