@@ -1,4 +1,4 @@
-@if (!isLogin()) {
+@if (!authService.isAuthenticated()) {
   <app-navbar></app-navbar>
 
 }

@@ -1,4 +1,5 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { UserDataSharingService } from './../../services/user-data-sharing.service';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +9,7 @@ import { CustomSidenavComponent } from './custom-sidenav/custom-sidenav.componen
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { LogoutService } from '../../services/logout.service';
 import { Router } from '@angular/router';
+import { type CurrentUser } from '../../model/loginResponse.model';
 @Component({
   selector: 'app-employer-dashboard',
   standalone: true,
@@ -28,15 +30,19 @@ export class EmployerDashboardComponent {
   sideNavWidth = computed(() => (this.collapsed() ? '65px' : '250px'));
   private logoutService = inject(LogoutService);
   private router = inject(Router);
+
   onLogout() {
     this.logoutService.logoutUser().subscribe({
       next: (data) => {
         console.log(data);
+        if (localStorage.getItem('userFullName')) {
+          localStorage.removeItem('userFullName');
+        }
         this.router.navigate(['/login']);
       },
-      error:(err)=>{
-        console.log(err)
-      }
+      error: (err) => {
+        console.log(err);
+      },
     });
   }
 }

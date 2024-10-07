@@ -1,5 +1,4 @@
 import { Component, effect } from '@angular/core';
-import { NgModule } from '@angular/core';
 import {
   FormBuilder,
   ReactiveFormsModule,
@@ -8,6 +7,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { LoginService } from '../../services/login.service';
+import { UserDataSharingService } from '../../services/user-data-sharing.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -21,7 +21,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private loginService: LoginService,
-    private router: Router
+    private router: Router,
+    private userDataSharingService: UserDataSharingService
   ) {
     this.loginForm = this.fb.group({
       role: ['', Validators.required],
@@ -33,23 +34,21 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      // console.log('Logged info',this.loginForm.value);
       this.loginService.loginByRole(this.loginForm.value).subscribe({
-        next: (data) => {
-          console.log(data);
-          this.router.navigate(['/employer']);
+        next: (response) => {
+          const user = response.body?.data;
+          if (user) {
+            this.userDataSharingService.setLoginUserData(user);
+          }
+          user?.role === 'employer'
+            ? this.router.navigate(['/employer'])
+            : this.router.navigate(['/employer']);
           this.loginForm.reset();
         },
         error: (err) => {
           console.log(err);
         },
       });
-      effect(() => this.loginService.isLogin.set(true));
-
-      console.log(
-        this.loginService.isLogin(),
-        'lskdflskdjflsdkfjlskdfslkdfjls'
-      );
     }
   }
 }

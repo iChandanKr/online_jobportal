@@ -1,4 +1,5 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { AuthService } from './services/auth.service';
+import { Component, inject, signal, OnInit, effect } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginService } from './services/login.service';
@@ -11,11 +12,9 @@ import { LoginService } from './services/login.service';
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  private loginService = inject(LoginService);
-  title = 'client';
-  isLogin = signal(false);
-  ngOnInit(): void {
-    this.isLogin.set(this.loginService.isLogin());
+  constructor(public authService: AuthService) {
   }
-
+  title = 'client';
+  ngOnInit(): void {
+  }
 }
