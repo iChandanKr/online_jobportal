@@ -42,7 +42,7 @@
                 Location</label>
             <select id="jobLocation" name="jobLocation" formControlName="jobLocation"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option>select</option>
+                <option value="" disabled>select</option>
                 <option value="onsite">On Site</option>
                 <option value="remote">Remote</option>
             </select>
@@ -59,9 +59,9 @@
 
         <div class="control">
             <label for="skills" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Skills</label>
-            <select id="skills" name="skills" formControlName="skills"
+            <select id="skills" name="skills" multiple formControlName="skills"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option>select</option>
+                <option value="" disabled>select</option>
                 <option value="html">Html</option>
                 <option value="angular">Angular</option>
                 <option value="node">Node</option>
@@ -80,7 +80,7 @@
 
         <div class="control">
             <div class="mb-5">
-                <label for="maxSalary" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Minimum
+                <label for="maxSalary" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Maximum
                     Salary</label>
                 <input type="text" id="maxSalary" name="maxSalary" formControlName="maxSalary"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -102,7 +102,7 @@
             <label for="jobType" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Job Type</label>
             <select id="jobType" name="jobType" formControlName="jobType"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option>select</option>
+                <option value="" disabled>select</option>
                 <option>Part Time</option>
                 <option>Full Time</option>
                 <option value="">Internship</option>
@@ -113,7 +113,7 @@
             <label for="shift" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Shift</label>
             <select id="shift" name="shift" formControlName="shift"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option>select</option>
+                <option value="" disabled>select</option>
                 <option value="evening">Evening</option>
                 <option value="morning">Morning</option>
             </select>

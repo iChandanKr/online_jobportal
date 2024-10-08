@@ -18,18 +18,14 @@ export class PostJobComponent {
     description: new FormControl('', [Validators.required]),
     role: new FormControl('', [Validators.required]),
     industryName: new FormControl('', [Validators.required]),
-    jobLocation: new FormControl<'onsite' | 'remote'>('onsite', [
-      Validators.required,
-    ]),
+    jobLocation: new FormControl('', [Validators.required]),
     city: new FormControl('', [Validators.required]),
-    skills: new FormControl('', [Validators.required]),
+    skills: new FormControl([], [Validators.required]),
     applicationDeadline: new FormControl('', [Validators.required]),
     maxSalary: new FormControl('', [Validators.required]),
     minSalary: new FormControl('', [Validators.required]),
     jobType: new FormControl('', [Validators.required]),
-    shift: new FormControl<'morning' | 'evening'>('morning', [
-      Validators.required,
-    ]),
+    shift: new FormControl('', [Validators.required]),
   });
 
   onSubmit() {
