@@ -1,242 +1,139 @@
 <h2 class="text-3xl font-medium text-center mb-8">Post Job</h2>
-<form
-  class="max-w-md md:max-w-4xl mx-auto"
-  [formGroup]="jobForm"
-  (ngSubmit)="onSubmit()"
->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 borders">
-    <div class="control">
-      <div class="mb-5">
-        <label
-          for="title"
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Title</label
-        >
-        <input
-          type="text"
-          id="title"
-          name="title"
-          formControlName="title"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Enter Title..."
-        />
-      </div>
-    </div>
-    <div class="control">
-      <label
-        for="description"
-        class="block mb-2 text-md font-mease-inputdium text-gray-900 dark:text-white"
-        >Description</label
-      >
+<form class="max-w-md md:max-w-4xl mx-auto" [formGroup]="jobForm" (ngSubmit)="onSubmit()">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 borders">
+        <div class="control">
+            <div class="mb-5">
+                <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
+                <input type="text" id="title" name="title" formControlName="title"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Enter Title..." />
+            </div>
+        </div>
+        <div class="control">
+            <label for="description"
+                class="block mb-2 text-md font-mease-inputdium text-gray-900 dark:text-white">Description</label>
 
-      <textarea
-        id="description"
-        name="description"
-        rows="4"
-        formControlName="description"
-        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        placeholder="Leave a comment..."
-      ></textarea>
-    </div>
+            <textarea id="description" name="description" rows="4" formControlName="description"
+                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Leave a comment..."></textarea>
+        </div>
 
-    <div class="control">
-      <div class="mb-5">
-        <label
-          for="role"
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Role</label
-        >
-        <input
-          type="text"
-          id="role"
-          name="role"
-          formControlName="role"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Enter Role..."
-        />
-      </div>
-    </div>
+        <div class="control">
+            <div class="mb-5">
+                <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
+                <input type="text" id="role" name="role" formControlName="role"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Enter Role..." />
+            </div>
+        </div>
 
-    <div class="control">
-      <div class="mb-5">
-        <label
-          for="industryName"
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Industry Name</label
-        >
-        <input
-          type="text"
-          id="industryName"
-          name="industryName"
-          formControlName="industryName"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Enter Location..."
-        />
-      </div>
-    </div>
+        <div class="control">
+            <div class="mb-5">
+                <label for="industryName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Industry
+                    Name</label>
+                <input type="text" id="industryName" name="industryName" formControlName="industryName"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Enter Location..." />
+            </div>
+        </div>
 
-    <div class="control">
-      <label
-        for="jobLocation"
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >Select Job Location</label
-      >
-      <select
-        id="jobLocation"
-        name="jobLocation"
-        formControlName="jobLocation"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-      >
-        <option>select</option>
-        <option>On Site</option>
-        <option>Remote</option>
-      </select>
-    </div>
+        <div class="control">
+            <label for="jobLocation" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Job
+                Location</label>
+            <select id="jobLocation" name="jobLocation" formControlName="jobLocation"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option>select</option>
+                <option value="onsite">On Site</option>
+                <option value="remote">Remote</option>
+            </select>
+        </div>
 
-    <div class="control">
-      <div class="mb-5">
-        <label
-          for="city"
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >City</label
-        >
-        <input
-          type="text"
-          id="city"
-          name="city"
-          formControlName="city"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Enter Location..."
-        />
-      </div>
-    </div>
+        <div class="control">
+            <div class="mb-5">
+                <label for="city" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
+                <input type="text" id="city" name="city" formControlName="city"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Enter Location..." />
+            </div>
+        </div>
 
-    <div class="control">
-      <label
-        for="skills"
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >Skills</label
-      >
-      <select
-        id="skills"
-        name="skills"
-        formControlName="skills"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-      >
-        <option>select</option>
-        <option>Html</option>
-        <option>Angular</option>
-        <option value="">Node</option>
-      </select>
-    </div>
-    <div class="control">
-      <div class="mb-5">
-        <label
-          for="applicationDeadline"
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Application Deadline</label
-        >
-        <input
-          type="text"
-          id="applicationDeadline"
-          name="applicationDeadline"
-          formControlName="applicationDeadline"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Enter deadline..."
-        />
-      </div>
-    </div>
+        <div class="control">
+            <label for="skills" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Skills</label>
+            <select id="skills" name="skills" formControlName="skills"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option>select</option>
+                <option value="html">Html</option>
+                <option value="angular">Angular</option>
+                <option value="node">Node</option>
+            </select>
+        </div>
+        <div class="control">
+            <div class="mb-5">
+                <label for="applicationDeadline"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Application Deadline</label>
+                <input type="date" id="applicationDeadline" name="applicationDeadline"
+                    formControlName="applicationDeadline"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Enter deadline..." />
+            </div>
+        </div>
 
-    <div class="control">
-      <div class="mb-5">
-        <label
-          for="maxSalary"
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Minimum Salary</label
-        >
-        <input
-          type="text"
-          id="maxSalary"
-          name="maxSalary"
-          formControlName="maxSalary"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Enter Max salary..."
-        />
-      </div>
-    </div>
+        <div class="control">
+            <div class="mb-5">
+                <label for="maxSalary" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Minimum
+                    Salary</label>
+                <input type="text" id="maxSalary" name="maxSalary" formControlName="maxSalary"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Enter Max salary..." />
+            </div>
+        </div>
 
-    <div class="control">
-      <div class="mb-5">
-        <label
-          for="minSalary"
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Minimum Salary</label
-        >
-        <input
-          type="text"
-          id="minSalary"
-          name="minSalary"
-          formControlName="minSalary"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Enter Min salary..."
-        />
-      </div>
-    </div>
+        <div class="control">
+            <div class="mb-5">
+                <label for="minSalary" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Minimum
+                    Salary</label>
+                <input type="text" id="minSalary" name="minSalary" formControlName="minSalary"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Enter Min salary..." />
+            </div>
+        </div>
 
-    <div class="control">
-      <label
-        for="jobType"
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >Job Type</label
-      >
-      <select
-        id="jobType"
-        name="jobType"
-        formControlName="jobType"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-      >
-        <option>select</option>
-        <option>Part Time</option>
-        <option>Full Time</option>
-        <option value="">Internship</option>
-      </select>
-    </div>
+        <div class="control">
+            <label for="jobType" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Job Type</label>
+            <select id="jobType" name="jobType" formControlName="jobType"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option>select</option>
+                <option>Part Time</option>
+                <option>Full Time</option>
+                <option value="">Internship</option>
+            </select>
+        </div>
 
-    <div class="control">
-      <label
-        for="shift"
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >Shift</label
-      >
-      <select
-        id="shift"
-        name="shift"
-        formControlName="shift"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-      >
-        <option >select</option>
-        <option value="evening">Evening</option>
-        <option value="morning">Morning</option>
-      </select>
-    </div>
+        <div class="control">
+            <label for="shift" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Shift</label>
+            <select id="shift" name="shift" formControlName="shift"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option>select</option>
+                <option value="evening">Evening</option>
+                <option value="morning">Morning</option>
+            </select>
+        </div>
 
-    <div class="w-64 mx-auto">
-      <button
-        type="button"
-        (click)="onReset()"
-        class="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition duration-200"
-      >
-        Clear
-      </button>
-    </div>
+        <div class="w-64 mx-auto">
+            <button type="button" (click)="onReset()"
+                class="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition duration-200">
+                Clear
+            </button>
+        </div>
 
-    <div class="w-64 mx-auto">
-      <button
-        type="submit"
-        class="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition duration-200"
-      >
-        Post
-      </button>
+        <div class="w-64 mx-auto">
+            <button type="submit"
+                class="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition duration-200"
+                [disabled]="
+                !jobForm.valid || !jobForm.touched || !jobForm.dirty
+              ">
+                Post
+            </button>
+        </div>
     </div>
-  </div>
 </form>
