@@ -1,24 +1,25 @@
-import { Injectable } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
-import { jwtDecode } from 'jwt-decode';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { catchError, map, Observable, of } from 'rxjs';
+import { response } from 'express';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private cookieService: CookieService) {}
-
-  private isTokenExpired(refreshToken: string): boolean {
-    const decodedToken = jwtDecode(refreshToken);
-    // decodedToken.exp return seconds to convert it into milliseconds
-    const expirationDate = decodedToken.exp! * 1000;
-    return Date.now() >= expirationDate;
-  }
-
-  isAuthenticated(): boolean {
-    const refreshToken = this.cookieService.get('refreshToken');
-    if (!refreshToken) {
-      return false;
-    }
-    return !this.isTokenExpired(refreshToken);
+  private httpClient = inject(HttpClient);
+  private authUrl = ' http://localhost:3000/api/v1/users/auth/check';
+  isAuthenticated(): Observable<boolean> {
+    return this.httpClient
+      .get<{ authenticated: boolean; user: object }>(this.authUrl, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((response) => {
+          return response.authenticated;
+        }),
+        catchError(() => {
+          return of(false);
+        })
+      );
   }
 }

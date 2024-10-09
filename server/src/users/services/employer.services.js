@@ -1,4 +1,4 @@
-const { createEmployerDb } = require("../repo/employer.repo");
+const { createEmployerDb,updateEmployerDb } = require("../repo/employer.repo");
 const { dataModel } = require("../../dbConnection");
 const { sequelize } = dataModel;
 const AuthService = require("../../auth/auth.services");
@@ -27,5 +27,9 @@ class EmployerService {
     }
     return result;
   };
+
+  static updateEmployerService=async(id,employerData,t)=>{
+    return await updateEmployerDb(id,employerData,t)
+  }
 }
 module.exports = EmployerService;

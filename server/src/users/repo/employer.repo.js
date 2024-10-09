@@ -79,6 +79,93 @@ const createEmployerDb = async (employerData, t) => {
   return newEmployer;
 };
 
+const updateEmployerDb = async (id, employerData, t) => {
+  const employer = await User.findOne({
+    where: { id: id },
+    transaction: t,
+  });
+
+  if (!employer) {
+    throw new Error("Employer not found");
+  }
+
+  await employer.update(
+    {
+      firstName: employerData.firstName,
+      lastName: employerData.lastName,
+      email: employerData.email,
+      dob: employerData.dob,
+      contact: employerData.contact,
+      city: employerData.city,
+      pinCode: employerData.pinCode,
+      state: employerData.state,
+      country: employerData.country,
+    },
+    {
+      transaction: t,
+    }
+  );
+
+  const professionDetails = await Employer.findOne({
+    where: { userId: employer.id },
+    transaction: t,
+  });
+  await professionDetails.update(
+    {
+      department: employerData.department,
+      designation: employerData.designation,
+    },
+    { transaction: t }
+  );
+
+  const company = await Company.findOne({
+    where: { id: professionDetails.companyId },
+    transaction: t,
+  });
+
+  await company.update(
+    {
+      name: employerData.companyName,
+      companyIndustry: employerData.companyIndustry,
+      email: employerData.companyEmail,
+      contact: employerData.companyContact,
+      totalEmployees: employerData.totalEmployees,
+      foundedDate: employerData.foundedDate,
+    },
+    { transaction: t }
+  );
+
+  const branch = await Branch.findOne({
+    where: { id: professionDetails.branchId },
+    transaction: t,
+  });
+  await branch.update(
+    {
+      branchName: employerData.branchName,
+    },
+    { transaction: t }
+  );
+
+  const address = await CompanyAddress.findOne({
+    where: { id: branch.addressId },
+    transaction: t,
+  });
+
+  await address.update(
+    {
+      line1: employerData.addressLine1,
+      line2: employerData.addressLine2,
+      city: employerData.companyCity,
+      state: employerData.companyState,
+      pincode: employerData.companyPincode,
+      country: employerData.companyCountry,
+    },
+    { transaction: t }
+  );
+  return employer;
+};
+
 module.exports = {
   createEmployerDb,
+  updateEmployerDb,
 };

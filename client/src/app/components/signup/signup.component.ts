@@ -75,11 +75,12 @@ export class SignupComponent {
       .subscribe({
         next: (data) => {
           console.log(data);
+        
+          this.signupForm.reset();
         },
         error: (er) => {
           console.log(er);
         },
       });
-    this.signupForm.reset();
   }
 }
