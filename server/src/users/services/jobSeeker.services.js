@@ -1,6 +1,7 @@
 const {
   createJobseekerDb,
   findJobseekerDB,
+  updateJobseekerDb
 } = require("../repo/jobSeeker.repo");
 const{generateAccessToken} = require('../../utils/tokenGenerator');
 const { dataModel } = require("../../dbConnection");
@@ -40,5 +41,11 @@ class JobseekerService {
     }
     throw new Error("user not found");
   };
+
+  static updateJobseekerService=async(id,userData,t)=>{
+    return await updateJobseekerDb(id,userData,t)
+  }
 }
+
+
 module.exports = JobseekerService;

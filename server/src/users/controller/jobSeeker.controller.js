@@ -26,14 +26,31 @@ const findJobseeker = async (req, res) => {
       data: jobSeeker,
     });
   } catch (err) {
-    res.status(400).json({
-      status: "fail",
-      message: "Don't able to find user!!",
-      error: err,
-    });
+    resObj(res, 400, "Not able to find the user!!", err.message);
   }
 };
+const updateJobseeker = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userData = req.body;
+
+    const updatedUser = await JobseekerService.updateJobseekerService(
+      id,
+      userData
+    );
+
+    const userResponse = updatedUser.toJSON();
+
+    delete userResponse.password;
+
+    resObj(res, 200, "User updated successfully", userResponse);
+  } catch (error) {
+    resObj(res, 500, "Error updating user", error.message);
+  }
+};
+
 module.exports = {
   registerJobseeker,
   findJobseeker,
+  updateJobseeker,
 };

@@ -12,7 +12,7 @@ class JobPostService{
                 
             });
         } catch (error) {
-            throw new CustomError(error.message,500)
+            throw new CustomError(error,500)
         }
         return result
     }
