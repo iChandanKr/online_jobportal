@@ -7,6 +7,9 @@ const {
   logoutValidator,
 } = require("../middleware/joiValidation.middleware");
 router.route("/login").post(loginValidation, userLogin);
+router.route("/auth/check").get(authMiddleware, (req, res) => {
+  res.status(200).json({ authenticated: true, user: req.user });
+});
 
 // protected routes
 router.route("/logout").post(logoutValidator, authMiddleware, logoutUser);

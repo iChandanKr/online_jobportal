@@ -28,7 +28,7 @@ export class LoginComponent {
       role: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      remember: [false],
+      // remember: [false],
     });
   }
 
@@ -40,6 +40,7 @@ export class LoginComponent {
           if (user) {
             this.userDataSharingService.setLoginUserData(user);
           }
+          console.log(user)
           user?.role === 'employer'
             ? this.router.navigate(['/employer'])
             : this.router.navigate(['/employer']);
