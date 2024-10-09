@@ -24,6 +24,7 @@ const updateEmployer=async(req,res)=>{
 
     const updatedEmployerData=await EmployerService.updateEmployerService(id,employersData)
     const employerResponse = updatedEmployerData.toJSON();
+    delete employerResponse.password;
     resObj(res, 200, "Employer updated successfully", employerResponse);
 
   } catch (error) {
