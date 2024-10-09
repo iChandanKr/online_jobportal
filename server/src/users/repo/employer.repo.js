@@ -79,42 +79,47 @@ const createEmployerDb = async (employerData, t) => {
   return newEmployer;
 };
 
-const updateEmployerDb=async(id,employerData,t)=>{
-  const employer=await User.findOne(id,{transaction:t})
+const updateEmployerDb = async (id, employerData, t) => {
+  const employer = await User.findOne({
+    where: { id: id },
+    transaction: t,
+  });
 
-  if(!employer){
-    throw new Error("Employer not found")
+  if (!employer) {
+    throw new Error("Employer not found");
   }
 
-  await employer.update({
-    firstName: employerData.firstName,
-    lastName: employerData.lastName,
-    email: employerData.email,
-    dob: employerData.dob,
-    contact: employerData.contact,
-    city: employerData.city,
-    pinCode: employerData.pinCode,
-    state: employerData.state,
-    country: employerData.country,
-  },{
-    transaction:t
-  })
+  await employer.update(
+    {
+      firstName: employerData.firstName,
+      lastName: employerData.lastName,
+      email: employerData.email,
+      dob: employerData.dob,
+      contact: employerData.contact,
+      city: employerData.city,
+      pinCode: employerData.pinCode,
+      state: employerData.state,
+      country: employerData.country,
+    },
+    {
+      transaction: t,
+    }
+  );
 
   const professionDetails = await Employer.findOne({
-    where: { UserId: employer.id },
+    where: { userId: employer.id },
     transaction: t,
   });
   await professionDetails.update(
     {
       department: employerData.department,
       designation: employerData.designation,
-      // If branchId or companyId is part of the employerData, update it here
     },
     { transaction: t }
   );
 
   const company = await Company.findOne({
-    where: { id: employerData.companyId }, // Assuming companyId is part of employerData
+    where: { id: professionDetails.companyId },
     transaction: t,
   });
 
@@ -130,8 +135,19 @@ const updateEmployerDb=async(id,employerData,t)=>{
     { transaction: t }
   );
 
+  const branch = await Branch.findOne({
+    where: { id: professionDetails.branchId },
+    transaction: t,
+  });
+  await branch.update(
+    {
+      branchName: employerData.branchName,
+    },
+    { transaction: t }
+  );
+
   const address = await CompanyAddress.findOne({
-    where: { id: employerData.addressId }, // Assuming addressId is part of employerData
+    where: { id: branch.addressId },
     transaction: t,
   });
 
@@ -146,21 +162,10 @@ const updateEmployerDb=async(id,employerData,t)=>{
     },
     { transaction: t }
   );
-
-  const branch = await Branch.findOne({
-    where: { id: employerData.branchId }, // Assuming branchId is part of employerData
-    transaction: t,
-  });
-  await branch.update(
-    {
-      branchName: employerData.branchName,
-    },
-    { transaction: t }
-  );
-  return employer
-}
+  return employer;
+};
 
 module.exports = {
   createEmployerDb,
-  updateEmployerDb
+  updateEmployerDb,
 };
