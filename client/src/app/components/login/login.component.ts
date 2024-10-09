@@ -5,6 +5,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { Router, RouterLink } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 import { UserDataSharingService } from '../../services/user-data-sharing.service';
@@ -22,7 +23,8 @@ export class LoginComponent {
     private fb: FormBuilder,
     private loginService: LoginService,
     private router: Router,
-    private userDataSharingService: UserDataSharingService
+    private userDataSharingService: UserDataSharingService,
+    private toastr: ToastrService
   ) {
     this.loginForm = this.fb.group({
       role: ['', Validators.required],
@@ -40,7 +42,9 @@ export class LoginComponent {
           if (user) {
             this.userDataSharingService.setLoginUserData(user);
           }
-          console.log(user)
+          this.toastr.success(response.body?.message, 'success', {
+            timeOut: 1500,
+          });
           user?.role === 'employer'
             ? this.router.navigate(['/employer'])
             : this.router.navigate(['/employer']);
