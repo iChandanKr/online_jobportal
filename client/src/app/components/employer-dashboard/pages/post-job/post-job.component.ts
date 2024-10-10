@@ -8,6 +8,9 @@ import {
 } from '@angular/forms';
 import { PostJobService } from '../../../../services/post-job.service';
 import { Skill } from '../../../../model/skill.model';
+
+const currentTime = new Date().toISOString();
+console.log(currentTime);
 @Component({
   selector: 'app-post-job',
   standalone: true,
@@ -24,19 +27,19 @@ export class PostJobComponent implements OnInit {
     location: new FormControl('', [Validators.required]),
     city: new FormControl('', [Validators.required]),
     skillId: new FormControl([], [Validators.required]),
-    applicationDeadline: new FormControl('', [Validators.required]),
-    maxSalary: new FormControl('', [Validators.required]),
-    minSalary: new FormControl('', [Validators.required]),
+    applicationDeadline: new FormControl(currentTime, [Validators.required]),
+    maxSalary: new FormControl(0, [Validators.required]),
+    minSalary: new FormControl(0, [Validators.required]),
     jobType: new FormControl('', [Validators.required]),
     shift: new FormControl('', [Validators.required]),
   });
   skills = signal<Skill[]>([]);
+  currentTime = signal(new Date().toISOString);
   private postJobService = inject(PostJobService);
   ngOnInit(): void {
     this.postJobService.fetchExistingSkills().subscribe({
       next: (response) => {
         this.skills.set(response.data);
-
       },
       error: (err) => {
         console.log(err);
@@ -49,6 +52,14 @@ export class PostJobComponent implements OnInit {
       return;
     }
     console.log(this.jobForm);
+    this.postJobService.postJob(this.jobForm.value).subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 
   onReset() {

@@ -12,6 +12,8 @@ class JobPostService{
                 
             });
         } catch (error) {
+            console.log({...error});
+            
             throw new CustomError(error,500)
         }
         return result

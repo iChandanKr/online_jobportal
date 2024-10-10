@@ -1,7 +1,6 @@
 const JobPostService = require("./jobPost.services");
 
 const createJobPost = async (req, res) => {
-  console.log("hello");
 
   const jobPostData = req.body;
   const empId=req.empId
@@ -13,7 +12,7 @@ const createJobPost = async (req, res) => {
       data: newJobData,
     });
   } catch (error) {
-    console.error("Error creating job post:", error,);
+    console.error("Error creating job post:", {...error},);
     return res.status(500).json({ error: error.message });
   }
 };

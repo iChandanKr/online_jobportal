@@ -84,7 +84,11 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Max salary must be an integer",
           },
           isGreaterThanMin(value) {
-            if (value !== null && value < this.minSalary) {
+            console.log(value,this.minSalary);
+            
+            if (value && value < this.minSalary) {
+              console.log('hi');
+              
               throw new Error(
                 "Max salary must be greater than or equal to min salary"
               );
@@ -110,7 +114,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       shift: {
-        type: DataTypes.ENUM("day", "night"),
+        type: DataTypes.ENUM("morning", "evening"),
         allowNull: false,
       },
     },

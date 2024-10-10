@@ -11,6 +11,11 @@ module.exports = (error, req, res, next) => {
   if (error.name === "SequelizeUniqueConstraintError") {
     error = new CustomError(`${error.errors[0].message}`,400);
   }
+  if (error.name === "SequelizeDatabaseError") {
+    console.log({...error});
+    
+    error = new CustomError(`${error.errors[0].message}`,400);
+  }
   res.status(error.statusCode).json({
     status: error.statusCode,
     message: error.message,
