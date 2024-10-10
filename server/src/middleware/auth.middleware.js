@@ -89,6 +89,7 @@ module.exports = async (req, res, next) => {
       token,
       process.env.ACCESS_SECRET_KEY
     );
+    req.decodedToken=decodedToken
 
     //3. if the user exists
     const user = await User.findByPk(decodedToken.id, {
@@ -114,6 +115,7 @@ module.exports = async (req, res, next) => {
     }
     //5. allow user to access route
     req.user = user.dataValues;
+    req.empId=decodedToken.id
     req.currentRefreshToken = req.cookies.refreshToken;
 
     next();
