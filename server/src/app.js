@@ -4,6 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const jobSeekerRoute = require("./users/route/jobSeeker.route");
 const employerRoute = require("./users/route/employer.route");
+const skillsRoute=require("./skills/skills.route")
 const authRoute = require("./auth/auth.route");
 const globalErrorHandler = require("./utils/globalErrorHandler");
 const jobpostroute=require("./jobPost/jobPost.route")
@@ -21,6 +22,7 @@ app.use("/api/v1/users", jobSeekerRoute);
 app.use("/api/v1/users", employerRoute);
 app.use("/api/v1/users", authRoute);
 app.use("/api/v1/job",jobpostroute);
+app.use("/api/v1/skills",skillsRoute)
 
 app.use(globalErrorHandler);
 module.exports = app;

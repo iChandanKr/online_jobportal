@@ -17,7 +17,7 @@ const registerEmployer = async (req, res, next) => {
   }
 };
 
-const updateEmployer=async(req,res)=>{
+const updateEmployer=async(req,res,next)=>{
   try {
     const id=req.params.id
     const employersData=req.body
@@ -28,7 +28,7 @@ const updateEmployer=async(req,res)=>{
     resObj(res, 200, "Employer updated successfully", employerResponse);
 
   } catch (error) {
-    resObj(res,500,"Error updating the employer",error)
+    next(error)
   }
 }
 
