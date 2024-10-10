@@ -4,6 +4,8 @@ const createJobPost = async (req, res) => {
   console.log("hello");
 
   const jobPostData = req.body;
+  const empId=req.empId
+  jobPostData.empId=empId
   try {
     const newJobData = await JobPostService.createJobPostService(jobPostData);
     return res.status(201).json({
