@@ -115,7 +115,6 @@ module.exports = async (req, res, next) => {
     }
     //5. allow user to access route
     req.user = user.dataValues;
-    req.empId=decodedToken.id
     req.currentRefreshToken = req.cookies.refreshToken;
 
     next();

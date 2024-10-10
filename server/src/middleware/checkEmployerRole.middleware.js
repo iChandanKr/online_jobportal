@@ -1,24 +1,26 @@
 const { dataModel } = require('../dbConnection');
-const { User, UserRole, Role } = dataModel; 
+const {  UserRole, Role,Employer } = dataModel; 
 const CustomError = require('../utils/customError');
 
 const checkEmployerRole = async (req, res, next) => {
   try {
-    const empId = req.empId; 
+    const userId = req.user.id; 
     
-    if (!empId) {
-      return next(new CustomError("empId not provided in request", 400));
-    }
+    // if (!userId) {
+    //   return next(new CustomError("empId not provided in request", 400));
+    // }
 
     
-    const employer = await User.findByPk(empId);
+    const employer = await Employer.findOne({
+        where :{userId:userId}
+    });
+    
     if (!employer) {
       return next(new CustomError("User not found", 404));
     }
     
-    
     const userRole = await UserRole.findOne({
-      where: { UserId: empId },
+      where: { UserId: userId },
       include: [{
         model: Role, 
         attributes: ['role'] 
@@ -35,9 +37,9 @@ const checkEmployerRole = async (req, res, next) => {
     if (roleName !== 'employer') {
       return next(new CustomError("Access denied: User is not an employer", 403));
     }
-
     
-    req.empId = empId; 
+    
+    req.empId = employer.empId; 
     next();
   } catch (error) {
     next(new CustomError(error.message, 500));

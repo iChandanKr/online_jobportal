@@ -15,7 +15,7 @@ const registerJobseeker = async (req, res, next) => {
   }
 };
 
-const findJobseeker = async (req, res) => {
+const findJobseeker = async (req, res,next) => {
   try {
     const jobSeeker = await JobseekerService.findJobseekerService(
       req.params.id
@@ -26,10 +26,10 @@ const findJobseeker = async (req, res) => {
       data: jobSeeker,
     });
   } catch (err) {
-    resObj(res, 400, "Not able to find the user!!", err.message);
+    next(err)
   }
 };
-const updateJobseeker = async (req, res) => {
+const updateJobseeker = async (req, res,next) => {
   try {
     const id = req.params.id;
     const userData = req.body;
@@ -45,7 +45,7 @@ const updateJobseeker = async (req, res) => {
 
     resObj(res, 200, "User updated successfully", userResponse);
   } catch (error) {
-    resObj(res, 500, "Error updating user", error.message);
+    next(error)
   }
 };
 
