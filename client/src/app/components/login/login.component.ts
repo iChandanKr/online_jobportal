@@ -51,7 +51,10 @@ export class LoginComponent {
           this.loginForm.reset();
         },
         error: (err) => {
-          console.log(err);
+          console.log(err.error.message);
+          this.toastr.error(err.error.message, 'error', {
+            timeOut: 1500,
+          });
         },
       });
     }
