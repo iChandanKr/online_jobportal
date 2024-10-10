@@ -6,4 +6,6 @@ export const API_URLS = {
   registerEmployer: `${environment.apiUrl}/users/register-employer`,
   registerJobseeker: `${environment.apiUrl}/users/register-jobseeker`,
   auth: `${environment.apiUrl}/users/auth/check`,
+  fetchSkills: `${environment.apiUrl}/skills/getAllSkills`,
+  postJob: `${environment.apiUrl}/job/add-jobpost}`,
 };
