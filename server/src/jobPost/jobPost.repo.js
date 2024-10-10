@@ -1,7 +1,6 @@
 const { dataModel } = require("../dbConnection");
 const { JobPost, JobSkills } = dataModel;
 const createJobPostDb = async (jobPostData, t) => {
-  console.log(typeof jobPostData.applicationDeadline);
 
   const newJobData = await JobPost.create(
     {
