@@ -1,7 +1,6 @@
 const JobseekerService = require("../services/jobSeeker.services");
-const resObj = require("../../utils/response");
 const uuid = require("uuid");
-const CustomError = require("../../utils/customError");
+const { CustomError, respondOk } = require("../../utils/apiResponse");
 const registerJobseeker = async (req, res, next) => {
   req.body.role = "jobseeker";
   try {
@@ -10,7 +9,7 @@ const registerJobseeker = async (req, res, next) => {
     const { accessToken, refreshToken } = createdUser.dataValues;
     res.cookie("accessToken", accessToken);
     res.cookie("refreshToken", refreshToken);
-    resObj(res, 201, "User Created successfully", createdUser);
+    respondOk(res, 201, "User Created successfully", createdUser);
   } catch (err) {
     next(err);
   }
@@ -52,7 +51,7 @@ const updateJobseeker = async (req, res, next) => {
 
     delete userResponse.password;
 
-    resObj(res, 200, "User updated successfully", userResponse);
+    respondOk(res, 200, "User updated successfully", userResponse);
   } catch (error) {
     next(error);
   }

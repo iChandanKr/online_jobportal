@@ -5,7 +5,7 @@ const {
 } = require("../repo/jobSeeker.repo");
 const { generateAccessToken } = require("../../utils/tokenGenerator");
 const { dataModel } = require("../../dbConnection");
-const CustomError = require("../../utils/customError");
+const { CustomError } = require("../../utils/apiResponse");
 const AuthService = require("../../auth/auth.services");
 const { sequelize } = dataModel;
 // const {generateAccessToken,generateRefreshToken} = require('../../utils/tokenGenerator');

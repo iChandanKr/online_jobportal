@@ -5,9 +5,9 @@ const {
   logoutSchema,
   jobPostSchema,
   updateEmployerSchema,
-  updateJobseekerSchema
+  updateJobseekerSchema,
 } = require("../utils/apiSchema");
-const CustomError = require("../utils/customError");
+const { CustomError } = require("../utils/apiResponse");
 
 const loginValidation = (req, res, next) => {
   const { error } = loginSchema.validate(req.body);
@@ -46,35 +46,32 @@ const registerEmployerValidation = (req, res, next) => {
   }
 };
 
-const jobPostValidation=(req,res,next)=>{
-  const {error}=jobPostSchema.validate(req.body);
-  if(error){
-    next(new CustomError(error.message,400));
+const jobPostValidation = (req, res, next) => {
+  const { error } = jobPostSchema.validate(req.body);
+  if (error) {
+    next(new CustomError(error.message, 400));
+  } else {
+    next();
   }
-  else{
-    next()
-  }
-}
+};
 
-const updateEmployerValidation=(req,res,next)=>{
-  const {error}=updateEmployerSchema.validate(req.body);
-  if(error){
-    next(new CustomError(error.message,400));
+const updateEmployerValidation = (req, res, next) => {
+  const { error } = updateEmployerSchema.validate(req.body);
+  if (error) {
+    next(new CustomError(error.message, 400));
+  } else {
+    next();
   }
-  else{
-    next()
-  }
-}
+};
 
-const updateJobseekerValidation=(req,res,next)=>{
-  const {error}=updateJobseekerSchema.validate(req.body);
-  if(error){
-    next(new CustomError(error.message,400));
+const updateJobseekerValidation = (req, res, next) => {
+  const { error } = updateJobseekerSchema.validate(req.body);
+  if (error) {
+    next(new CustomError(error.message, 400));
+  } else {
+    next();
   }
-  else{
-    next()
-  }
-}
+};
 
 module.exports = {
   loginValidation,
@@ -83,5 +80,5 @@ module.exports = {
   registerEmployerValidation,
   jobPostValidation,
   updateEmployerValidation,
-  updateJobseekerValidation
+  updateJobseekerValidation,
 };

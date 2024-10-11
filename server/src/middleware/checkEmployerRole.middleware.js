@@ -1,6 +1,6 @@
 const { dataModel } = require("../dbConnection");
 const { UserRole, Role, Employer } = dataModel;
-const CustomError = require("../utils/customError");
+const { CustomError } = require("../utils/apiResponse");
 
 const checkEmployerRole = async (req, res, next) => {
   try {

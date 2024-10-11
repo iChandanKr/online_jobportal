@@ -1,4 +1,4 @@
-const CustomError = require("../../utils/customError");
+const { CustomError } = require("../../utils/apiResponse");
 const AuthService = require("../auth.services");
 const { generateAccessToken } = require("../../utils/tokenGenerator");
 module.exports = async (sequelize, id, next) => {
