@@ -56,8 +56,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM(
           "software",
           "finance",
-          "hr",
-          "accouting",
+          "accounting",
           "manufacturing",
           "construction"
         ),
@@ -84,11 +83,7 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Max salary must be an integer",
           },
           isGreaterThanMin(value) {
-            console.log(value,this.minSalary);
-            
-            if (value && value < this.minSalary) {
-              console.log('hi');
-              
+            if (value && parseInt(value) < parseInt(this.minSalary)) {
               throw new Error(
                 "Max salary must be greater than or equal to min salary"
               );

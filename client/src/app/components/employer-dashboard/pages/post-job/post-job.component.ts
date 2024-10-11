@@ -6,8 +6,10 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { PostJobService } from '../../../../services/post-job.service';
 import { Skill } from '../../../../model/skill.model';
+import { timeout } from 'rxjs';
 
 const currentTime = new Date().toISOString();
 console.log(currentTime);
@@ -36,6 +38,8 @@ export class PostJobComponent implements OnInit {
   skills = signal<Skill[]>([]);
   currentTime = signal(new Date().toISOString);
   private postJobService = inject(PostJobService);
+  private toaster = inject(ToastrService);
+
   ngOnInit(): void {
     this.postJobService.fetchExistingSkills().subscribe({
       next: (response) => {
@@ -54,10 +58,16 @@ export class PostJobComponent implements OnInit {
     console.log(this.jobForm);
     this.postJobService.postJob(this.jobForm.value).subscribe({
       next: (response) => {
-        console.log(response);
+        this.jobForm.reset();
+
+        this.toaster.success(response.message, 'success', {
+          timeOut: 1500,
+        });
       },
       error: (err) => {
-        console.log(err);
+        this.toaster.error(err.message, 'error', {
+          timeOut: 1500,
+        });
       },
     });
   }
