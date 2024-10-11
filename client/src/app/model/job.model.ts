@@ -12,3 +12,9 @@ export interface Job {
   jobType: string;
   shift: string;
 }
+
+export interface JobResponse {
+  status: string;
+  message: string;
+  data: Job;
+}

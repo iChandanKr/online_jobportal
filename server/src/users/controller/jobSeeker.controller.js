@@ -1,6 +1,7 @@
 const JobseekerService = require("../services/jobSeeker.services");
 const resObj = require("../../utils/response");
-
+const uuid = require("uuid");
+const CustomError = require("../../utils/customError");
 const registerJobseeker = async (req, res, next) => {
   req.body.role = "jobseeker";
   try {
@@ -15,21 +16,29 @@ const registerJobseeker = async (req, res, next) => {
   }
 };
 
-const findJobseeker = async (req, res,next) => {
+const findJobseeker = async (req, res, next) => {
+  const id = req.params.id;
+  if (id) {
+    const isvalid = uuid.validate(id) && uuid.version(id) === 4;
+    if (!isvalid) {
+      next(new CustomError("Invalid UUID format", 400));
+    }
+  }
+
   try {
     const jobSeeker = await JobseekerService.findJobseekerService(
       req.params.id
     );
-    res.status(201).json({
+    res.status(200).json({
       status: "success",
       message: "User Created successfully",
       data: jobSeeker,
     });
   } catch (err) {
-    next(err)
+    next(err);
   }
 };
-const updateJobseeker = async (req, res,next) => {
+const updateJobseeker = async (req, res, next) => {
   try {
     const id = req.params.id;
     const userData = req.body;
@@ -45,7 +54,7 @@ const updateJobseeker = async (req, res,next) => {
 
     resObj(res, 200, "User updated successfully", userResponse);
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 
