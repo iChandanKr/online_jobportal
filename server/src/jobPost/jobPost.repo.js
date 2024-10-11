@@ -1,7 +1,6 @@
 const { dataModel } = require("../dbConnection");
 const { JobPost, JobSkills } = dataModel;
 const createJobPostDb = async (jobPostData, t) => {
-
   const newJobData = await JobPost.create(
     {
       title: jobPostData.title,
@@ -21,17 +20,14 @@ const createJobPostDb = async (jobPostData, t) => {
     { transaction: t }
   );
 
-  if (jobPostData.skillId && jobPostData.skillId.length > 0) {
-    
-    const jobPostId = newJobData.id;
+  const jobPostId = newJobData.id;
 
-    const jobSkillsData = jobPostData.skillId.map((skillId) => ({
-      JobPostId: jobPostId,
-      SkillId: skillId,
-    }));
+  const jobSkillsData = jobPostData.skillId.map((skillId) => ({
+    JobPostId: jobPostId,
+    SkillId: skillId,
+  }));
 
-    await JobSkills.bulkCreate(jobSkillsData, { transaction: t });
-  }
+  await JobSkills.bulkCreate(jobSkillsData, { transaction: t });
 
   return newJobData;
 };
