@@ -1,3 +1,4 @@
+const { respondOk } = require("../utils/apiResponse");
 const JobPostService = require("./jobPost.services");
 
 const createJobPost = async (req, res, next) => {
@@ -6,10 +7,7 @@ const createJobPost = async (req, res, next) => {
   jobPostData.empId = empId;
   try {
     const newJobData = await JobPostService.createJobPostService(jobPostData);
-    return res.status(201).json({
-      message: "Job Post created successfully!",
-      data: newJobData,
-    });
+    respondOk(res, 201, "Job Post created successfully!", newJobData);
   } catch (error) {
     next(error);
   }
