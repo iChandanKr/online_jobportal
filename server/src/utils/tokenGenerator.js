@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const CustomError = require("./customError");
+const { CustomError } = require("./apiResponse");
 const generateAccessToken = (id) => {
   try {
     const accessToken = jwt.sign({ id }, process.env.ACCESS_SECRET_KEY, {

@@ -1,9 +1,8 @@
 const EmployerService = require("../services/employer.services");
-const resObj = require("../../utils/response");
+const { respondOk } = require("../../utils/apiResponse");
 const registerEmployer = async (req, res, next) => {
   req.body.role = "employer";
   try {
-    
     const createdEmployer = await EmployerService.createEmployerService(
       req.body
     );
@@ -11,28 +10,30 @@ const registerEmployer = async (req, res, next) => {
     res.cookie("accessToken", accessToken);
     res.cookie("refreshToken", refreshToken);
 
-    resObj(res, 201, "Employer Created successfully", createdEmployer);
+    respondOk(res, 201, "Employer Created successfully", createdEmployer);
   } catch (err) {
     next(err);
   }
 };
 
-const updateEmployer=async(req,res,next)=>{
+const updateEmployer = async (req, res, next) => {
   try {
-    const id=req.params.id
-    const employersData=req.body
+    const id = req.params.id;
+    const employersData = req.body;
 
-    const updatedEmployerData=await EmployerService.updateEmployerService(id,employersData)
+    const updatedEmployerData = await EmployerService.updateEmployerService(
+      id,
+      employersData
+    );
     const employerResponse = updatedEmployerData.toJSON();
     delete employerResponse.password;
-    resObj(res, 200, "Employer updated successfully", employerResponse);
-
+    respondOk(res, 200, "Employer updated successfully", employerResponse);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 module.exports = {
   registerEmployer,
-  updateEmployer
+  updateEmployer,
 };

@@ -1,7 +1,8 @@
 const Joi = require("joi");
 const user = {
   firstName: Joi.string().trim().max(50).required().messages({
-    "string.empty": "please Enter your Name",
+    "string.empty": "please Enter your firstName ",
+    "any.required": "please Enter your firstName ",
   }),
   lastName: Joi.string().trim().max(40).allow(null, ""),
   dob: Joi.date().required().messages({
@@ -414,13 +415,14 @@ const jobPostSchema = Joi.object({
       "any.required": "Job Type is required"
     }),
   shift: Joi.string()
-    .valid("day", "night")
+    .valid("morning", "evening")
     .required()
     .messages({
       "string.empty": "Shift is required",
-      "any.only": "Shift must be either day or night",
+      "any.only": "Shift must be either morning or evening",
       "any.required": "Shift is required"
     })
+
 });
 module.exports = {
   loginSchema,

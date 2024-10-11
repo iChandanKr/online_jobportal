@@ -1,6 +1,5 @@
 const { dataModel } = require("../dbConnection");
 const { sequelize } = dataModel;
-// const CustomError = require("../utils/customError");
 const { createJobPostDb } = require("./jobPost.repo");
 
 class JobPostService {
