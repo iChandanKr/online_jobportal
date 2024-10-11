@@ -358,28 +358,33 @@ const updateEmployerSchema = Joi.object({
 });
 
 // -------------ADD-JOBPOST -----------
-const jobPostSchema=Joi.object({
+const jobPostSchema = Joi.object({
   title: Joi.string().min(3).max(100).required().messages({
     "string.empty": "Title is required",
     "string.min": "Title must be at least 3 characters long",
-    "string.max": "Title must be less than or equal to 100 characters long"
+    "string.max": "Title must be less than or equal to 100 characters long",
   }),
   description: Joi.string().min(10).max(1000).required().messages({
     "string.empty": "Description is required",
     "string.min": "Description must be at least 10 characters long",
-    "string.max": "Description must be less than or equal to 1000 characters long"
+    "string.max":
+      "Description must be less than or equal to 1000 characters long",
   }),
-  role:Joi.string().required(),
+  role: Joi.string().required(),
   location: Joi.string().required(),
   city: Joi.string().required(),
-  industryName: Joi.string().required(),
-  skillId:Joi.array().min(1).required(),
-  minSalary:Joi.number().required(),
-  maxSalary:Joi.number(),
-  applicationDeadline:Joi.date(),
-  jobType:Joi.string().valid("full-time", "part-time", "internship").required(),
-  shift:Joi.string().valid("day","night").required()
-})
+  industryName: Joi.string()
+    .valid("software", "finance", "accounting", "manufacturing", "construction")
+    .required(),
+  skillId: Joi.array().min(1).required(),
+  minSalary: Joi.number().required(),
+  maxSalary: Joi.number(),
+  applicationDeadline: Joi.date(),
+  jobType: Joi.string()
+    .valid("full-time", "part-time", "internship")
+    .required(),
+  shift: Joi.string().valid("day", "night").required(),
+});
 module.exports = {
   loginSchema,
   registerJobSeekerSchema,
@@ -387,5 +392,5 @@ module.exports = {
   logoutSchema,
   updateJobseekerSchema,
   updateEmployerSchema,
-  jobPostSchema
+  jobPostSchema,
 };
