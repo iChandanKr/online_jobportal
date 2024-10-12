@@ -39,7 +39,7 @@ dataModel.Application = require("./users/model/application.model")(
   sequelize,
   DataTypes
 );
-dataModel.JobPost = require("./jobPost/jobPost.model.js")(sequelize, DataTypes);
+dataModel.JobPost = require("./jobs/jobPost.model.js")(sequelize, DataTypes);
 dataModel.Skill = require("./skills/skills.model.js")(sequelize, DataTypes);
 dataModel.UserSkills = require("./users/model/userSkill.model")(
   sequelize,

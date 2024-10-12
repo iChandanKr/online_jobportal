@@ -32,4 +32,9 @@ const createJobPostDb = async (jobPostData, t) => {
   return newJobData;
 };
 
-module.exports = { createJobPostDb };
+const getAllJobsDB = async () => {
+  return JobPost.findAll();
+
+};
+
+module.exports = { createJobPostDb, getAllJobsDB };
