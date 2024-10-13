@@ -1,5 +1,6 @@
 const { dataModel } = require("../dbConnection");
 const { JobPost, JobSkills } = dataModel;
+const { Op } = require("sequelize");
 const createJobPostDb = async (jobPostData, t) => {
   const newJobData = await JobPost.create(
     {
@@ -32,4 +33,37 @@ const createJobPostDb = async (jobPostData, t) => {
   return newJobData;
 };
 
-module.exports = { createJobPostDb };
+const getAllJobsDB = async (
+  orderBy,
+  attributes,
+  searchFields,
+  shift,
+  limit,
+  offset
+) => {
+  return JobPost.findAndCountAll({
+    where: {
+      [Op.or]: [
+        {
+          title: {
+            [Op.iLike]: searchFields,
+          },
+        },
+        {
+          role: {
+            [Op.iLike]: searchFields,
+          },
+        },
+      ],
+      shift: {
+        [Op.in]: shift,
+      },
+    },
+    order: orderBy,
+    attributes,
+    limit,
+    offset,
+  });
+};
+
+module.exports = { createJobPostDb, getAllJobsDB };

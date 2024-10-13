@@ -65,7 +65,9 @@ export class PostJobComponent implements OnInit {
         });
       },
       error: (err) => {
-        this.toaster.error(err.message, 'error', {
+        console.log(err);
+        
+        this.toaster.error(err.error.message, 'error', {
           timeOut: 1500,
         });
       },
