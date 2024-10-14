@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const util = require("util");
-const CustomError = require("../utils/customError");
+const { CustomError } = require("../utils/apiResponse");
 const { dataModel } = require("../dbConnection");
 const { User, sequelize } = dataModel;
 const AuthService = require("../auth/auth.services");
@@ -32,7 +32,7 @@ const recreateSession = async (req, res, next) => {
     const existingRefreshToken = await AuthService.findRefreshTokenService(
       incomingRefreshToken
     );
-    
+
     if (!existingRefreshToken) {
       throw new CustomError("Access Denied, Invalid Token", 401);
     }
@@ -89,7 +89,7 @@ module.exports = async (req, res, next) => {
       token,
       process.env.ACCESS_SECRET_KEY
     );
-    req.decodedToken=decodedToken
+    req.decodedToken = decodedToken;
 
     //3. if the user exists
     const user = await User.findByPk(decodedToken.id, {
@@ -120,7 +120,7 @@ module.exports = async (req, res, next) => {
     next();
   } catch (error) {
     if (error.name === "TokenExpiredError") {
-    await  recreateSession(req, res, next);
+      await recreateSession(req, res, next);
     } else {
       next(new CustomError(error?.message || "Invalid Access Token", 401));
     }

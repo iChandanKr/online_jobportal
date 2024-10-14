@@ -1,51 +1,45 @@
 const {
   createJobseekerDb,
   findJobseekerDB,
-  updateJobseekerDb
+  updateJobseekerDb,
 } = require("../repo/jobSeeker.repo");
-const{generateAccessToken} = require('../../utils/tokenGenerator');
+const { generateAccessToken } = require("../../utils/tokenGenerator");
 const { dataModel } = require("../../dbConnection");
-const CustomError = require("../../utils/customError");
+const { CustomError } = require("../../utils/apiResponse");
 const AuthService = require("../../auth/auth.services");
 const { sequelize } = dataModel;
 // const {generateAccessToken,generateRefreshToken} = require('../../utils/tokenGenerator');
 class JobseekerService {
   static createUserService = async (userData) => {
-    let result;
-    try {
-      result = sequelize.transaction(async (t) => {
-        const response = await createJobseekerDb(userData, t);
-        // console.log(response);
-        
-        delete response.dataValues.password;
-        const userId = response.dataValues?.id;
-        
-        const refreshTokenDetails = await AuthService.createSessionService(userId,t);
-        
-        const accessToken = generateAccessToken(userId);
-        response.dataValues.accessToken = accessToken;
-        response.dataValues.refreshToken = refreshTokenDetails.dataValues?.refreshToken;
-        return response;
-      });
-    } catch (error) {
-      throw new CustomError(error.message, 400);
-    }
+    const result = sequelize.transaction(async (t) => {
+      const response = await createJobseekerDb(userData, t);
+      delete response.dataValues.password;
+      const userId = response.dataValues?.id;
+      const refreshTokenDetails = await AuthService.createSessionService(
+        userId,
+        t
+      );
+      const accessToken = generateAccessToken(userId);
+      response.dataValues.accessToken = accessToken;
+      response.dataValues.refreshToken =
+        refreshTokenDetails.dataValues?.refreshToken;
+      return response;
+    });
     return result;
   };
 
   static findJobseekerService = async (id) => {
-    const res = await findJobseekerDB(id);
-    // console.log(res);
-    if (res) {
-      return res;
+    const user = await findJobseekerDB(id);
+    if (!user) {
+      console.log("inside user not found");
+      throw new CustomError("user not found", 404);
     }
-    throw new Error("user not found");
+    return user;
   };
 
-  static updateJobseekerService=async(id,userData,t)=>{
-    return await updateJobseekerDb(id,userData,t)
-  }
+  static updateJobseekerService = async (id, userData, t) => {
+    return await updateJobseekerDb(id, userData, t);
+  };
 }
-
 
 module.exports = JobseekerService;

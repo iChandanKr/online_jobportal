@@ -1,7 +1,7 @@
 const { dataModel } = require("../dbConnection");
 const { sequelize } = dataModel;
 const CustomError = require('../utils/customError');
-const {createJobPostDb,getJobsByEmpId}=require('./jobPost.repo')
+const {createJobPostDb}=require('./jobPost.repo')
 
 class JobPostService{
     static createJobPostService=async(jobpostdata)=>{
@@ -17,12 +17,6 @@ class JobPostService{
         return result
     }
 
-    static getJobsByEmpId=async(empId)=>{
-        try {
-            return await getJobsByEmpId(empId)
-        } catch (error) {
-            throw new Error('Error fetching jobs by employer ID',error)
-        }
-    }
+    
 }
 module.exports=JobPostService

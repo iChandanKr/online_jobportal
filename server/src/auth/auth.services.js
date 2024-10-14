@@ -11,7 +11,7 @@ const {
   generateRefreshToken,
   // generateAccessToken,
 } = require("../utils/tokenGenerator");
-const CustomError = require("../utils/customError");
+const {CustomError} = require("../utils/apiResponse");
 class AuthService {
   static loginService = async (req, inputDetails) => {
     const { email, password, role } = inputDetails;

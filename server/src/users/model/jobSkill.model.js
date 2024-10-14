@@ -1,4 +1,4 @@
-const JobPost = require("../../jobPost/jobPost.model"); // Adjust the import path as necessary
+const JobPost = require("../../jobs/jobPost.model"); // Adjust the import path as necessary
 const Skills = require("../../skills/skills.model");
 
 module.exports = (sequelize, DataTypes) => {
