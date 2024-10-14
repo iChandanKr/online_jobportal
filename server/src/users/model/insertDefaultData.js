@@ -5,12 +5,11 @@ const insertDefaultRoles = async (Role) => {
     { role: "employer" },
   ];
   try {
-    // upsert accept object
     await Promise.all(
       roles.map((r) =>
         Role.findOrCreate({
           where: { role: r.role },
-          default: { r },
+          default: r,
         })
       )
     );
