@@ -57,6 +57,7 @@ class JobService {
           "shift",
         ];
     const jobs = await getAllJobsDB(
+      req.empId,
       orderBy,
       attributes,
       searchFields,
