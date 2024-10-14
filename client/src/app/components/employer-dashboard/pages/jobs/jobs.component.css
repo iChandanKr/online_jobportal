@@ -1,13 +1,13 @@
 .search-bar{
     display: flex;
-    justify-content: center;
+    justify-content: left;
     margin-bottom: 20px;
     width: 100%;
     
 }
 
 .search-bar input{
-    width: 50%;
+    width: 25%;
     padding: 12px 16px;
     border-radius: 10px;
     border: 2px solid #ccc; 
@@ -28,4 +28,14 @@
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     border: 1px solid #ddd; /* Add a border to the table */
     border-radius: 8px; /* Rounded corners for the table */
+  }
+
+  .inner-table{
+    border:1px  black;
+    margin-bottom:10px;
+  }
+
+  mat-paginator {
+    margin-top: 20px;
+    background-color: transparent;
   }
