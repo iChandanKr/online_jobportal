@@ -1,1 +1,327 @@
-<p>profile works!</p>
+<form>
+  <h4 class="text-2xl font-bold dark:text-white">Personal Details...</h4>
+  <div class="grid gap-6 mb-6 md:grid-cols-2">
+    <div>
+      <label
+        for="first_name"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >First name</label
+      >
+      <input
+        type="text"
+        id="first_name"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="John"
+        required
+      />
+    </div>
+    <div>
+      <label
+        for="last_name"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Last name</label
+      >
+      <input
+        type="text"
+        id="last_name"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="Doe"
+        required
+      />
+    </div>
+    <div>
+      <label
+        for="email"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Email address</label
+      >
+      <input
+        type="email"
+        id="email"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="john.doe@company.com"
+        required
+      />
+    </div>
+    <div>
+      <label
+        for="phone"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Phone number</label
+      >
+      <input
+        type="tel"
+        id="phone"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="123-45-678"
+        pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+        required
+      />
+    </div>
+
+    <div>
+      <label
+        for="dob"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Date of Birth</label
+      >
+      <input
+        type="date"
+        id="dob"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      />
+    </div>
+    <div>
+      <label
+        for="password"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Password</label
+      >
+      <div class="relative">
+        <input
+          type="text"
+          id="password"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Edit..."
+        />
+
+        <div class="absolute inset-y-0 end-3 flex items-center ps-3.5">
+          <svg
+            class="w-5 h-5 text-gray-600 dark:text-gray-800 cursor-pointer hover:text-blue-500"
+            fill="currentColor"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512"
+            (click)="openChangePasswordDialog('300ms','300ms')"
+          >
+            <path
+              d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1 0 32c0 8.8 7.2 16 16 16l32 0zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mb-6">
+    <h4 class="text-2xl font-bold dark:text-white">Professional Details...</h4>
+  </div>
+  <div class="grid gap-6 mb-6 md:grid-cols-2">
+    <div>
+      <label
+        for="company_name"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Company name</label
+      >
+      <input
+        type="text"
+        id="company_name"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        required
+      />
+    </div>
+    <div>
+      <label
+        for="department"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Department</label
+      >
+      <input
+        type="text"
+        id="department"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      />
+    </div>
+    <div>
+      <label
+        for="designation"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Designation</label
+      >
+      <input
+        type="text"
+        id="designation"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      />
+    </div>
+  </div>
+  <div class="mb-6">
+    <h4 class="text-2xl font-bold dark:text-white">Company Details...</h4>
+  </div>
+  <div class="grid gap-6 mb-6 md:grid-cols-2">
+    <div>
+      <label
+        for="totalEmployees"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Total Employees</label
+      >
+      <input
+        type="number"
+        id="totalEmployees"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      />
+    </div>
+    <div class="control">
+      <div class="mb-5">
+        <label
+          for="industryName"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Industry Name</label
+        >
+        <select
+          id="jobLocation"
+          name="jobLocation"
+          formControlName="industryName"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        >
+          <option value="" disabled>select</option>
+          <option value="software">Software</option>
+          <option value="finance">Finance</option>
+          <option value="manufacturing">Manufacturing</option>
+          <option value="construction">Construction</option>
+          <option value="accounting">Accou</option>
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <label
+        for="company_email"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Email address</label
+      >
+      <input
+        type="email"
+        id="company_email"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="john.doe@company.com"
+        required
+      />
+    </div>
+    <div>
+      <label
+        for="company_phone"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Contact</label
+      >
+      <input
+        type="tel"
+        id="company_phone"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="123-45-678"
+        pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+        required
+      />
+    </div>
+
+    <div>
+      <label
+        for="foundedDate"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Founded Date</label
+      >
+      <input
+        type="date"
+        id="foundedDate"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      />
+    </div>
+    <div>
+      <label
+        for="branch"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Branch Name</label
+      >
+      <input
+        type="text"
+        id="branch"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      />
+    </div>
+  </div>
+  <div class="mb-6">
+    <h4 class="text-2xl font-bold dark:text-white">Company Address...</h4>
+  </div>
+  <div class="grid gap-6 mb-6 md:grid-cols-2">
+    <div>
+      <label
+        for="line1"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Line 1</label
+      >
+      <input
+        type="text"
+        id="line1"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      />
+    </div>
+
+    <div>
+      <label
+        for="line2"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Line 2</label
+      >
+      <input
+        type="text"
+        id="line2"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      />
+    </div>
+
+    <div>
+      <label
+        for="city"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >city</label
+      >
+      <input
+        type="text"
+        id="city"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      />
+    </div>
+
+    <div>
+      <label
+        for="state"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >State</label
+      >
+      <input
+        type="text"
+        id="state"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      />
+    </div>
+    <div>
+      <label
+        for="pin"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Pincode</label
+      >
+      <input
+        type="text"
+        id="pin"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      />
+    </div>
+    <div>
+      <label
+        for="country"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Country</label
+      >
+      <input
+        type="text"
+        id="country"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      />
+    </div>
+  </div>
+  <button
+    type="submit"
+    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+  >
+    Submit
+  </button>
+</form>

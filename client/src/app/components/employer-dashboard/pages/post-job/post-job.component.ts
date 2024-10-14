@@ -1,4 +1,3 @@
-import { response } from 'express';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   FormGroup,
@@ -9,7 +8,6 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { PostJobService } from '../../../../services/post-job.service';
 import { Skill } from '../../../../model/skill.model';
-import { timeout } from 'rxjs';
 
 const currentTime = new Date().toISOString();
 console.log(currentTime);
@@ -66,7 +64,7 @@ export class PostJobComponent implements OnInit {
       },
       error: (err) => {
         console.log(err);
-        
+
         this.toaster.error(err.error.message, 'error', {
           timeOut: 1500,
         });
