@@ -185,7 +185,7 @@ const findEmployerDB = async (userId) => {
               {
                 model: Branch,
                 attributes: {
-                  exclude: ["createdAt", "updatedAt", "companyId"],
+                  exclude: ["createdAt", "updatedAt", "companyId","addressId"],
                 },
                 include: [
                   {

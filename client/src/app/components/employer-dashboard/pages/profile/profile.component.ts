@@ -29,10 +29,7 @@ export class ProfileComponent implements OnInit {
     this.updateEmployerService.getEmployerDetails().subscribe({
       next: (response) => {
         console.log(response);
-        this.employerDetails.set({
-          ...response.data,
-          ...response.data.Profession_Details,
-        });
+        
         console.log(this.employerDetails());
       },
     });

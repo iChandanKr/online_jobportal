@@ -33,20 +33,48 @@ class EmployerService {
 
   static findEmployerService = async (userId) => {
     const employer = await findEmployerDB(userId);
-    // const personal_details = {
-    //   ...employer,
-    //   ...employer.personal_details,
-    //   ...employer.Profession_Details.Company,
-    // };
-    // delete employer.Profession_Details;
-    const personal_details = employer.dataValues;
-    console.log(Object.keys(personal_details));
-    console.log(
-      employer.Profession_Details.Company.Branches[0].CompanyAddress,
-      "dataaaaaaaa"
+    const personal_details = JSON.parse(JSON.stringify(employer.dataValues));
+    const profession_details = JSON.parse(
+      JSON.stringify(employer.Profession_Details)
+    );
+    const company_details = JSON.parse(
+      JSON.stringify(employer.Profession_Details.Company)
+    );
+    const branch_details = JSON.parse(
+      JSON.stringify(employer.Profession_Details.Company.Branches[0])
+    );
+    const company_address = JSON.parse(
+      JSON.stringify(
+        employer.Profession_Details.Company.Branches[0].CompanyAddress
+      )
     );
 
-    // console.log(employer);
+    delete personal_details.Profession_Details;
+    delete profession_details.Company;
+    delete company_details.Branches;
+    delete branch_details.CompanyAddress;
+    const {
+      name,
+      companyIndustry,
+      email: companyEmail,
+      contact: companyContact,
+      totalEmployees,
+      foundedDate,
+    } = company_details;
+    const sendResponse = {
+      ...personal_details,
+      ...profession_details,
+
+      name,
+      companyIndustry,
+      companyEmail,
+      companyContact,
+      totalEmployees,
+      foundedDate,
+      ...branch_details,
+      ...company_address,
+    };
+    console.log(sendResponse);
     return employer;
   };
 }

@@ -13,7 +13,7 @@ const sort = (sort) => {
   } else {
     return ["updatedAt", "DESC"];
   }
-  //   console.log(arr);
+    // console.log(arr);
   return arr;
 };
 
