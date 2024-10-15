@@ -169,29 +169,35 @@ const findEmployerDB = async (userId) => {
   return await User.findOne({
     where: { id: userId },
     attributes: {
-      exclude: ["password", "createdAt", "updatedAt", "passwordChangedAt"],
+      exclude: [
+        "id",
+        "password",
+        "createdAt",
+        "updatedAt",
+        "passwordChangedAt",
+      ],
     },
     include: [
       {
         model: Employer,
         as: "Profession_Details",
 
-        attributes: { exclude: ["createdAt", "updatedAt", "userId"] },
+        attributes: { exclude: ["createdAt", "updatedAt"] },
         include: [
           {
             model: Company,
-            attributes: { exclude: ["createdAt", "updatedAt"] },
+            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
             include: [
               {
                 model: Branch,
                 attributes: {
-                  exclude: ["createdAt", "updatedAt", "companyId","addressId"],
+                  exclude: ["id", "createdAt", "updatedAt"],
                 },
                 include: [
                   {
                     model: CompanyAddress,
                     attributes: {
-                      exclude: ["createdAt", "updatedAt"],
+                      exclude: ["id", "createdAt", "updatedAt"],
                     },
                   },
                 ],

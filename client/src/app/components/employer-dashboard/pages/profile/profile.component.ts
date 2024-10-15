@@ -1,8 +1,15 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { UpdateEmployerService } from '../../../../services/update-employer.service';
+import { type EmployerResponse } from '../../../../model/employer.model';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -12,27 +19,44 @@ import { UpdateEmployerService } from '../../../../services/update-employer.serv
 })
 export class ProfileComponent implements OnInit {
   dialog = inject(MatDialog);
-  employerDetails = signal({});
+  employerDetails = signal<EmployerResponse | undefined>(undefined);
   private updateEmployerService = inject(UpdateEmployerService);
-  private formBuilder = inject(FormBuilder);
-  profileForm = this.formBuilder.group({
-    personal_details: this.formBuilder.group({
-      firstName: [this.employerDetails(), Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', Validators.required],
-      phone: ['', Validators.required],
-      DOB: ['', Validators.required],
-      password: ['', Validators.required],
-    }),
+  profileForm = new FormGroup({
+    firstName: new FormControl(this.employerDetails()?.firstName || '', [
+      Validators.required,
+    ]),
+    lastName: new FormControl(this.employerDetails()?.lastName || '', [
+      Validators.required,
+    ]),
+    email: new FormControl(this.employerDetails()?.email || '', [
+      Validators.required,
+    ]),
+    phone: new FormControl('', [Validators.required]),
+    DOB: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
   });
+
   ngOnInit(): void {
     this.updateEmployerService.getEmployerDetails().subscribe({
       next: (response) => {
         console.log(response);
-        
+        this.employerDetails.set(response.data);
+        this.updateForm();
         console.log(this.employerDetails());
       },
     });
+  }
+
+  updateForm() {
+    const details = this.employerDetails();
+    if (details) {
+      this.profileForm.patchValue({
+        firstName: details.firstName,
+        lastName: details.lastName,
+        email: details.email,
+        DOB: details.dob,
+      });
+    }
   }
   openChangePasswordDialog(
     enterAnimationDuration: string,

@@ -37,22 +37,22 @@ class EmployerService {
     const profession_details = JSON.parse(
       JSON.stringify(employer.Profession_Details)
     );
-    const company_details = JSON.parse(
-      JSON.stringify(employer.Profession_Details.Company)
-    );
+
     const branch_details = JSON.parse(
       JSON.stringify(employer.Profession_Details.Company.Branches[0])
     );
-    const company_address = JSON.parse(
-      JSON.stringify(
-        employer.Profession_Details.Company.Branches[0].CompanyAddress
-      )
-    );
-
     delete personal_details.Profession_Details;
     delete profession_details.Company;
-    delete company_details.Branches;
     delete branch_details.CompanyAddress;
+    const {
+      line1,
+      line2,
+      city: companyCity,
+      state: companyState,
+      pincode: companyPincode,
+      country: companyCountry,
+    } = employer.Profession_Details.Company.Branches[0].CompanyAddress;
+
     const {
       name,
       companyIndustry,
@@ -60,7 +60,9 @@ class EmployerService {
       contact: companyContact,
       totalEmployees,
       foundedDate,
-    } = company_details;
+    } = employer.Profession_Details.Company;
+
+
     const sendResponse = {
       ...personal_details,
       ...profession_details,
@@ -72,10 +74,15 @@ class EmployerService {
       totalEmployees,
       foundedDate,
       ...branch_details,
-      ...company_address,
+      line1,
+      line2,
+      companyCity,
+      companyState,
+      companyPincode,
+      companyCountry,
     };
     console.log(sendResponse);
-    return employer;
+    return sendResponse;
   };
 }
 module.exports = EmployerService;
