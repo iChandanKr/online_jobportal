@@ -5,6 +5,17 @@
 html, body { height: 100%; }
 *{
   box-sizing: border-box;
-  border-style: none;    /* added due to dialog box in changePassword */
+
 }
+
+.mdc-notched-outline__notch{
+  border: none; /* added due to dialog box in changePassword */
+}
+
+
+/* Another way */
+/* div:has(> label){
+  border: none;
+} */
+
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

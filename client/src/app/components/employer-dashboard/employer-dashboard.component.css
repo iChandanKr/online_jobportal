@@ -12,7 +12,8 @@ mat-toolbar {
 mat-sidenav-container {
   height: calc(100vh - 64px);
   /* background-color: rgb(185, 179, 179); */
-  background-color: #f1f9ec;
+  /* background-color: #f1f9ec; */
+  background-color: #F6F5F2;
 }
 mat-sidenav,
 mat-sidenav-content {
