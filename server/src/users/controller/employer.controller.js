@@ -33,7 +33,17 @@ const updateEmployer = async (req, res, next) => {
   }
 };
 
+const getSpecificEmployeer = async (req, res, next) => {
+  try {
+    const employer = await EmployerService.findEmployerService(req.user.id);
+    respondOk(res, 200, "Here is the Employer Details", employer);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registerEmployer,
   updateEmployer,
+  getSpecificEmployeer,
 };

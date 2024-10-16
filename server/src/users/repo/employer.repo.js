@@ -165,7 +165,53 @@ const updateEmployerDb = async (id, employerData, t) => {
   return employer;
 };
 
+const findEmployerDB = async (userId) => {
+  return await User.findOne({
+    where: { id: userId },
+    attributes: {
+      exclude: [
+        "id",
+        "password",
+        "createdAt",
+        "updatedAt",
+        "passwordChangedAt",
+      ],
+    },
+    include: [
+      {
+        model: Employer,
+        as: "Profession_Details",
+
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+        include: [
+          {
+            model: Company,
+            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+            include: [
+              {
+                model: Branch,
+                attributes: {
+                  exclude: ["id", "createdAt", "updatedAt"],
+                },
+                include: [
+                  {
+                    model: CompanyAddress,
+                    attributes: {
+                      exclude: ["id", "createdAt", "updatedAt"],
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  });
+};
+
 module.exports = {
   createEmployerDb,
   updateEmployerDb,
+  findEmployerDB,
 };
