@@ -52,6 +52,7 @@ const updatePasswordDB = async (id, newPassword) => {
       where: {
         id,
       },
+      individualHooks: true
     }
   );
 };

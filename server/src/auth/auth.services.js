@@ -103,9 +103,8 @@ class AuthService {
     if (newPassword !== confirmPassword) {
       throw new CustomError("New password and confirm password doesn't match",400)
     }
-    console.log('here');
     
-    // return await updatePasswordDB(userInfo.id,newPassword)
+    return await updatePasswordDB(userInfo.id,newPassword)
   };
 }
 module.exports = AuthService;

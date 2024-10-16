@@ -136,6 +136,16 @@ module.exports = (sequelize, DataTypes) => {
           user.password = await bcrypt.hash(user.password, 10);
           user.confirmPassword = undefined;
         },
+
+        beforeUpdate: async (user) => {
+          if (await user.changed("password")) {
+            user.password = await bcrypt.hash(user.password, 10);
+            user.passwordChangedAt = Date.now();
+          }
+        },
+        afterUpdate: async (user) => {
+          user.confirmPassword = undefined;
+        },
       },
     }
   );
