@@ -305,7 +305,7 @@ const updateEmployerSchema = Joi.object({
   designation: Joi.string().max(80).optional().messages({
     "string.empty": "please Enter Designation",
   }),
-  companyName: Joi.string().max(150).optional().messages({
+  name: Joi.string().max(150).optional().messages({
     "string.empty": "please Enter Company Name",
   }),
   companyIndustry: Joi.string().max(100).optional().messages({
@@ -330,10 +330,10 @@ const updateEmployerSchema = Joi.object({
   foundedDate: Joi.date().iso().optional().messages({
     "date.base": "Please Enter Company Foundation Date",
   }),
-  addressLine1: Joi.string().max(100).optional().messages({
+  line1: Joi.string().max(100).optional().messages({
     "string.empty": "please Enter Address",
   }),
-  addressLine2: Joi.string().max(150).optional().messages({
+  line2: Joi.string().max(150).optional().messages({
     "string.empty": "Address Line 2 cannot be empty",
   }),
   companyCity: Joi.string().max(100).optional().messages({

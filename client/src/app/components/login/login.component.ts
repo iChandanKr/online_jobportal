@@ -42,9 +42,7 @@ export class LoginComponent {
           if (user) {
             this.userDataSharingService.setLoginUserData(user);
           }
-          this.toastr.success(response.body?.message, 'success', {
-            timeOut: 1500,
-          });
+          this.toastr.success(response.body?.message, 'success');
           user?.role === 'employer'
             ? this.router.navigate(['/employer'])
             : this.router.navigate(['/employer']);

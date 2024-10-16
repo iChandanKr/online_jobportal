@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { UpdateEmployerService } from '../../../../services/update-employer.service';
 import { type EmployerResponse } from '../../../../model/employer.model';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -21,49 +22,65 @@ export class ProfileComponent implements OnInit {
   dialog = inject(MatDialog);
   employerDetails = signal<EmployerResponse | undefined>(undefined);
   private updateEmployerService = inject(UpdateEmployerService);
+  private toaster = inject(ToastrService);
   profileForm = new FormGroup({
     firstName: new FormControl(this.employerDetails()?.firstName || '', [
       Validators.required,
     ]),
-    lastName: new FormControl(this.employerDetails()?.lastName || '', [
-      Validators.required,
-    ]),
+    lastName: new FormControl(this.employerDetails()?.lastName || '', []),
     email: new FormControl(this.employerDetails()?.email || '', [
       Validators.required,
+      Validators.email,
     ]),
-    contact: new FormControl(this.employerDetails()?.email || '', [
+    contact: new FormControl(this.employerDetails()?.contact || '', [
       Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(10),
     ]),
-    DOB: new FormControl('', [Validators.required]),
-    password: new FormControl('****', [Validators.required]),
+    dob: new FormControl('', [Validators.required]),
     city: new FormControl('', [Validators.required]),
     state: new FormControl('', [Validators.required]),
-    pincode: new FormControl('', [Validators.required]),
+    pinCode: new FormControl('', [
+      Validators.required,
+      Validators.minLength(6),
+      Validators.maxLength(6),
+    ]),
     country: new FormControl('', [Validators.required]),
     department: new FormControl('', [Validators.required]),
     designation: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required]),
     companyIndustry: new FormControl('', [Validators.required]),
-    companyEmail: new FormControl('', [Validators.required]),
-    companyContact: new FormControl('', [Validators.required]),
-    totalEmployees: new FormControl(1, [Validators.required]),
+    companyEmail: new FormControl('', [Validators.required, Validators.email]),
+    companyContact: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(10),
+      Validators.minLength(10),
+    ]),
+    totalEmployees: new FormControl(1, [
+      Validators.required,
+      Validators.min(1),
+    ]),
     foundedDate: new FormControl('', [Validators.required]),
     branchName: new FormControl('', [Validators.required]),
     line1: new FormControl('', [Validators.required]),
     line2: new FormControl('', [Validators.required]),
     companyCity: new FormControl('', [Validators.required]),
     companyState: new FormControl('', [Validators.required]),
-    companyPincode: new FormControl('', [Validators.required]),
+    companyPincode: new FormControl('', [
+      Validators.required,
+      Validators.minLength(6),
+      Validators.maxLength(6),
+    ]),
     companyCountry: new FormControl('', [Validators.required]),
   });
 
   ngOnInit(): void {
     this.updateEmployerService.getEmployerDetails().subscribe({
       next: (response) => {
-        console.log(response);
+        // console.log(response);
         this.employerDetails.set(response.data);
         this.updateForm();
-        console.log(this.employerDetails());
+        // console.log(this.employerDetails());
       },
     });
   }
@@ -75,11 +92,11 @@ export class ProfileComponent implements OnInit {
         firstName: details.firstName,
         lastName: details.lastName,
         email: details.email,
-        DOB: details.dob,
+        dob: details.dob,
         contact: details.contact,
         city: details.city,
         state: details.state,
-        pincode: details.pinCode,
+        pinCode: details.pinCode,
         country: details.country,
         department: details.department,
         designation: details.designation,
@@ -98,6 +115,32 @@ export class ProfileComponent implements OnInit {
         companyCountry: details.companyCountry,
       });
     }
+  }
+
+  onSubmit() {
+    if (this.profileForm.invalid) {
+      console.log('INVALID FORM');
+      return;
+    }
+    if (this.profileForm.value) {
+      const data = this.profileForm.value;
+      this.updateEmployerService.updateEmployerDetails(data).subscribe({
+        next: (res) => {
+          localStorage.setItem(
+            'userFullName',
+            data.firstName! + ' ' + data.lastName!
+          );
+          this.toaster.success(res?.message, res?.status);
+        },
+        error: (err) => {
+          this.toaster.success(err?.error.message, err?.error.status);
+        },
+      });
+    }
+  }
+
+  onCancel() {
+    window.location.reload();
   }
   openChangePasswordDialog(
     enterAnimationDuration: string,

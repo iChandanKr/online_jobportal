@@ -1,4 +1,5 @@
 const { dataModel } = require("../../dbConnection");
+const { CustomError } = require("../../utils/apiResponse");
 const { Company, Employer, User, CompanyAddress, Branch, Role, UserRole } =
   dataModel;
 
@@ -81,12 +82,12 @@ const createEmployerDb = async (employerData, t) => {
 
 const updateEmployerDb = async (id, employerData, t) => {
   const employer = await User.findOne({
-    where: { id: id },
+    where: { id },
     transaction: t,
   });
 
   if (!employer) {
-    throw new Error("Employer not found");
+    throw new CustomError("Employer not found", 404);
   }
 
   await employer.update(
@@ -102,6 +103,7 @@ const updateEmployerDb = async (id, employerData, t) => {
       country: employerData.country,
     },
     {
+      validate: true,
       transaction: t,
     }
   );
@@ -125,14 +127,14 @@ const updateEmployerDb = async (id, employerData, t) => {
 
   await company.update(
     {
-      name: employerData.companyName,
+      name: employerData.name,
       companyIndustry: employerData.companyIndustry,
       email: employerData.companyEmail,
       contact: employerData.companyContact,
       totalEmployees: employerData.totalEmployees,
       foundedDate: employerData.foundedDate,
     },
-    { transaction: t }
+    { transaction: t, validate: true }
   );
 
   const branch = await Branch.findOne({
@@ -153,8 +155,8 @@ const updateEmployerDb = async (id, employerData, t) => {
 
   await address.update(
     {
-      line1: employerData.addressLine1,
-      line2: employerData.addressLine2,
+      line1: employerData.line1,
+      line2: employerData.line2,
       city: employerData.companyCity,
       state: employerData.companyState,
       pincode: employerData.companyPincode,
@@ -182,7 +184,16 @@ const findEmployerDB = async (userId) => {
         model: Employer,
         as: "Profession_Details",
 
-        attributes: { exclude: ["createdAt", "updatedAt"] },
+        attributes: {
+          exclude: [
+            "empId",
+            "branchId",
+            "userId",
+            "companyId",
+            "createdAt",
+            "updatedAt",
+          ],
+        },
         include: [
           {
             model: Company,
@@ -191,7 +202,13 @@ const findEmployerDB = async (userId) => {
               {
                 model: Branch,
                 attributes: {
-                  exclude: ["id", "createdAt", "updatedAt"],
+                  exclude: [
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "addressId",
+                    "companyId",
+                  ],
                 },
                 include: [
                   {
