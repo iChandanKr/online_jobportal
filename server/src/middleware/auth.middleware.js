@@ -32,7 +32,7 @@ const recreateSession = async (req, res, next) => {
     const existingRefreshToken = await AuthService.findRefreshTokenService(
       incomingRefreshToken
     );
-
+    console.log(incomingRefreshToken,'line 35')
     if (!existingRefreshToken) {
       throw new CustomError("Access Denied, Invalid Token", 401);
     }

@@ -44,6 +44,17 @@ const stopSessionDB = async (id, refreshToken) => {
 const findRefreshTokenDb = async (refreshToken) => {
   return await RefreshToken.findOne({ where: { refreshToken } });
 };
+
+const updatePasswordDB = async (id, newPassword) => {
+  return await User.update(
+    { password: newPassword },
+    {
+      where: {
+        id,
+      },
+    }
+  );
+};
 module.exports = {
   createSessionDB,
   findUserByEmail,
@@ -52,4 +63,5 @@ module.exports = {
   findUserById,
   stopSessionDB,
   findRefreshTokenDb,
+  updatePasswordDB
 };
