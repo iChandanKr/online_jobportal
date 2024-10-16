@@ -34,6 +34,7 @@ const createJobPostDb = async (jobPostData, t) => {
 };
 
 const getAllJobsDB = async (
+  id,
   orderBy,
   attributes,
   searchFields,
@@ -43,6 +44,7 @@ const getAllJobsDB = async (
 ) => {
   return JobPost.findAndCountAll({
     where: {
+      empId: id,
       [Op.or]: [
         {
           title: {
