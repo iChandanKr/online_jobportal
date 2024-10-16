@@ -10,28 +10,29 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { JobseekerSignupService } from '../../../app/services/jobseeker-signup.service';
-function isPasswordMatch(
-  controlName1: string,
-  controlName2: string
-): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const val1 = control.get(controlName1);
-    const val2 = control.get(controlName2);
-    if (!val1 || !val2) {
-      return null;
-    }
-    if (val2.errors && !val2.errors['valuesNotEqual']) {
-      return null;
-    }
+import { CustomValidators } from '../../utils/customValidators';
+// function isPasswordMatch(
+//   controlName1: string,
+//   controlName2: string
+// ): ValidatorFn {
+//   return (control: AbstractControl): ValidationErrors | null => {
+//     const val1 = control.get(controlName1);
+//     const val2 = control.get(controlName2);
+//     if (!val1 || !val2) {
+//       return null;
+//     }
+//     if (val2.errors && !val2.errors['valuesNotEqual']) {
+//       return null;
+//     }
 
-    if (val1?.value === val2?.value) {
-      val2.setErrors(null);
-      return null;
-    }
-    val2.setErrors({ valuesNotEqual: true });
-    return { valuesNotEqual: true };
-  };
-}
+//     if (val1?.value === val2?.value) {
+//       val2.setErrors(null);
+//       return null;
+//     }
+//     val2.setErrors({ valuesNotEqual: true });
+//     return { valuesNotEqual: true };
+//   };
+// }
 @Component({
   selector: 'app-signup',
   standalone: true,
@@ -59,7 +60,7 @@ export class SignupComponent {
         state: ['', Validators.required],
         country: ['', Validators.required],
       },
-      { validators: isPasswordMatch('password', 'confirmPassword') }
+      { validators: CustomValidators.passwordsMatch }
     );
   }
 

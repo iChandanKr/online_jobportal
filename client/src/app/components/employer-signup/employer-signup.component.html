@@ -2,239 +2,396 @@
   <form
     [formGroup]="employerSignup"
     (ngSubmit)="onSubmit()"
-    class="bg-white shadow-md rounded-lg p-8 w-full max-w-lg"
+    class="bg-white shadow-md rounded-lg p-8 w-full max-w-4xl"
   >
-    <h2 class="text-3xl font-semibold mb-6 text-center">Employer Signup</h2>
+    <h4 class="text-3xl font-semibold mb-6 text-center">Employer Signup</h4>
+    <mat-horizontal-stepper>
+      <!-- Section 1: Personal Information -->
+      <mat-step label="Personal Information">
+        <fieldset formGroupName="employerDetails">
+          <legend class="text-lg font-medium mb-4">Section 1: Personal Information</legend>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="mb-4">
+              <label class="block mb-1">First Name:</label>
+              <input
+                formControlName="firstName"
+                class="border rounded px-3 py-2 w-full"
+              />
 
-    <!-- Section 1: Personal Information -->
-    @if(currentStep===0){
-    <fieldset formGroupName="employerDetails">
-      <legend class="text-lg font-medium">
-        Section 1: Personal Information
-      </legend>
-      <div class="mb-4">
-        <label class="block mb-1">First Name:</label>
-        <input
-          formControlName="firstName"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">Last Name:</label>
-        <input
-          formControlName="lastName"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">Email:</label>
-        <input
-          formControlName="email"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">Password:</label>
-        <input
-          type="password"
-          formControlName="password"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">Confirm Password:</label>
-        <input
-          type="password"
-          formControlName="confirmPassword"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">Contact:</label>
-        <input
-          formControlName="contact"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">Date of Birth:</label>
-        <input
-          type="date"
-          formControlName="dob"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">Designation</label>
-        <input
-          formControlName="designation"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">Department</label>
-        <input
-          formControlName="department"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">City:</label>
-        <input formControlName="city" class="border rounded px-3 py-2 w-full" />
-      </div>
-      <div class="mb-4">
-        <div class="mb-4">
-          <label class="block mb-1">PinCode:</label>
-          <input
-            formControlName="pinCode"
-            class="border rounded px-3 py-2 w-full"
-          />
+              
+              @if (employerSignup.get('employerDetails.firstName')?.touched) {
+                @if (employerSignup.get('employerDetails.firstName')?.errors?.['required']) {
+                  <small class="text-red-500">First Name is required.</small>
+                } @else if (employerSignup.get('employerDetails.firstName')?.errors?.['noSpaceAllowed']) {
+                  <small class="text-red-500">No space is allowed in first name.</small>
+                }
+              }
+              <small>
+
+              </small>
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">Last Name:</label>
+              <input
+                formControlName="lastName"
+                class="border rounded px-3 py-2 w-full"
+              />
+
+              @if (employerSignup.get('employerDetails.lastName')?.touched) {
+                @if (employerSignup.get('employerDetails.lastName')?.errors?.['required']) {
+                  <small class="text-red-500">Last Name is required.</small>
+                }
+                  @else if (employerSignup.get('employerDetails.lastName')?.errors?.['noSpaceAllowed']) {
+                    <small class="text-red-500">No space is allowed in last name.</small>
+                    
+                  }
+              }
+              
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">Email:</label>
+              <input
+                formControlName="email"
+                class="border rounded px-3 py-2 w-full"
+              />
+              @if (employerSignup.get('employerDetails.email')?.touched) {
+                @if (employerSignup.get('employerDetails.email')?.errors?.['required']) {
+                  <small class="text-red-500">Email is required.</small>
+                }
+                @else if (employerSignup.get('employerDetails.email')?.errors?.['invalidEmail']) {
+                  <small class="text-red-500">Enter the valid email</small>
+                }
+              }
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">Contact:</label>
+              <input
+                formControlName="contact"
+                class="border rounded px-3 py-2 w-full"
+              />
+              @if (employerSignup.get('employerDetails.contact')?.touched) {
+                @if (employerSignup.get('employerDetails.contact')?.errors?.['required']) {
+                  <small class="text-red-500">Contact is required.</small>
+                }
+                @if (employerSignup.get('employerDetails.contact')?.hasError('minlength') || employerSignup.get('employerDetails.contact')?.hasError('maxlength')) {
+                  <small class="text-red-500" >Length should be exact 10</small>
+                }
+              }
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">Password:</label>
+              <input
+                type="password"
+                formControlName="password"
+                class="border rounded px-3 py-2 w-full"
+              />
+              @if (employerSignup.get('employerDetails.password')?.touched) {
+                @if (employerSignup.get('employerDetails.password')?.errors?.['required']) {
+                  <small class="text-red-500">Password is required.</small>
+                }
+                @else if (employerSignup.get('employerDetails.password')?.hasError('minlength')) {
+                  <small class="text-red-500">Min length should be 8</small>
+                }
+              }
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">Confirm Password:</label>
+              <input
+                type="password"
+                formControlName="confirmPassword"
+                class="border rounded px-3 py-2 w-full"
+              />
+              @if (employerSignup.get('employerDetails.confirmPassword')?.touched) {
+                @if (employerSignup.get('employerDetails.confirmPassword')?.errors?.['required']) {
+                  <small class="text-red-500">Confirm Password is required.</small>
+                }
+                @else if (employerSignup.get('employerDetails')?.errors?.['passwordMismatch']) {
+                  <small class="text-red-500">Password and Confirm Password must be same</small>
+                }
+              }
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">Date of Birth:</label>
+              <input
+                type="date"
+                formControlName="dob"
+                class="border rounded px-3 py-2 w-full"
+              />
+              @if (employerSignup.get('employerDetails.dob')?.touched) {
+                @if (employerSignup.get('employerDetails.dob')?.errors?.['required']) {
+                  <small class="text-red-500">Date of Birth is required.</small>
+                } @else if (employerSignup.get('employerDetails.dob')?.errors?.['futuredob']) {
+                  <small class="text-red-500">Date of Birth cannot be in future.</small>
+                }
+              }
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">Designation:</label>
+              <input
+                formControlName="designation"
+                class="border rounded px-3 py-2 w-full"
+              />
+              @if (employerSignup.get('employerDetails.designation')?.touched) {
+                @if (employerSignup.get('employerDetails.designation')?.errors?.['required']) {
+                  <small class="text-red-500">Designation is required.</small>
+                } 
+              }
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">Department:</label>
+              <input
+                formControlName="department"
+                class="border rounded px-3 py-2 w-full"
+              />
+              @if (employerSignup.get('employerDetails.department')?.touched) {
+                @if (employerSignup.get('employerDetails.department')?.errors?.['required']) {
+                  <small class="text-red-500">Department is required.</small>
+                } 
+              }
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">City:</label>
+              <input formControlName="city" class="border rounded px-3 py-2 w-full" />
+              @if (employerSignup.get('employerDetails.city')?.touched ) {
+                @if (employerSignup.get('employerDetails.city')?.errors?.['required']) {
+                <small class="text-red-500">City is required</small>
+              }
+              }
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">PinCode:</label>
+              <input formControlName="pinCode" class="border rounded px-3 py-2 w-full" />
+              @if (employerSignup.get('employerDetails.pinCode')?.touched && employerSignup.get('employerDetails.pinCode')?.invalid) {
+                <small class="text-red-500">Pincode must be valid</small>
+              }
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">State:</label>
+              <input formControlName="state" class="border rounded px-3 py-2 w-full" />
+              @if (employerSignup.get('employerDetails.state')?.touched ) {
+                @if (employerSignup.get('employerDetails.state')?.errors?.['required']) {
+                <small class="text-red-500">State is required</small>
+              }
+            }
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">Country:</label>
+              <input formControlName="country" class="border rounded px-3 py-2 w-full" />
+              @if (employerSignup.get('employerDetails.country')?.touched ) {
+                @if (employerSignup.get('employerDetails.country')?.errors?.['required']) {
+                <small class="text-red-500">Country is required</small>
+              }
+              }
+            </div>
+          </div>
+        </fieldset>
+        <div class="flex justify-end mt-6">
+          <button
+          (onclick)="onNextStep()"
+            mat-button
+            matStepperNext
+            class="bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 transition"
+          >
+            Next
+          </button>
         </div>
-      </div>
-      <div>
-        <label class="block mb-1">State:</label>
-        <input
-          formControlName="state"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">Country</label>
-        <input
-          formControlName="country"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-    </fieldset>
-    }
+      </mat-step>
 
-    <!-- Section 2: Address -->
-    @if(currentStep===1){
+      <!-- Section 2: Address -->
+      <mat-step label="Address Information">
+        <fieldset formGroupName="addressDetails">
+          <legend class="text-lg font-medium mb-4">Section 2: Company Address</legend>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="mb-4">
+              <label class="block mb-1">Address Line 1:</label>
+              <input
+                formControlName="addressLine1"
+                class="border rounded px-3 py-2 w-full"
+              />
+              @if (employerSignup.get('addressDetails.addressLine1')?.touched ) {
+                @if (employerSignup.get('addressDetails.addressLine1')?.errors?.['required']) {
+                <small class="text-red-500">Line 1 is required</small>
+              }
+              }
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">Address Line 2:</label>
+              <input
+                formControlName="addressLine2"
+                class="border rounded px-3 py-2 w-full"
+              />
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">City:</label>
+              <input
+                formControlName="companyCity"
+                class="border rounded px-3 py-2 w-full"
+              />
+              @if (employerSignup.get('addressDetails.companyCity')?.touched ) {
+                @if (employerSignup.get('addressDetails.companyCity')?.errors?.['required']) {
+                <small class="text-red-500">City is required</small>
+              }
+              }
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">State:</label>
+              <input
+                formControlName="companyState"
+                class="border rounded px-3 py-2 w-full"
+              />
+              @if (employerSignup.get('addressDetails.companyState')?.touched ) {
+                @if (employerSignup.get('addressDetails.companyState')?.errors?.['required']) {
+                <small class="text-red-500">State is required</small>
+              }
+              }
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">Pincode:</label>
+              <input
+                formControlName="companyPincode"
+                class="border rounded px-3 py-2 w-full"
+              />
+                @if (employerSignup.get('addressDetails.companyPincode')?.touched && employerSignup.get('addressDetails.companyPincode')?.invalid) {
+                <small class="text-red-500">Pincode must be valid</small>
+              }
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">Country:</label>
+              <input
+                formControlName="companyCountry"
+                class="border rounded px-3 py-2 w-full"
+              />
+              @if (employerSignup.get('addressDetails.companyCountry')?.touched ) {
+                @if (employerSignup.get('addressDetails.companyCountry')?.errors?.['required']) {
+                <small class="text-red-500">Country is required</small>
+              }
+              }
+            </div>
+          </div>
+        </fieldset>
+        <div class="flex justify-between mt-6">
+          <button
+            mat-button
+            matStepperPrevious
+            class="bg-gray-500 text-white py-2 px-6 rounded hover:bg-gray-600 transition"
+          >
+            Previous
+          </button>
+          <button
+            mat-button
+            matStepperNext
+            class="bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 transition"
+          >
+            Next
+          </button>
+        </div>
+      </mat-step>
 
-    <fieldset formGroupName="addressDetails">
-      <legend class="text-lg font-medium">Section 2: Company Address</legend>
-      <div class="mb-4">
-        <label class="block mb-1">Line 1:</label>
-        <input
-          formControlName="addressLine1"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">Line 2:</label>
-        <input
-          formControlName="addressLine2"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">City:</label>
-        <input
-          formControlName="companyCity"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">State:</label>
-        <input
-          formControlName="companyState"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">Pincode:</label>
-        <input
-          formControlName="companyPincode"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">Country:</label>
-        <input
-          formControlName="companyCountry"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-    </fieldset>
-    }
-
-    <!-- Section 3: Company Details -->
-    @if(currentStep===2){
-
-    <fieldset formGroupName="companyDetails">
-      <legend class="text-lg font-medium">Section 3: Company Details</legend>
-      <div class="mb-4">
-        <label class="block mb-1">Company Name:</label>
-        <input
-          formControlName="companyName"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">Total Employees:</label>
-        <input
-          formControlName="totalEmployees"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">Founded Date:</label>
-        <input
-          type="date"
-          formControlName="foundedDate"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">Company Industry:</label>
-        <input
-          formControlName="companyIndustry"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">Company Email:</label>
-        <input
-          formControlName="companyEmail"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">Company Contact:</label>
-        <input
-          formControlName="companyContact"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block mb-1">Company Branch Name:</label>
-        <input
-          formControlName="branchName"
-          class="border rounded px-3 py-2 w-full"
-        />
-      </div>
-    </fieldset>
-    }
-
-   
-    <!-- Step Navigation -->
-    <div class="flex justify-between mb-4">
-      <button
-        type="button"
-        (click)="previousStep()"
-        [disabled]="currentStep === 0"
-        class="bg-gray-300 text-black py-2 px-4 rounded hover:bg-gray-400"
-      >
-        Previous
-      </button>
-      <button
-        type="button"
-        (click)="nextStep()"
-        [disabled]="currentStep === maxStep"
-        class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-      >
-        {{ currentStep === maxStep - 1 ? "Submit" : "Next" }}
-      </button>
-    </div>
+      <!-- Section 3: Company Details -->
+      <mat-step label="Company Details">
+        <fieldset formGroupName="companyDetails">
+          <legend class="text-lg font-medium mb-4">Section 3: Company Details</legend>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="mb-4">
+              <label class="block mb-1">Company Name:</label>
+              <input
+                formControlName="companyName"
+                class="border rounded px-3 py-2 w-full"
+              />
+              @if (employerSignup.get('companyDetails.companyName')?.touched ) {
+                @if (employerSignup.get('companyDetails.companyName')?.errors?.['required']) {
+                <small class="text-red-500">Company Name is required</small>
+              }
+              }
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">Total Employees:</label>
+              <input
+                formControlName="totalEmployees"
+                class="border rounded px-3 py-2 w-full"
+              />
+              @if (employerSignup.get('companyDetails.totalEmployees')?.touched ) {
+                @if (employerSignup.get('companyDetails.totalEmployees')?.errors?.['required']) {
+                <small class="text-red-500">No of employees are required</small>
+              }
+              }
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">Founded Date:</label>
+              <input
+                type="date"
+                formControlName="foundedDate"
+                class="border rounded px-3 py-2 w-full"
+              />
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">Company Industry:</label>
+              <input
+                formControlName="companyIndustry"
+                class="border rounded px-3 py-2 w-full"
+              />
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">Company Email:</label>
+              <input
+                formControlName="companyEmail"
+                class="border rounded px-3 py-2 w-full"
+              />
+              @if (employerSignup.get('companyDetails.companyEmail')?.touched ) {
+                @if (employerSignup.get('companyDetails.companyEmail')?.errors?.['required']) {
+                <small class="text-red-500">Email is required</small>
+              }
+              @else if (employerSignup.get('companyDetails.companyEmail')?.errors?.['invalidEmail']) {
+                <small class="text-red-500">Email must be valid</small>
+              }
+              }
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">Company Contact:</label>
+              <input
+                formControlName="companyContact"
+                class="border rounded px-3 py-2 w-full"
+              />
+              @if (employerSignup.get('companyDetails.companyContact')?.touched ) {
+                @if (employerSignup.get('companyDetails.companyContact')?.errors?.['required']) {
+                <small class="text-red-500">Contact is required</small>
+              }
+              @if (employerSignup.get('companyDetails.companyContact')?.hasError('minlength') || employerSignup.get('companyDetails.companyContact')?.hasError('maxlength')) {
+                <small class="text-red-500" >Length should be exact 10</small>
+              }
+              }
+            </div>
+            <div class="mb-4">
+              <label class="block mb-1">Company Branch Name:</label>
+              <input
+                formControlName="branchName"
+                class="border rounded px-3 py-2 w-full"
+              />
+              @if (employerSignup.get('companyDetails.branchName')?.touched ) {
+                @if (employerSignup.get('companyDetails.branchName')?.errors?.['required']) {
+                <small class="text-red-500">Branch Name is required</small>
+              }
+            }
+            </div>
+          </div>
+        </fieldset>
+        <div class="flex justify-between mt-6">
+          <button
+            mat-button
+            matStepperPrevious
+            class="bg-gray-500 text-white py-2 px-6 rounded hover:bg-gray-600 transition"
+          >
+            Previous
+          </button>
+          <button
+            mat-button
+            type="submit"
+            class="bg-green-500 text-white py-2 px-6 rounded hover:bg-green-600 transition"
+          >
+            Submit
+          </button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
   </form>
 </div>

@@ -6,39 +6,48 @@ import {
   Validators,
 } from '@angular/forms';
 import { EmployerSignupService } from '../../services/employer-signup.service';
+import { MatStepper } from '@angular/material/stepper';
+import { MatStepperModule } from '@angular/material/stepper'; 
+import { MatButtonModule } from '@angular/material/button'; 
+import { CustomValidators } from '../../utils/customValidators';
+import { EventEmitter } from 'stream';
 
 @Component({
   selector: 'app-employer-signup',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,MatStepper,MatStepperModule,MatButtonModule],
   templateUrl: './employer-signup.component.html',
   styleUrls: ['./employer-signup.component.css'],
 })
 export class EmployerSignupComponent implements OnInit {
   employerSignup: FormGroup;
-  currentStep = 0;
-  maxStep = 3;
-
   constructor(
     private formBuilder: FormBuilder,
     private employerSignupService: EmployerSignupService
   ) {
     this.employerSignup = this.formBuilder.group({
       employerDetails: this.formBuilder.group({
-        firstName: ['', Validators.required],
-        lastName: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
+        firstName: ['', [Validators.required,CustomValidators.noSpaceAllowed]],
+        lastName: ['', [Validators.required,CustomValidators.noSpaceAllowed]],
+        email: ['', [Validators.required,CustomValidators.validEmail]],
         password: ['', [Validators.required, Validators.minLength(8)]],
-        confirmPassword: ['', Validators.required],
-        contact: ['', Validators.required],
-        dob: ['', Validators.required],
+        confirmPassword: ['', [Validators.required]],
+        contact: ['', [
+          Validators.required,           
+          Validators.pattern(/^[0-9]*$/), 
+          Validators.minLength(10),       
+          Validators.maxLength(10)        
+        ]
+      ],
+        dob: ['', [Validators.required,CustomValidators.validDOB]],
         city: ['', Validators.required],
-        pinCode: ['', Validators.required],
+        pinCode: ['', [Validators.required,Validators.pattern(/^\d{6}$/)]],
         state: ['', Validators.required],
         country: ['', Validators.required],
         department: ['', Validators.required],
         designation: ['', Validators.required],
-      }),
+      },
+      { validators: CustomValidators.passwordsMatch }),
 
       addressDetails: this.formBuilder.group({
         addressLine1: ['', Validators.required],
@@ -57,14 +66,16 @@ export class EmployerSignupComponent implements OnInit {
         totalEmployees: ['', Validators.required],
         foundedDate: ['', Validators.required],
         companyIndustry: ['', Validators.required],
-        companyEmail: ['', [Validators.required, Validators.email]],
-        companyContact: ['', Validators.required],
+        companyEmail: ['', [Validators.required, CustomValidators.validEmail]],
+        companyContact: ['', [
+          Validators.required,           
+          Validators.pattern(/^[0-9]*$/), 
+          Validators.minLength(10),       
+          Validators.maxLength(10)        
+        ]],
         branchName: ['', Validators.required],
       }),
 
-      // branchDetails: this.formBuilder.group({
-      //   branchName: ['', Validators.required]
-      // })
     });
   }
 
@@ -119,22 +130,6 @@ export class EmployerSignupComponent implements OnInit {
     }
   }
 
-  nextStep() {
-    this.saveFormData();
-    if (this.currentStep < this.maxStep - 1) {
-      this.currentStep++;
-    } else {
-      this.onSubmit();
-    }
-  }
-
-  previousStep() {
-    this.saveFormData();
-    if (this.currentStep > 0) {
-      this.currentStep--;
-    }
-  }
-
   saveFormData() {
     const employerDetails = this.employerSignup.get('employerDetails')?.value;
     const addressDetails = this.employerSignup.get('addressDetails')?.value;
@@ -143,5 +138,9 @@ export class EmployerSignupComponent implements OnInit {
     localStorage.setItem('employerDetails', JSON.stringify(employerDetails));
     localStorage.setItem('addressDetails', JSON.stringify(addressDetails));
     localStorage.setItem('companyDetails', JSON.stringify(companyDetails));
+  }
+
+  onNextStep(){
+
   }
 }
