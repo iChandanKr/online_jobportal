@@ -15,8 +15,13 @@ router
   .route("/register-employer")
   .post(registerEmployerValidation, registerEmployer);
 router
-  .route("/update-employer/:id")
-  .put(updateEmployerValidation, updateEmployer);
+  .route("/update-employer")
+  .put(
+    updateEmployerValidation,
+    authMiddleware,
+    checkEmployerRole,
+    updateEmployer
+  );
 router
   .route("/employer")
   .get(authMiddleware, checkEmployerRole, getSpecificEmployeer);

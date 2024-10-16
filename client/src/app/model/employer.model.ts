@@ -37,12 +37,8 @@ export interface EmployerResponse {
   state: string;
   pinCode: string;
   country: string;
-  empId: string;
   department: string;
   designation: string;
-  userId: string;
-  branchId: string;
-  companyId: string;
   name: string;
   companyIndustry: string;
   companyEmail: string;
@@ -50,7 +46,6 @@ export interface EmployerResponse {
   totalEmployees: number;
   foundedDate: string;
   branchName: string;
-  addressId: string;
   line1: string;
   line2: string;
   companyCity: string;

@@ -53,7 +53,7 @@ export class PostJobComponent implements OnInit {
       console.log('INVALID FORM');
       return;
     }
-    console.log(this.jobForm);
+    // console.log(this.jobForm);
     this.postJobService.postJob(this.jobForm.value).subscribe({
       next: (response) => {
         this.jobForm.reset();
@@ -63,7 +63,7 @@ export class PostJobComponent implements OnInit {
         });
       },
       error: (err) => {
-        console.log(err);
+        // console.log(err);
 
         this.toaster.error(err.error.message, 'error', {
           timeOut: 1500,
