@@ -37,7 +37,6 @@ class EmployerService {
     const profession_details = JSON.parse(
       JSON.stringify(employer.Profession_Details)
     );
-
     const branch_details = JSON.parse(
       JSON.stringify(employer.Profession_Details.Company.Branches[0])
     );
@@ -62,7 +61,6 @@ class EmployerService {
       foundedDate,
     } = employer.Profession_Details.Company;
 
-
     const sendResponse = {
       ...personal_details,
       ...profession_details,
@@ -81,7 +79,6 @@ class EmployerService {
       companyPincode,
       companyCountry,
     };
-    console.log(sendResponse);
     return sendResponse;
   };
 }
