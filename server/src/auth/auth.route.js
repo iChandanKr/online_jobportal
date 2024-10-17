@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { userLogin, logoutUser } = require("./auth.controller");
+const {
+  userLogin,
+  logoutUser,
+  updateUserPassword,
+} = require("./auth.controller");
 const authMiddleware = require("../middleware/auth.middleware");
 const {
   loginValidation,
@@ -13,5 +17,6 @@ router.route("/auth/check").get(authMiddleware, (req, res) => {
 
 // protected routes
 router.route("/logout").post(logoutValidator, authMiddleware, logoutUser);
+router.route("/password-update").patch(authMiddleware, updateUserPassword);
 
 module.exports = router;

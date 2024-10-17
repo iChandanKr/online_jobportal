@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -12,6 +12,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { UpdatePasswordService } from '../../../../../services/update-password.service';
+import { ToastrService } from 'ngx-toastr';
+import { NgClass } from '@angular/common';
 function comparePasswords(
   controlName1: string,
   controlName2: string
@@ -20,11 +23,8 @@ function comparePasswords(
     const val1 = control.get(controlName1)?.value;
     const val2 = control.get(controlName2)?.value;
     if (val1 && val2 && val1 !== val2) {
-      console.log('inside error');
-
       return { valuesNotEqual: true };
     }
-    console.log('not error')
     return null;
   };
 }
@@ -37,12 +37,15 @@ function comparePasswords(
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    NgClass,
   ],
   templateUrl: './change-password-dialog.component.html',
   styleUrl: './change-password-dialog.component.css',
 })
 export class ChangePasswordDialogComponent {
   public dialogRef = inject(MatDialogRef<ChangePasswordDialogComponent>);
+  private updatePasswordService = inject(UpdatePasswordService);
+  private toaster = inject(ToastrService);
   passwordForm = new FormGroup(
     {
       password: new FormControl('', [
@@ -67,7 +70,28 @@ export class ChangePasswordDialogComponent {
   onSubmit(): void {
     if (this.passwordForm.valid) {
       const formValues = this.passwordForm.value;
-      // console.log(formValues);
+      if (
+        formValues.password &&
+        formValues.newPassword &&
+        formValues.confirmPassword
+      ) {
+        this.updatePasswordService
+          .updatePassword({
+            password: formValues.password,
+            newPassword: formValues.newPassword,
+            confirmPassword: formValues.confirmPassword,
+          })
+          .subscribe({
+            next: (res) => {
+              this.toaster.success(res.message, 'Success');
+            },
+            error: (err) => {
+              console.log(err.message);
+              this.toaster.error(err.error.message, 'Error');
+            },
+          });
+      }
+
       this.dialogRef.close();
     }
   }

@@ -50,9 +50,7 @@ export class LoginComponent {
         },
         error: (err) => {
           console.log(err.error.message);
-          this.toastr.error(err.error.message, 'error', {
-            timeOut: 1500,
-          });
+          this.toastr.error(err.error.message, 'error');
         },
       });
     }

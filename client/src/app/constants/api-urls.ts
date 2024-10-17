@@ -9,6 +9,7 @@ export const API_URLS = {
   fetchSkills: `${environment.apiUrl}/skills/getAllSkills`,
   postJob: `${environment.apiUrl}/job/add-jobpost`,
   fetchEmployer: `${environment.apiUrl}/users/employer`,
-  getJobs:`${environment.apiUrl}/job/jobs`,
-  updateEmployer:`${environment.apiUrl}/users/update-employer`
+  getJobs: `${environment.apiUrl}/job/jobs`,
+  updateEmployer: `${environment.apiUrl}/users/update-employer`,
+  updatePassword: `${environment.apiUrl}/users/password-update`,
 };

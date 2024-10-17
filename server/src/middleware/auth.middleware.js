@@ -5,6 +5,7 @@ const { dataModel } = require("../dbConnection");
 const { User, sequelize } = dataModel;
 const AuthService = require("../auth/auth.services");
 const createSessionHandler = require("../auth/shared/createSessionHandler");
+const { stopSessionDBforUser } = require("../auth/auth.repo");
 
 const recreateSession = async (req, res, next) => {
   const incomingRefreshToken = req.cookies?.refreshToken;
@@ -32,7 +33,6 @@ const recreateSession = async (req, res, next) => {
     const existingRefreshToken = await AuthService.findRefreshTokenService(
       incomingRefreshToken
     );
-
     if (!existingRefreshToken) {
       throw new CustomError("Access Denied, Invalid Token", 401);
     }
@@ -111,6 +111,8 @@ module.exports = async (req, res, next) => {
         "The password has been changed recently. Please login again",
         401
       );
+      // stop all the sessions associated with this user
+      await stopSessionDBforUser(user.id);
       return next(error);
     }
     //5. allow user to access route
