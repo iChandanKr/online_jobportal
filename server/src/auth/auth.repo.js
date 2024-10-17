@@ -41,6 +41,15 @@ const stopSessionDB = async (id, refreshToken) => {
   });
 };
 
+// for the case user update password
+const stopSessionDBforUser = async (id) => {
+  return await RefreshToken.destroy({
+    where: {
+      userId: id,
+    },
+  });
+};
+
 const findRefreshTokenDb = async (refreshToken) => {
   return await RefreshToken.findOne({ where: { refreshToken } });
 };
@@ -52,7 +61,7 @@ const updatePasswordDB = async (id, newPassword) => {
       where: {
         id,
       },
-      individualHooks: true
+      individualHooks: true,
     }
   );
 };
@@ -64,5 +73,6 @@ module.exports = {
   findUserById,
   stopSessionDB,
   findRefreshTokenDb,
-  updatePasswordDB
+  updatePasswordDB,
+  stopSessionDBforUser,
 };
