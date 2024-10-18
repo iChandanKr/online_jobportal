@@ -116,6 +116,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       tableName: "jobPosts",
       timestamps: true,
+      paranoid: true,
     }
   );
   return jobpost;

@@ -21,7 +21,31 @@ const getAllJobs = async (req, res, next) => {
     next(error);
   }
 };
+
+// const updateJob=async(req,res,next)=>{
+//   try {
+//     const updateJob=await JobService
+//   } catch (error) {
+    
+//   }
+// }
+
+const deleteJob=async(req,res,next)=>{
+  
+  const id=req.params.id
+  console.log(id);
+  
+  try {
+    await JobService.deleteJobService(id)
+    respondOk(res,200,'Job post deleted successfully (soft delete)')
+  } catch (error) {
+    next(error)
+  }
+}
+
+
 module.exports = {
   createJobPost,
   getAllJobs,
+  deleteJob
 };

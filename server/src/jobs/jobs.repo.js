@@ -68,4 +68,9 @@ const getAllJobsDB = async (
   });
 };
 
-module.exports = { createJobPostDb, getAllJobsDB };
+const deleteJobDB=async(id)=>{
+  const jobPost=await JobPost.findByPk(id)
+  await jobPost.destroy()
+}
+
+module.exports = { createJobPostDb, getAllJobsDB,deleteJobDB };
