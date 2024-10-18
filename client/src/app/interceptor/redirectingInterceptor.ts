@@ -23,6 +23,9 @@ export function authInterceptor(
           toaster.error(err.error.message, 'error');
           router.navigate(['/login']);
         }
+        if (err.error.status === 400 || 403) {
+          toaster.error(err.error.message, 'error');
+        }
       },
     })
   );

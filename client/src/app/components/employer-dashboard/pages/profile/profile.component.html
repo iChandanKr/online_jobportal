@@ -415,7 +415,7 @@
         type="button"
         [disabled]="!profileForm.valid || !profileForm.dirty"
         (click)="onCancel()"
-        class="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition duration-200"
+        class="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
       >
         Cancel
       </button>
@@ -424,7 +424,7 @@
       <button
         type="submit"
         [disabled]="!profileForm.valid || !profileForm.dirty"
-        class="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition duration-200"
+        class="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
       >
         Submit
       </button>
