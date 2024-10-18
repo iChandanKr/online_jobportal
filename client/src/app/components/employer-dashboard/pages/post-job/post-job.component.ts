@@ -1,4 +1,11 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  OnInit,
+  signal,
+  computed,
+} from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -8,6 +15,7 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { PostJobService } from '../../../../services/post-job.service';
 import { Skill } from '../../../../model/skill.model';
+import { log } from 'console';
 
 const currentTime = new Date().toISOString();
 console.log(currentTime);
@@ -33,27 +41,19 @@ export class PostJobComponent implements OnInit {
     jobType: new FormControl('', [Validators.required]),
     shift: new FormControl('', [Validators.required]),
   });
-  skills = signal<Skill[]>([]);
   currentTime = signal(new Date().toISOString);
   private postJobService = inject(PostJobService);
   private toaster = inject(ToastrService);
 
   ngOnInit(): void {
-    this.postJobService.fetchExistingSkills().subscribe({
-      next: (response) => {
-        this.skills.set(response.data);
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+    console.log('[Inside On Init post job component]');
   }
+  skills = computed(() => this.postJobService.skills());
   onSubmit() {
     if (this.jobForm.invalid) {
       console.log('INVALID FORM');
       return;
     }
-    // console.log(this.jobForm);
     this.postJobService.postJob(this.jobForm.value).subscribe({
       next: (response) => {
         this.jobForm.reset();
