@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CustomValidators } from '../../utils/customValidators';
 import { EventEmitter } from 'stream';
 import { Router } from '@angular/router';
+import { UserDataSharingService } from '../../services/user-data-sharing.service';
 
 @Component({
   selector: 'app-employer-signup',
@@ -25,7 +26,8 @@ export class EmployerSignupComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private employerSignupService: EmployerSignupService,
-    private router:Router
+    private router:Router,
+    private userDataSharingService:UserDataSharingService
   ) {
     this.employerSignup = this.formBuilder.group({
       employerDetails: this.formBuilder.group({
@@ -119,6 +121,7 @@ export class EmployerSignupComponent implements OnInit {
       this.employerSignupService.signupEmployer(combinedDetails).subscribe({
         next: (data) => {
           console.log(data);
+          this.userDataSharingService.setLoginUserData(combinedDetails)
           this.router.navigate(['/employer'])
           
         },
