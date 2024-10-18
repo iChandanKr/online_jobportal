@@ -32,9 +32,7 @@ const getAllJobs = async (req, res, next) => {
 
 const deleteJob=async(req,res,next)=>{
   
-  const id=req.params.id
-  console.log(id);
-  
+  const id=req.params.id  
   try {
     await JobService.deleteJobService(id)
     respondOk(res,200,'Job post deleted successfully (soft delete)')

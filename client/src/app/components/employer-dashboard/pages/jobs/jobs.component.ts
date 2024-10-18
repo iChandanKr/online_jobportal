@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { JobsService } from '../../../../services/jobs.service';
 import { Router } from '@angular/router';
 import { debounceTime, Subject } from 'rxjs';
-import { query } from 'express';
+import { query, response } from 'express';
 
 export interface Job {
   title: string;
@@ -90,6 +90,16 @@ export class JobsComponent implements OnInit {
   }
 
   onDelete(jobId: string) {
-
+    // console.log(jobId);
+    this.jobsservice.deleteJob(jobId).subscribe(
+      response=>{
+        this.getJobs()
+      },
+      error => {
+        
+        console.error('Error deleting job:', error);
+      }
+    )
+    
   }
 }
