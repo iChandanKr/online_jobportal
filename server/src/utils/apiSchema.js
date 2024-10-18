@@ -75,7 +75,7 @@ const loginSchema = Joi.object({
     }),
 
   password: Joi.string()
-    .pattern(new RegExp("^[a-zA-Z0-9]{8,}$"))
+    .pattern(new RegExp("^.{8,}$"))
     .required()
     .messages({
       "string.empty": "please Enter your Password",

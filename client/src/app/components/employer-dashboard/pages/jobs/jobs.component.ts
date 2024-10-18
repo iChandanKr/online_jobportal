@@ -53,8 +53,7 @@ export class JobsComponent implements OnInit {
   getJobs() {
     this.jobsservice.getJobs(this.searchQuery, this.sortOrder, this.pageIndex + 1, this.pageSize).subscribe((response: any) => {
       this.totalRecords = response.data.count;
-      this.datasource.data = response.data.rows;
-      console.log("Total records: ", this.totalRecords);
+      this.datasource.data = response.data.rows;  
     });
   }
 
