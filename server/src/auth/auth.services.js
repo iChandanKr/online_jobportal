@@ -6,7 +6,8 @@ const {
   findUserById,
   stopSessionDB,
   findRefreshTokenDb,
-  updatePasswordDB
+  updatePasswordDB,
+  stopSessionDBforUser,
 } = require("./auth.repo");
 const {
   generateRefreshToken,
@@ -89,7 +90,7 @@ class AuthService {
     return await createSessionDB(user_id, refreshToken, t);
   };
 
-  static updatePasswordService = async (req) => {
+  static updatePasswordService = async (req,res) => {
     const user = req.user;
     const userInfo = await findUserById(user.id);
     const { password, newPassword, confirmPassword } = req.body;
@@ -101,10 +102,19 @@ class AuthService {
       throw new CustomError("You have entered wrong password", 400);
     }
     if (newPassword !== confirmPassword) {
-      throw new CustomError("New password and confirm password doesn't match",400)
+      throw new CustomError(
+        "New password and confirm password doesn't match",
+        400
+      );
     }
-    
-    return await updatePasswordDB(userInfo.id,newPassword)
+    const updatedRes = await updatePasswordDB(userInfo.id, newPassword);
+    if (updatedRes) {
+      // stop all the sessions associated with this user
+      await stopSessionDBforUser(userInfo.id);
+      res.clearCookie("accessToken");
+      res.clearCookie("refreshToken");
+    }
+    return updatedRes;
   };
 }
 module.exports = AuthService;

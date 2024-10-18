@@ -45,9 +45,8 @@ const logoutUser = async (req, res, next) => {
 
 // ------------ update password ---------
 const updateUserPassword = async (req, res, next) => {
-  
   try {
-    const updatedPassword = await AuthService.updatePasswordService(req);
+    const updatedPassword = await AuthService.updatePasswordService(req, res);
     if (updatedPassword) {
       respondOk(res, 200, "Password has been updated successfully!");
     }
@@ -55,4 +54,4 @@ const updateUserPassword = async (req, res, next) => {
     next(error);
   }
 };
-module.exports = { userLogin, logoutUser,updateUserPassword };
+module.exports = { userLogin, logoutUser, updateUserPassword };
