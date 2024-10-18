@@ -14,17 +14,32 @@
             formControlName="firstName"
             class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
           />
+          @if (signupForm.get('firstName')?.touched) {
+            @if (signupForm.get('firstName')?.errors?.['required']) {
+              <small class="text-red-500">First Name is required.</small>
+            } @else if (signupForm.get('firstName')?.errors?.['noSpaceAllowed']) {
+              <small class="text-red-500">No space is allowed in first name.</small>
+            }
+          }
         </div>
         <div class="control">
           <label for="lastName" class="block text-sm font-medium text-gray-700"
             >Last Name:</label
           >
+         
           <input
             type="text"
             id="lastName"
             formControlName="lastName"
             class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
           />
+          @if (signupForm.get('lastName')?.touched) {
+            @if (signupForm.get('lastName')?.errors?.['required']) {
+              <small class="text-red-500">Last Name is required.</small>
+            } @else if (signupForm.get('lastName')?.errors?.['noSpaceAllowed']) {
+              <small class="text-red-500">No space is allowed in last name.</small>
+            }
+          }
         </div>
       </div>
 
@@ -38,6 +53,13 @@
           formControlName="email"
           class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
         />
+        @if (signupForm.get('email')?.touched) {
+          @if (signupForm.get('email')?.errors?.['required']) {
+            <small class="text-red-500">Email is required.</small>
+          } @else if (signupForm.get('email')?.errors?.['invalidEmail']) {
+            <small class="text-red-500">Email must be valid</small>
+          }
+        }
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -52,6 +74,14 @@
             formControlName="password"
             class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
           />
+          @if (signupForm.get('password')?.touched) {
+            @if (signupForm.get('password')?.errors?.['required']) {
+              <small class="text-red-500"> Password is required.</small>
+            }
+            @else if (signupForm.get('password')?.hasError('minlength')) {
+              <small class="text-red-500">Min length should be 8</small>
+            }
+          }
         </div>
         <div class="control">
           <label
@@ -66,9 +96,14 @@
             formControlName="confirmPassword"
             class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
           />
+          @if (signupForm.get('confirmPassword')?.touched) {
+            @if (signupForm.get('confirmPassword')?.errors?.['required']) {
+              <small class="text-red-500">Confirm Password is required.</small>
+            }
           @if(signupForm.hasError('passwordMismatch') &&
           signupForm.get('confirmPassword')?.touched){
           <p class="text-red-500">passwords do not match</p>
+          }
           }
         </div>
       </div>
@@ -83,6 +118,13 @@
           formControlName="dob"
           class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
         />
+        @if (signupForm.get('dob')?.touched) {
+          @if (signupForm.get('dob')?.errors?.['required']) {
+            <small class="text-red-500">Date of birth is required.</small>
+          } @else if (signupForm.get('dob')?.errors?.['futuredob']) {
+            <small class="text-red-500">Date of Birth cannot be in future.</small>
+          }
+        }
       </div>
 
       <div class="mb-6 control">
@@ -95,6 +137,14 @@
           formControlName="contact"
           class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
         />
+        @if (signupForm.get('contact')?.touched) {
+          @if (signupForm.get('contact')?.errors?.['required']) {
+            <small class="text-red-500"> Contact is required.</small>
+          }
+          @else if (signupForm.get('contact')?.invalid) {
+            <small class="text-red-500"> Length must be 10.</small>
+          }
+        }
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -108,6 +158,11 @@
             formControlName="city"
             class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
           />
+          @if (signupForm.get('city')?.touched) {
+            @if (signupForm.get('city')?.errors?.['required']) {
+              <small class="text-red-500"> City is required.</small>
+            }
+          }
         </div>
         <div class="control">
           <label for="pinCode" class="block text-sm font-medium text-gray-700"
@@ -119,6 +174,9 @@
             formControlName="pinCode"
             class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
           />
+          @if (signupForm.get('pinCode')?.touched && signupForm.get('pinCode')?.invalid) {
+            <small class="text-red-500">Pincode must be valid</small>
+          }
         </div>
       </div>
 
@@ -133,6 +191,11 @@
             formControlName="state"
             class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
           />
+          @if (signupForm.get('state')?.touched) {
+            @if (signupForm.get('state')?.errors?.['required']) {
+              <small class="text-red-500"> State is required.</small>
+            }
+          }
         </div>
         <div class="control">
           <label for="country" class="block text-sm font-medium text-gray-700"
@@ -144,15 +207,18 @@
             formControlName="country"
             class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
           />
+          @if (signupForm.get('country')?.touched) {
+            @if (signupForm.get('country')?.errors?.['required']) {
+              <small class="text-red-500"> Country is required.</small>
+            }
+          }
         </div>
       </div>
 
       <button
         type="submit"
-        class="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition duration-200"
-        [disabled]="
-          !signupForm.valid || !signupForm.touched || !signupForm.dirty
-        "
+        class="w-full p-3 rounded-md transition duration-200 text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+        [disabled]="!signupForm.valid"
       >
         Sign Up
       </button>

@@ -11,6 +11,8 @@ import {
 import { RouterLink } from '@angular/router';
 import { JobseekerSignupService } from '../../../app/services/jobseeker-signup.service';
 import { CustomValidators } from '../../utils/customValidators';
+import { LoginService } from '../../services/login.service';
+import { Router } from '@angular/router';
 // function isPasswordMatch(
 //   controlName1: string,
 //   controlName2: string
@@ -44,19 +46,21 @@ export class SignupComponent {
   signupForm: FormGroup;
   constructor(
     private formBuilder: FormBuilder,
-    private jobSeekerSignupService: JobseekerSignupService
+    private jobSeekerSignupService: JobseekerSignupService,
+    private loginService: LoginService,
+    private router: Router
   ) {
     this.signupForm = this.formBuilder.group(
       {
-        firstName: ['', Validators.required],
-        lastName: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
-        dob: ['', Validators.required],
+        firstName: ['', [Validators.required, CustomValidators.noSpaceAllowed]],
+        lastName: ['', [Validators.required, CustomValidators.noSpaceAllowed]],
+        email: ['', [Validators.required, CustomValidators.validEmail]],
+        dob: ['', [Validators.required, CustomValidators.validDOB]],
         contact: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', Validators.required],
         city: ['', Validators.required],
-        pinCode: ['', Validators.required],
+        pinCode: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
         state: ['', Validators.required],
         country: ['', Validators.required],
       },
@@ -65,8 +69,10 @@ export class SignupComponent {
   }
 
   onSubmit() {
+    console.log(this.signupForm.valid);
+    console.log(this.signupForm.value);
+
     if (this.signupForm.invalid) {
-      console.log('hello');
       return;
     }
 
@@ -75,8 +81,8 @@ export class SignupComponent {
       .signupJobseeker(this.signupForm.value)
       .subscribe({
         next: (data) => {
-          console.log(data);
-        
+          this.router.navigate(['/employer']);
+
           this.signupForm.reset();
         },
         error: (er) => {

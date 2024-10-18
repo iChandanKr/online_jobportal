@@ -38,8 +38,7 @@ export class CustomValidators {
     static passwordsMatch(control: AbstractControl): ValidationErrors | null {
         const password = control.get('password')?.value;
         const confirmPassword = control.get('confirmPassword')?.value;
-        console.log(password,confirmPassword);
-        
+
         return password === confirmPassword ? null : { passwordMismatch: true };
       }
 }

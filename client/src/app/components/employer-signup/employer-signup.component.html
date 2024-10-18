@@ -190,7 +190,7 @@
           (onclick)="onNextStep()"
             mat-button
             matStepperNext
-            class="bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 transition"
+            class="bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 transition" [disabled]="!employerSignup.get('employerDetails')?.valid"
           >
             Next
           </button>
@@ -280,7 +280,7 @@
           <button
             mat-button
             matStepperNext
-            class="bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 transition"
+            class="bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 transition" [disabled]="!employerSignup.get('addressDetails')?.valid"
           >
             Next
           </button>
@@ -323,6 +323,11 @@
                 formControlName="foundedDate"
                 class="border rounded px-3 py-2 w-full"
               />
+              @if (employerSignup.get('companyDetails.foundedDate')?.touched ) {
+                @if (employerSignup.get('companyDetails.foundedDate')?.errors?.['required']) {
+                <small class="text-red-500">Founded date is required</small>
+              }
+              }
             </div>
             <div class="mb-4">
               <label class="block mb-1">Company Industry:</label>

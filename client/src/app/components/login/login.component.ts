@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router, RouterLink } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 import { UserDataSharingService } from '../../services/user-data-sharing.service';
+import { CustomValidators } from '../../utils/customValidators';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -28,7 +29,7 @@ export class LoginComponent {
   ) {
     this.loginForm = this.fb.group({
       role: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, CustomValidators.validEmail]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       // remember: [false],
     });
@@ -36,9 +37,12 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
+      
       this.loginService.loginByRole(this.loginForm.value).subscribe({
+        
         next: (response) => {
           const user = response.body?.data;
+          
           if (user) {
             this.userDataSharingService.setLoginUserData(user);
           }

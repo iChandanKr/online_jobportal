@@ -11,6 +11,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button'; 
 import { CustomValidators } from '../../utils/customValidators';
 import { EventEmitter } from 'stream';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-employer-signup',
@@ -23,7 +24,8 @@ export class EmployerSignupComponent implements OnInit {
   employerSignup: FormGroup;
   constructor(
     private formBuilder: FormBuilder,
-    private employerSignupService: EmployerSignupService
+    private employerSignupService: EmployerSignupService,
+    private router:Router
   ) {
     this.employerSignup = this.formBuilder.group({
       employerDetails: this.formBuilder.group({
@@ -117,6 +119,8 @@ export class EmployerSignupComponent implements OnInit {
       this.employerSignupService.signupEmployer(combinedDetails).subscribe({
         next: (data) => {
           console.log(data);
+          this.router.navigate(['/employer'])
+          
         },
         error: (er) => {
           console.log(er);
@@ -126,7 +130,7 @@ export class EmployerSignupComponent implements OnInit {
       localStorage.removeItem('employerDetails');
       localStorage.removeItem('addressDetails');
       localStorage.removeItem('companyDetails');
-      // this.employerSignup.reset()
+      this.employerSignup.reset()
     }
   }
 
