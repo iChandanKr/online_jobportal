@@ -13,6 +13,7 @@ import { JobseekerSignupService } from '../../../app/services/jobseeker-signup.s
 import { CustomValidators } from '../../utils/customValidators';
 import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
+import { UserDataSharingService } from '../../services/user-data-sharing.service';
 // function isPasswordMatch(
 //   controlName1: string,
 //   controlName2: string
@@ -48,7 +49,8 @@ export class SignupComponent {
     private formBuilder: FormBuilder,
     private jobSeekerSignupService: JobseekerSignupService,
     private loginService: LoginService,
-    private router: Router
+    private router: Router,
+    private userDataSharingService:UserDataSharingService
   ) {
     this.signupForm = this.formBuilder.group(
       {
@@ -81,6 +83,7 @@ export class SignupComponent {
       .signupJobseeker(this.signupForm.value)
       .subscribe({
         next: (data) => {
+          this.userDataSharingService.setLoginUserData(this.signupForm.value)
           this.router.navigate(['/employer']);
 
           this.signupForm.reset();
