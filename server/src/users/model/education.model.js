@@ -9,12 +9,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
       validate: {
-        notEmpty: {
-          msg: "please Enter 10th obtained marks percentage",
+        isNumeric: {
+          msg: "marks must be a numeric",
         },
-      },
-      set(value) {
-        this.setDataValue("tenthMarksPercent", value?.trim());
+        min: 0,
+        max: 100,
       },
     },
     tenthPassingYear: {
@@ -30,12 +29,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
       validate: {
-        notEmpty: {
-          msg: "please Enter 12th obtained marks percentage",
+        isNumeric: {
+          msg: "marks must be a numeric",
         },
-      },
-      set(value) {
-        this.setDataValue("twelfthMarksPercent", value?.trim());
+        min: 0,
+        max: 100,
       },
     },
     twelfthPassingYear: {
@@ -78,7 +76,7 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           msg: "please Enter under graduate cgpa",
         },
-        isInt: {
+        isNumeric: {
           min: 1,
           max: 10,
         },
@@ -96,7 +94,7 @@ module.exports = (sequelize, DataTypes) => {
     pgStream: {
       type: DataTypes.STRING(200),
       set(value) {
-        this.setDataValue("ugStream", value?.trim());
+        this.setDataValue("pgStream", value?.trim());
       },
     },
     pgPassingYear: {
