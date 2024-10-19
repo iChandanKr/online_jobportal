@@ -1,5 +1,5 @@
 const JobPost = require("../../jobs/jobPost.model");
-const Skills = require("../../skills/skills.model");
+const Skill = require("../../skills/skills.model");
 
 module.exports = (sequelize, DataTypes) => {
   const JobSkill = sequelize.define(
@@ -22,13 +22,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-          model: Skills,
+          model: Skill,
           key: "id",
         },
       },
     },
     {
-      tableName: "jobSkills",
+      tableName: "jobSkill",
       timestamps: false,
     }
   );

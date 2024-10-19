@@ -2,7 +2,7 @@ const User = require("./user.model");
 const Jobpost = require("../../jobs/jobPost.model");
 
 module.exports = (sequelize, DataTypes) => {
-  const Application = sequelize.define(
+  const application = sequelize.define(
     "Application",
     {
       id: {
@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
-      JobpostId: {
+      JobPostId: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
@@ -33,10 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: "applications",
+      tableName: "application",
       timestamps: true,
     }
   );
 
-  return Application;
+  return application;
 };

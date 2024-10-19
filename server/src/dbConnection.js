@@ -62,10 +62,11 @@ dataModel.User.belongsToMany(dataModel.Role, {
 dataModel.Role.belongsToMany(dataModel.User, {
   through: dataModel.UserRole,
 });
-dataModel.User.hasMany(dataModel.UserRole);
-dataModel.UserRole.belongsTo(dataModel.User);
-dataModel.UserRole.belongsTo(dataModel.Role);
-dataModel.Role.hasMany(dataModel.UserRole);
+
+// dataModel.User.hasMany(dataModel.UserRole);
+// dataModel.UserRole.belongsTo(dataModel.User);
+// dataModel.UserRole.belongsTo(dataModel.Role);
+// dataModel.Role.hasMany(dataModel.UserRole);
 
 // =============== User-Skills:(many to many) ========================
 dataModel.User.belongsToMany(dataModel.Skill, {
@@ -223,7 +224,7 @@ const dbConnection = async function () {
   try {
     await sequelize.authenticate();
     console.log("Connection has been established successfully.");
-    await dataModel.sequelize.sync({ force: true });
+    await dataModel.sequelize.sync({ force: false });
     console.log("All models has been synchronized successfully.");
     await insertDefaultRoles(dataModel.Role);
     await insertDefaultSkills(dataModel.Skill);

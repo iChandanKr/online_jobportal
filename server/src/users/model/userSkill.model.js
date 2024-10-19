@@ -1,8 +1,8 @@
-const Skills = require("../../skills/skills.model");
+const Skill = require("../../skills/skills.model");
 const User = require("./user.model");
 module.exports = (sequelize, DataTypes) => {
-  const userSkills = sequelize.define(
-    "UserSkills",
+  const userSkill = sequelize.define(
+    "UserSkill",
     {
       id: {
         type: DataTypes.UUID,
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         // allowNull: false,
         references: {
-          model: Skills,
+          model: Skill,
           key: "id",
         },
       },
@@ -34,10 +34,10 @@ module.exports = (sequelize, DataTypes) => {
       // },
     },
     {
-      tableName: "userSkills",
+      tableName: "userSkill",
       timestamps: false,
     }
   );
 
-  return userSkills;
+  return userSkill;
 };
