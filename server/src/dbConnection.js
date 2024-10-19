@@ -63,11 +63,6 @@ dataModel.Role.belongsToMany(dataModel.User, {
   through: dataModel.UserRole,
 });
 
-// dataModel.User.hasMany(dataModel.UserRole);
-// dataModel.UserRole.belongsTo(dataModel.User);
-// dataModel.UserRole.belongsTo(dataModel.Role);
-// dataModel.Role.hasMany(dataModel.UserRole);
-
 // =============== User-Skills:(many to many) ========================
 dataModel.User.belongsToMany(dataModel.Skill, {
   through: dataModel.UserSkills,
