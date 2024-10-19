@@ -100,6 +100,7 @@ dataModel.User.hasOne(dataModel.Education, {
   foreignKey: {
     name: "userId",
     allowNull: false,
+    unique: true,
   },
   constraints: false,
   as: "Education_Details",
@@ -108,6 +109,7 @@ dataModel.Education.belongsTo(dataModel.User, {
   foreignKey: {
     name: "userId",
     allowNull: false,
+    unique: true,
   },
   constraints: false,
 });

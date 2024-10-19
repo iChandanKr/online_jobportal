@@ -67,6 +67,7 @@ const recreateSession = async (req, res, next) => {
 
 module.exports = async (req, res, next) => {
   //1. read the token if exists
+  
   try {
     if (!req.cookies?.refreshToken || !req.cookies?.accessToken) {
       const error = new CustomError("you are not logged in!", 401);
@@ -80,7 +81,6 @@ module.exports = async (req, res, next) => {
       const error = new CustomError("you are not logged in!", 401);
       return next(error);
     }
-
     //2. validate token
     const verifyToken = util.promisify(jwt.verify); // it will return a asynchronous function
     const decodedToken = await verifyToken(
@@ -114,7 +114,6 @@ module.exports = async (req, res, next) => {
     //5. allow user to access route
     req.user = user.dataValues;
     req.currentRefreshToken = req.cookies.refreshToken;
-
     next();
   } catch (error) {
     if (error.name === "TokenExpiredError") {

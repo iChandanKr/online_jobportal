@@ -57,8 +57,26 @@ const updateJobseeker = async (req, res, next) => {
   }
 };
 
+const addEducationDetails = async (req, res, next) => {
+  try {
+    const addEducation = await JobseekerService.addEducationDetailsService(
+      req.user.id,
+      req.body
+    );
+    respondOk(
+      res,
+      201,
+      "[Education Details Updated Successfully]",
+      addEducation
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registerJobseeker,
   findJobseeker,
   updateJobseeker,
+  addEducationDetails,
 };

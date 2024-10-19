@@ -441,6 +441,82 @@ const updatePasswordSchema = Joi.object({
       "any.only": "Confirm password must match new password.",
     }),
 });
+
+// -------------- ADD EDUCATION DETAILS --------
+const addEducationSchema = Joi.object({
+  tenthMarksPercent: Joi.number().min(0).max(100).required().messages({
+    "number.base": "10th obtained marks percentage must be a number.",
+    "number.min": "10th obtained marks percentage must be at least 0.",
+    "number.max": "10th obtained marks percentage cannot exceed 100.",
+    "any.required": "Please enter 10th obtained marks percentage.",
+  }),
+  tenthPassingYear: Joi.number()
+    .integer()
+    .min(1900)
+    .max(new Date().getFullYear())
+    .required()
+    .messages({
+      "number.base": "10th passing year must be a number.",
+      "number.integer": "10th passing year must be an integer.",
+      "any.required": "Please enter 10th passing year.",
+    }),
+  twelfthMarksPercent: Joi.number().min(0).max(100).required().messages({
+    "number.base": "12th obtained marks percentage must be a number.",
+    "number.min": "12th obtained marks percentage must be at least 0.",
+    "number.max": "12th obtained marks percentage cannot exceed 100.",
+    "any.required": "Please enter 12th obtained marks percentage.",
+  }),
+  twelfthPassingYear: Joi.number()
+    .integer()
+    .min(1900)
+    .max(new Date().getFullYear())
+    .required()
+    .messages({
+      "number.base": "12th passing year must be a number.",
+      "number.integer": "12th passing year must be an integer.",
+      "any.required": "Please enter 12th passing year.",
+    }),
+  ugStream: Joi.string().min(1).max(200).required().messages({
+    "string.base": "Under graduate stream must be a string.",
+    "string.empty": "Please enter under graduate stream.",
+    "any.required": "Please enter under graduate stream.",
+  }),
+  ugBranch: Joi.string().min(1).max(200).required().messages({
+    "string.base": "Under graduate branch must be a string.",
+    "string.empty": "Please enter under graduate branch.",
+    "any.required": "Please enter under graduate branch.",
+  }),
+  ugCGPA: Joi.number().min(1).max(10).required().messages({
+    "number.base": "Under graduate CGPA must be a number.",
+    "number.min": "Under graduate CGPA must be at least 1.",
+    "number.max": "Under graduate CGPA cannot exceed 10.",
+    "any.required": "Please enter under graduate CGPA.",
+  }),
+  ugPassingYear: Joi.number()
+    .integer()
+    .min(1900)
+    .max(new Date().getFullYear())
+    .required()
+    .messages({
+      "number.base": "Under graduate passing year must be a number.",
+      "number.integer": "Under graduate passing year must be an integer.",
+      "any.required": "Please enter under graduate passing year.",
+    }),
+  pgStream: Joi.string().max(200).optional().messages({
+    "string.base": "Post graduate stream must be a string.",
+    "string.empty": "Post graduate stream cannot be empty.",
+  }),
+  pgPassingYear: Joi.number()
+    .integer()
+    .min(1900)
+    .max(new Date().getFullYear())
+    .optional()
+    .messages({
+      "number.base": "Post graduate passing year must be a number.",
+      "number.integer": "Post graduate passing year must be an integer.",
+    }),
+});
+
 module.exports = {
   loginSchema,
   registerJobSeekerSchema,
@@ -449,5 +525,6 @@ module.exports = {
   updateJobseekerSchema,
   updateEmployerSchema,
   jobPostSchema,
-  updatePasswordSchema
+  updatePasswordSchema,
+  addEducationSchema,
 };

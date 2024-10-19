@@ -29,11 +29,8 @@ const checkEmployerRole = async (req, res, next) => {
         new CustomError("[Access denied: User is not an employer]", 403)
       );
     }
-
     req.empId = employer.empId;
-    if (isEmployer) {
-      next();
-    }
+    next();
   } catch (error) {
     next(new CustomError(error.message, 404));
   }
