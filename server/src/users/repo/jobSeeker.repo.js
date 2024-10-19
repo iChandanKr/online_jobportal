@@ -1,5 +1,5 @@
 const { dataModel } = require("../../dbConnection");
-const { Role, UserRole, User, Education } = dataModel;
+const { Role, UserRole, User, Education, UserSkills } = dataModel;
 
 const createJobseekerDb = async (userData, t) => {
   const role = await Role.findOne({
@@ -51,9 +51,18 @@ const addEducationDB = async (userId, educationDetails) => {
   return await Education.create({ ...educationDetails, userId });
 };
 
+const addSkillsDb = async (userId, skills) => {
+  const userSkills = skills.map((skillId) => ({
+    UserId: userId,
+    SkillId: skillId,
+  }));
+  return await UserSkills.bulkCreate(userSkills);
+};
+
 module.exports = {
   createJobseekerDb,
   findJobseekerDB,
   updateJobseekerDb,
   addEducationDB,
+  addSkillsDb,
 };

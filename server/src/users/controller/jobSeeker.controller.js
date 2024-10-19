@@ -63,12 +63,29 @@ const addEducationDetails = async (req, res, next) => {
       req.user.id,
       req.body
     );
-    respondOk(
-      res,
-      201,
-      "[Education Details Updated Successfully]",
-      addEducation
+
+    if (addEducation) {
+      respondOk(
+        res,
+        201,
+        "[Education Details Updated Successfully]",
+        addEducation
+      );
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const addSkills = async (req, res, next) => {
+  try {
+    const addedSkills = await JobseekerService.addSkillsService(
+      req.user.id,
+      req.body.skills
     );
+    if (addedSkills) {
+      respondOk(res, 201, "[Skill AddeaddSkillsd successfylly]", addedSkills);
+    }
   } catch (error) {
     next(error);
   }
@@ -79,4 +96,5 @@ module.exports = {
   findJobseeker,
   updateJobseeker,
   addEducationDetails,
+  addSkills,
 };

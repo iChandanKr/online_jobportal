@@ -4,6 +4,7 @@ const {
   findJobseeker,
   updateJobseeker,
   addEducationDetails,
+  addSkills,
 } = require("../controller/jobSeeker.controller");
 const {
   registerJobseekerValidation,
@@ -28,5 +29,6 @@ router
     checkJobseekerRole,
     addEducationDetails
   );
+router.route("/add-skills").post(authMiddleware, checkJobseekerRole, addSkills);
 
 module.exports = router;
