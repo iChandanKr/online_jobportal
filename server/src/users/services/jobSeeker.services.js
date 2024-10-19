@@ -2,13 +2,13 @@ const {
   createJobseekerDb,
   findJobseekerDB,
   updateJobseekerDb,
+  addEducationDB,
 } = require("../repo/jobSeeker.repo");
 const { generateAccessToken } = require("../../utils/tokenGenerator");
 const { dataModel } = require("../../dbConnection");
 const { CustomError } = require("../../utils/apiResponse");
 const AuthService = require("../../auth/auth.services");
 const { sequelize } = dataModel;
-// const {generateAccessToken,generateRefreshToken} = require('../../utils/tokenGenerator');
 class JobseekerService {
   static createUserService = async (userData) => {
     const result = sequelize.transaction(async (t) => {
@@ -39,6 +39,10 @@ class JobseekerService {
 
   static updateJobseekerService = async (id, userData, t) => {
     return await updateJobseekerDb(id, userData, t);
+  };
+
+  static addEducationDetailsService = async (id, educationDetails) => {
+    return await addEducationDB(id, educationDetails);
   };
 }
 

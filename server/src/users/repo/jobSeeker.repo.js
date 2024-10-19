@@ -1,5 +1,5 @@
 const { dataModel } = require("../../dbConnection");
-const { Role, UserRole, User } = dataModel;
+const { Role, UserRole, User, Education } = dataModel;
 
 const createJobseekerDb = async (userData, t) => {
   const role = await Role.findOne({
@@ -16,14 +16,19 @@ const createJobseekerDb = async (userData, t) => {
 };
 
 const findJobseekerDB = async (id) => {
-  return await User.findOne({ where: { id } });
+  return await User.findOne({
+    where: { id },
+    attributes: {
+      exclude: ["password", "passwordChangedAt", "createdAt", "updatedAt"],
+    },
+  });
 };
 
-const updateJobseekerDb=async(id,userData,t)=>{
-  const user=await User.findByPk(id,{transaction:t})
-  
-  if(!user){
-    throw new Error("User not found")
+const updateJobseekerDb = async (id, userData, t) => {
+  const user = await User.findByPk(id, { transaction: t });
+
+  if (!user) {
+    throw new Error("User not found");
   }
   await user.update(
     {
@@ -39,10 +44,16 @@ const updateJobseekerDb=async(id,userData,t)=>{
     },
     { transaction: t }
   );
-  return user
-}
+  return user;
+};
+
+const addEducationDB = async (userId, educationDetails) => {
+  return await Education.create({ ...educationDetails, userId });
+};
+
 module.exports = {
   createJobseekerDb,
   findJobseekerDB,
-  updateJobseekerDb
+  updateJobseekerDb,
+  addEducationDB,
 };
