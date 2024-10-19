@@ -8,6 +8,8 @@ import { JobsService } from '../../../../services/jobs.service';
 import { Router } from '@angular/router';
 import { debounceTime, Subject } from 'rxjs';
 import { query, response } from 'express';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog'
 
 export interface Job {
   title: string;
@@ -26,6 +28,7 @@ export interface Job {
     MatSortModule,
     MatCardModule,
     MatFormFieldModule,
+    MatDialogModule,
   ],
   templateUrl: './jobs.component.html',
   styleUrl: './jobs.component.css'
@@ -39,7 +42,7 @@ export class JobsComponent implements OnInit {
   sortOrder = '';
   searchQuery = '';
   private searchSubject: Subject<string> = new Subject<string>()
-  constructor(private jobsservice: JobsService, private router: Router) { }
+  constructor(private jobsservice: JobsService, private router: Router,private dialog:MatDialog) { }
 
   ngOnInit() {
     this.getJobs();
@@ -91,6 +94,13 @@ export class JobsComponent implements OnInit {
 
   onDelete(jobId: string) {
     // console.log(jobId);
+    const dialogRef=this.dialog.open(MatDialogModule,{
+      width:'250px',
+      data: {
+        title: 'Confirm Delete',
+        message: 'Are you sure you want to delete this item?'
+      }
+    })
     this.jobsservice.deleteJob(jobId).subscribe(
       response=>{
         this.getJobs()
