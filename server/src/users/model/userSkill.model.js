@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       UserId: {
         type: DataTypes.UUID,
-        // allowNull: false,
+        allowNull: false,
         references: {
           model: User,
           key: "id",
@@ -19,19 +19,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       SkillId: {
         type: DataTypes.UUID,
-        // allowNull: false,
+        allowNull: false,
         references: {
           model: Skill,
           key: "id",
         },
       },
-      // experience: {
-      //     type: DataTypes.INTEGER,
-      //     allowNull: false,
-      //     validate: {
-      //         min: 0,
-      //     },
-      // },
+      
     },
     {
       tableName: "userSkill",
