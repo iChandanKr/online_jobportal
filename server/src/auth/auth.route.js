@@ -9,6 +9,7 @@ const authMiddleware = require("../middleware/auth.middleware");
 const {
   loginValidation,
   logoutValidator,
+  updatePasswordValidation,
 } = require("../middleware/joiValidation.middleware");
 router.route("/login").post(loginValidation, userLogin);
 router.route("/auth/check").get(authMiddleware, (req, res) => {
@@ -17,6 +18,8 @@ router.route("/auth/check").get(authMiddleware, (req, res) => {
 
 // protected routes
 router.route("/logout").post(logoutValidator, authMiddleware, logoutUser);
-router.route("/password-update").patch(authMiddleware, updateUserPassword);
+router
+  .route("/password-update")
+  .patch(updatePasswordValidation, authMiddleware, updateUserPassword);
 
 module.exports = router;

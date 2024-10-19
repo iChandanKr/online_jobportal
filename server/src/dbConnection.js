@@ -49,6 +49,10 @@ dataModel.JobSkills = require("./users/model/jobSkill.model")(
   sequelize,
   DataTypes
 );
+dataModel.Education = require("./users/model/education.model")(
+  sequelize,
+  DataTypes
+);
 // ----------- Relationships of models-------------------
 
 // ================= User-Role:(many to many)===================
@@ -58,10 +62,11 @@ dataModel.User.belongsToMany(dataModel.Role, {
 dataModel.Role.belongsToMany(dataModel.User, {
   through: dataModel.UserRole,
 });
-dataModel.User.hasMany(dataModel.UserRole);
-dataModel.UserRole.belongsTo(dataModel.User);
-dataModel.UserRole.belongsTo(dataModel.Role);
-dataModel.Role.hasMany(dataModel.UserRole);
+
+// dataModel.User.hasMany(dataModel.UserRole);
+// dataModel.UserRole.belongsTo(dataModel.User);
+// dataModel.UserRole.belongsTo(dataModel.Role);
+// dataModel.Role.hasMany(dataModel.UserRole);
 
 // =============== User-Skills:(many to many) ========================
 dataModel.User.belongsToMany(dataModel.Skill, {
@@ -95,7 +100,22 @@ dataModel.Employer.belongsTo(dataModel.User, {
   },
   constraints: false,
 });
-
+// ================== User-Education:(one to one )=================
+dataModel.User.hasOne(dataModel.Education, {
+  foreignKey: {
+    name: "userId",
+    allowNull: false,
+  },
+  constraints: false,
+  as: "Education_Details",
+});
+dataModel.Education.belongsTo(dataModel.User, {
+  foreignKey: {
+    name: "userId",
+    allowNull: false,
+  },
+  constraints: false,
+});
 // // ================== User-RefreshToken:(one to many )=============
 dataModel.User.hasMany(dataModel.RefreshToken, {
   foreignKey: {
@@ -190,56 +210,21 @@ dataModel.JobPost.belongsTo(dataModel.Employer, {
   },
   constraints: false,
 });
-// ===============JobPost-Application:(one to many) ========================
-dataModel.JobPost.hasMany(dataModel.Application, {
-  foreignKey: {
-    name: "jobId",
-  },
-  constraints: false,
+
+// ===============User-JobPost:(many to many joining table:- Application)  ========================
+dataModel.User.belongsToMany(dataModel.JobPost, {
+  through: dataModel.Application,
 });
 
-dataModel.Application.belongsTo(dataModel.JobPost, {
-  foreignKey: {
-    name: "jobId",
-  },
-  constraints: false,
-});
-
-// ===============User-Application:(one to many) ========================
-dataModel.User.hasMany(dataModel.Application, {
-  foreignKey: {
-    name: "userId",
-  },
-  constraints: false,
-});
-
-dataModel.Application.belongsTo(dataModel.User, {
-  foreignKey: {
-    name: "userId",
-  },
-  constraints: false,
-});
-
-// ===============Skill-Application:(one to many) ========================
-dataModel.Skill.hasMany(dataModel.Application, {
-  foreignKey: {
-    name: "skillId",
-  },
-  constraints: false,
-});
-
-dataModel.Application.belongsTo(dataModel.Skill, {
-  foreignKey: {
-    name: "skillId",
-  },
-  constraints: false,
+dataModel.JobPost.belongsToMany(dataModel.User, {
+  through: dataModel.Application,
 });
 
 const dbConnection = async function () {
   try {
     await sequelize.authenticate();
     console.log("Connection has been established successfully.");
-    await dataModel.sequelize.sync({ force: false, });
+    await dataModel.sequelize.sync({ force: false });
     console.log("All models has been synchronized successfully.");
     await insertDefaultRoles(dataModel.Role);
     await insertDefaultSkills(dataModel.Skill);

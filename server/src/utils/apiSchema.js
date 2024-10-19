@@ -74,13 +74,10 @@ const loginSchema = Joi.object({
       "any.required": "please Enter your email",
     }),
 
-  password: Joi.string()
-    .pattern(new RegExp("^.{8,}$"))
-    .required()
-    .messages({
-      "string.empty": "please Enter your Password",
-      "any.required": "please Enter your Password",
-    }),
+  password: Joi.string().pattern(new RegExp("^.{8,}$")).required().messages({
+    "string.empty": "please Enter your Password",
+    "any.required": "please Enter your Password",
+  }),
   role: Joi.string().valid("jobseeker", "employer").required().messages({
     "any.only": "Role must be either jobseeker or employer",
     "any.required": "Role is required",
@@ -364,65 +361,85 @@ const jobPostSchema = Joi.object({
     "string.empty": "Job Title is required",
     "string.min": "Job Title must be at least 3 characters long",
     "string.max": "Job Title must be less than or equal to 100 characters long",
-    "any.required": "Job Title is required"
+    "any.required": "Job Title is required",
   }),
   description: Joi.string().min(10).max(1000).required().messages({
     "string.empty": "Job Description is required",
     "string.min": "Job Description must be at least 10 characters long",
-    "string.max": "Job Description must be less than or equal to 1000 characters long",
-    "any.required": "Job Description is required"
+    "string.max":
+      "Job Description must be less than or equal to 1000 characters long",
+    "any.required": "Job Description is required",
   }),
   role: Joi.string().required().messages({
     "string.empty": "Role is required",
-    "any.required": "Role is required"
+    "any.required": "Role is required",
   }),
   location: Joi.string().required().messages({
     "string.empty": "Location is required",
-    "any.required": "Location is required"
+    "any.required": "Location is required",
   }),
   city: Joi.string().required().messages({
     "string.empty": "City is required",
-    "any.required": "City is required"
+    "any.required": "City is required",
   }),
   industryName: Joi.string()
     .valid("software", "finance", "accounting", "manufacturing", "construction")
     .required()
     .messages({
       "string.empty": "Industry Name is required",
-      "any.only": "Industry must be one of the following: software, finance, accounting, manufacturing, construction",
-      "any.required": "Industry Name is required"
+      "any.only":
+        "Industry must be one of the following: software, finance, accounting, manufacturing, construction",
+      "any.required": "Industry Name is required",
     }),
   skillId: Joi.array().min(1).required().messages({
     "array.min": "At least one skill is required",
-    "any.required": "Skills are required"
+    "any.required": "Skills are required",
   }),
   minSalary: Joi.number().required().messages({
     "number.base": "Minimum Salary must be a number",
-    "any.required": "Minimum Salary is required"
+    "any.required": "Minimum Salary is required",
   }),
   maxSalary: Joi.number().optional().messages({
-    "number.base": "Maximum Salary must be a number"
+    "number.base": "Maximum Salary must be a number",
   }),
   applicationDeadline: Joi.date().optional().messages({
-    "date.base": "Application Deadline must be a valid date"
+    "date.base": "Application Deadline must be a valid date",
   }),
   jobType: Joi.string()
     .valid("full-time", "part-time", "internship")
     .required()
     .messages({
       "string.empty": "Job Type is required",
-      "any.only": "Job Type must be one of the following: full-time, part-time, internship",
-      "any.required": "Job Type is required"
+      "any.only":
+        "Job Type must be one of the following: full-time, part-time, internship",
+      "any.required": "Job Type is required",
     }),
-  shift: Joi.string()
-    .valid("morning", "evening")
-    .required()
-    .messages({
-      "string.empty": "Shift is required",
-      "any.only": "Shift must be either morning or evening",
-      "any.required": "Shift is required"
-    })
+  shift: Joi.string().valid("morning", "evening").required().messages({
+    "string.empty": "Shift is required",
+    "any.only": "Shift must be either morning or evening",
+    "any.required": "Shift is required",
+  }),
+});
 
+// --------------UPDATE PASSWORD SCHEMA--------
+const updatePasswordSchema = Joi.object({
+  password: Joi.string().min(8).required().messages({
+    "string.empty": "password is required joi",
+    "string.min": "password must be at least 8 characters long",
+    "any.required": "password is required joi",
+  }),
+  newPassword: Joi.string().min(8).required().messages({
+    "string.empty": "newPassword is required",
+    "string.min": "newPassword must be at least 8 characters long",
+    "any.required": "newPassword is required",
+  }),
+  confirmPassword: Joi.string()
+    .required()
+    .valid(Joi.ref("newPassword"))
+    .messages({
+      "any.required": "Confirm password is required.",
+      "any.only": "Confirm password must match new password.",
+    }),
 });
 module.exports = {
   loginSchema,
@@ -432,4 +449,5 @@ module.exports = {
   updateJobseekerSchema,
   updateEmployerSchema,
   jobPostSchema,
+  updatePasswordSchema
 };

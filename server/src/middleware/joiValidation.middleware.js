@@ -6,6 +6,7 @@ const {
   jobPostSchema,
   updateEmployerSchema,
   updateJobseekerSchema,
+  updatePasswordSchema,
 } = require("../utils/apiSchema");
 const { CustomError } = require("../utils/apiResponse");
 
@@ -73,6 +74,14 @@ const updateJobseekerValidation = (req, res, next) => {
   }
 };
 
+const updatePasswordValidation = (req, res, next) => {
+  const { error } = updatePasswordSchema.validate(req.body);
+  if (error) {
+    next(new CustomError(error.message, 400));
+  } else {
+    next();
+  }
+};
 module.exports = {
   loginValidation,
   logoutValidator,
@@ -81,4 +90,5 @@ module.exports = {
   jobPostValidation,
   updateEmployerValidation,
   updateJobseekerValidation,
+  updatePasswordValidation,
 };
