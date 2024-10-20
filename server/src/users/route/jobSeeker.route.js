@@ -10,6 +10,7 @@ const {
   registerJobseekerValidation,
   updateJobseekerValidation,
   addEducationValidation,
+  addSkillValidation,
 } = require("../../middleware/joiValidation.middleware");
 const checkJobseekerRole = require("../../middleware/checkJobseeker.middleware");
 const authMiddleware = require("../../middleware/auth.middleware");
@@ -29,6 +30,8 @@ router
     checkJobseekerRole,
     addEducationDetails
   );
-router.route("/add-skills").post(authMiddleware, checkJobseekerRole, addSkills);
+router
+  .route("/add-skills")
+  .post(addSkillValidation, authMiddleware, checkJobseekerRole, addSkills);
 
 module.exports = router;
