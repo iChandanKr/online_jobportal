@@ -516,6 +516,24 @@ const addEducationSchema = Joi.object({
       "number.integer": "Post graduate passing year must be an integer.",
     }),
 });
+const addSkillSchema = Joi.object({
+  skills: Joi.array()
+    .items(
+      Joi.string()
+        .guid({ version: ["uuidv4"] })
+        .required()
+        .messages({
+          "string.guid": "Each skill must be a valid UUIDv4.",
+          "any.required": "Each skill entry is required.",
+        })
+    )
+    .min(1)
+    .required()
+    .messages({
+      "array.min": "At least one skill must be provided.",
+      "any.required": "The skills array is required.",
+    }),
+});
 
 module.exports = {
   loginSchema,
@@ -527,4 +545,5 @@ module.exports = {
   jobPostSchema,
   updatePasswordSchema,
   addEducationSchema,
+  addSkillSchema,
 };
