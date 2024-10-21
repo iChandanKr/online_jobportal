@@ -26,24 +26,40 @@ const getAllJobs = async (req, res, next) => {
 //   try {
 //     const updateJob=await JobService
 //   } catch (error) {
-    
+
 //   }
 // }
 
-const deleteJob=async(req,res,next)=>{
-  
-  const id=req.params.id  
+const deleteJob = async (req, res, next) => {
+  const id = req.params.id;
   try {
-    await JobService.deleteJobService(id)
-    respondOk(res,200,'Job post deleted successfully (soft delete)')
+    await JobService.deleteJobService(id);
+    respondOk(res, 200, "Job post deleted successfully (soft delete)");
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
+const applyJob = async (req, res, next) => {
+  try {
+    const jobId = req.body.jobId;
+    const applyForJob = await JobService.applyJobService(req.user.id, jobId);
+    if (applyForJob) {
+      respondOk(
+        res,
+        201,
+        "[You have Successfylly applied for job]",
+        applyForJob
+      );
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   createJobPost,
   getAllJobs,
-  deleteJob
+  deleteJob,
+  applyJob,
 };

@@ -1,6 +1,11 @@
 const { dataModel } = require("../dbConnection");
 const { sequelize } = dataModel;
-const { createJobPostDb, getAllJobsDB, deleteJobDB } = require("./jobs.repo");
+const {
+  createJobPostDb,
+  getAllJobsDB,
+  deleteJobDB,
+  applyForJobDB,
+} = require("./jobs.repo");
 const { sort, limitFields, search, paginate } = require("../utils/apiFeatures");
 
 class JobService {
@@ -68,8 +73,12 @@ class JobService {
     return jobs;
   };
 
-  static deleteJobService=async(id)=>{
-    return await deleteJobDB(id)
-  }
+  static deleteJobService = async (id) => {
+    return await deleteJobDB(id);
+  };
+
+  static applyJobService = async (userId, jobId) => {
+    return await applyForJobDB(userId, jobId);
+  };
 }
 module.exports = JobService;

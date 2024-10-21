@@ -535,6 +535,16 @@ const addSkillSchema = Joi.object({
     }),
 });
 
+const applyJob = Joi.object({
+  jobId: Joi.string()
+    .guid({ version: ["uuidv4"] })
+    .required()
+    .messages({
+      "string.guid": "JobPostId must be a valid UUID.",
+      "any.required": "JobPostId is required.",
+    }),
+});
+
 module.exports = {
   loginSchema,
   registerJobSeekerSchema,
@@ -546,4 +556,5 @@ module.exports = {
   updatePasswordSchema,
   addEducationSchema,
   addSkillSchema,
+  applyJob,
 };

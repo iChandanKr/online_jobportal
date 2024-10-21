@@ -1,5 +1,5 @@
 const { dataModel } = require("../dbConnection");
-const { JobPost, JobSkills } = dataModel;
+const { JobPost, JobSkills, Application } = dataModel;
 const { Op } = require("sequelize");
 const createJobPostDb = async (jobPostData, t) => {
   const newJobData = await JobPost.create(
@@ -68,9 +68,15 @@ const getAllJobsDB = async (
   });
 };
 
-const deleteJobDB=async(id)=>{
-  const jobPost=await JobPost.findByPk(id)
-  await jobPost.destroy()
-}
+const deleteJobDB = async (id) => {
+  const jobPost = await JobPost.findByPk(id);
+  await jobPost.destroy();
+};
 
-module.exports = { createJobPostDb, getAllJobsDB,deleteJobDB };
+const applyForJobDB = async (userId, jobId) => {
+  return await Application.create({
+    JobPostId: jobId,
+    UserId: userId,
+  });
+};
+module.exports = { createJobPostDb, getAllJobsDB, deleteJobDB, applyForJobDB };
