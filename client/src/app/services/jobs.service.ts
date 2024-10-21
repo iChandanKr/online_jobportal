@@ -9,6 +9,7 @@ import { API_URLS } from '../constants/api-urls';
 export class JobsService {
   private readonly apiUrl = API_URLS.getJobs
   private readonly deleteJobUrl = API_URLS.deleteJob
+  private readonly updateJobUrl=API_URLS.updateJob
   constructor(private httpClient: HttpClient) { }
 
 
@@ -36,5 +37,13 @@ export class JobsService {
     return this.httpClient.delete(url, {
       params, withCredentials: true
     })
+  }
+
+  updateJob(jobId: string, body: any): Observable<any> {
+    const url = `${this.updateJobUrl}/${jobId}`;
+    return this.httpClient.put(url, body, {
+      params: new HttpParams().set('id', jobId),
+      withCredentials: true
+    });
   }
 }

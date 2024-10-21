@@ -6,6 +6,7 @@ const {
   deleteJob,
   applyJob,
   updateJobPost,
+  getJobById
 } = require("./jobs.controller");
 const authMiddleware = require("../middleware/auth.middleware");
 const checkEmployerRole = require("../middleware/checkEmployerRole.middleware");
@@ -23,6 +24,7 @@ router
   .route("/delete-job/:id")
   .delete(authMiddleware, checkEmployerRole, deleteJob);
 router.route("/update-job/:id").put(authMiddleware, checkEmployerRole,updateJobPost);
+router.route("/getJob/:id").get(authMiddleware,checkEmployerRole,getJobById)
 router
   .route("/apply-job")
   .post(applyJobValidation, authMiddleware, checkJobseekerRole, applyJob);

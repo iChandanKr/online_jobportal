@@ -47,6 +47,17 @@ const deleteJob = async (req, res, next) => {
   }
 };
 
+const getJobById = async (req, res, next) => {
+  const id = req.params.id;
+
+  try {
+    const job = await JobService.getJobByIdService(id);
+    respondOk(res, 200, "Job retrieved successfully!", job);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const applyJob = async (req, res, next) => {
   try {
     const jobId = req.body.jobId;
@@ -70,4 +81,5 @@ module.exports = {
   deleteJob,
   updateJobPost,
   applyJob,
+  getJobById,
 };

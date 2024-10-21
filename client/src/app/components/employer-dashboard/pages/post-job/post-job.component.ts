@@ -15,7 +15,9 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { PostJobService } from '../../../../services/post-job.service';
 import { Skill } from '../../../../model/skill.model';
-import { log } from 'console';
+import { error, log } from 'console';
+import { ActivatedRoute } from '@angular/router';
+import { response } from 'express';
 
 const currentTime = new Date().toISOString();
 console.log(currentTime);
@@ -41,12 +43,46 @@ export class PostJobComponent implements OnInit {
     jobType: new FormControl('', [Validators.required]),
     shift: new FormControl('', [Validators.required]),
   });
+  jobId: string | null = null;
   currentTime = signal(new Date().toISOString);
   private postJobService = inject(PostJobService);
   private toaster = inject(ToastrService);
+  private activeRoute = inject(ActivatedRoute)
 
   ngOnInit(): void {
-    console.log('[Inside On Init post job component]');
+    // console.log('[Inside On Init post job component]');
+    this.activeRoute.paramMap.subscribe(params => {
+      this.jobId = params.get('id')
+
+    })
+
+    if (this.jobId) {
+      this.postJobService.getJob(this.jobId).subscribe(
+        response => {
+          response.data.applicationDeadline = this.formatDateForInput(response.data.applicationDeadline);
+          this.populateForm(response?.data)
+        },
+        error => {
+          this.toaster.error('Failed to load the job details!', 'Error')
+        }
+      )
+    }
+  }
+  populateForm(job: any) {
+    this.jobForm.patchValue({
+      title: job.title,
+      description: job.description,
+      role: job.role,
+      industryName: job.industryName,
+      location: job.location,
+      city: job.city,
+      skillId: job.skillId,
+      applicationDeadline: job.applicationDeadline,
+      maxSalary: job.maxSalary,
+      minSalary: job.minSalary,
+      jobType: job.jobType,
+      shift: job.shift,
+    });
   }
   skills = computed(() => this.postJobService.skills());
   onSubmit() {
@@ -74,5 +110,10 @@ export class PostJobComponent implements OnInit {
 
   onReset() {
     this.jobForm.reset();
+  }
+
+  formatDateForInput(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toISOString().slice(0, 16); // Convert to 'YYYY-MM-DDTHH:MM'
   }
 }

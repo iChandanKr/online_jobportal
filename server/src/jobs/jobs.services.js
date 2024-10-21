@@ -6,6 +6,7 @@ const {
   deleteJobDB,
   updateJobDB,
   applyForJobDB,
+  getJobByIdDB
 } = require("./jobs.repo");
 const { sort, limitFields, search, paginate } = require("../utils/apiFeatures");
 
@@ -85,5 +86,9 @@ class JobService {
   static applyJobService = async (userId, jobId) => {
     return await applyForJobDB(userId, jobId);
   };
+
+  static getJobByIdService=async(id)=>{
+    return await getJobByIdDB(id)
+  }
 }
 module.exports = JobService;

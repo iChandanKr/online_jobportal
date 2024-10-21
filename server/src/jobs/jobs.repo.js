@@ -84,4 +84,8 @@ const applyForJobDB = async (userId, jobId) => {
     UserId: userId,
   });
 };
-module.exports = { createJobPostDb, getAllJobsDB, deleteJobDB, applyForJobDB,updateJobDB };
+
+const getJobByIdDB=async(id)=>{
+  return await JobPost.findByPk(id)
+}
+module.exports = { createJobPostDb, getAllJobsDB, deleteJobDB, applyForJobDB,updateJobDB,getJobByIdDB };

@@ -12,10 +12,11 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr, ToastrModule } from 'ngx-toastr';
 import { authInterceptor } from './interceptor/redirectingInterceptor';
+import { withComponentInputBinding } from '@angular/router';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(routes,withComponentInputBinding()),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideClientHydration(),
     provideAnimations(),
