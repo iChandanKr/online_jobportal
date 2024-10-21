@@ -90,23 +90,40 @@ export class PostJobComponent implements OnInit {
       console.log('INVALID FORM');
       return;
     }
-    this.postJobService.postJob(this.jobForm.value).subscribe({
-      next: (response) => {
-        this.jobForm.reset();
-
-        this.toaster.success(response.message, 'success', {
-          timeOut: 1500,
-        });
-      },
-      error: (err) => {
-        // console.log(err);
-
-        this.toaster.error(err.error.message, 'error', {
-          timeOut: 1500,
-        });
-      },
-    });
+  
+    const jobData = this.jobForm.value;
+  
+    if (this.jobId) {
+      this.postJobService.updateJob(this.jobId, jobData).subscribe({
+        next: (response) => {
+          this.toaster.success('Job updated successfully', 'Success', {
+            timeOut: 1500,
+          });
+          this.jobForm.reset(); 
+        },
+        error: (err) => {
+          this.toaster.error(err.error.message, 'Error', {
+            timeOut: 1500,
+          });
+        },
+      });
+    } else {
+      this.postJobService.postJob(jobData).subscribe({
+        next: (response) => {
+          this.toaster.success('Job created successfully', 'Success', {
+            timeOut: 1500,
+          });
+          this.jobForm.reset(); 
+        },
+        error: (err) => {
+          this.toaster.error(err.error.message, 'Error', {
+            timeOut: 1500,
+          });
+        },
+      });
+    }
   }
+  
 
   onReset() {
     this.jobForm.reset();
