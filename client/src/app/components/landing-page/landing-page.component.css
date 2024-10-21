@@ -1,0 +1,41 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.matButtons{
+  font-size: medium;
+}
+.bgcolor {
+  position: relative;
+  background-color: #fff;
+}
+.customH{
+  /* border: 2px solid black; */
+  font-weight: 590;
+  font-size: 40px;
+  line-height: 54px;
+  margin-bottom: 10px;
+}
+
+.heroSection {
+  height: 400px;
+  /* border: 1px solid red; */
+  background: linear-gradient(180deg, #f5f4fa, #fbfbfd00);
+  /* background-image: linear-gradient(rgb(245,244,250),rgba(251,251,253,0)); */
+  /* background-color: #f5f4fa; */
+}
+.custom {
+  padding: 22px 30px;
+  font-size: large;
+}
+.menuClass{
+  --mat-menu-container-color:green !important;
+  background-color: white;
+}
+.mat-mdc-menu-panel{
+  --mat-menu-container-color:green !important;
+
+}
+.mat-mdc-menu-content{
+  padding: 0 !important;
+}

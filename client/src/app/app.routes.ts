@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { EmployerSignupComponent } from './components/employer-signup/employer-signup.component';
 import { EmployerDashboardComponent } from './components/employer-dashboard/employer-dashboard.component';
 import { DashboardComponent } from './components/employer-dashboard/pages/dashboard/dashboard.component';
@@ -10,6 +11,10 @@ import { ProfileComponent } from './components/employer-dashboard/pages/profile/
 import { ApplicationsComponent } from './components/employer-dashboard/pages/applications/applications.component';
 import { authGuard } from './guards/auth.guard';
 export const routes: Routes = [
+  {
+    path: 'landing-page',
+    component: LandingPageComponent,
+  },
   {
     path: '',
     redirectTo: 'signup',

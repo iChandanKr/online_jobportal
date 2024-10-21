@@ -1,0 +1,58 @@
+<div>
+  <mat-toolbar class="bgcolor shadow-lg">
+    <div>
+      <span class="text-4xl font-medium text-blue-700">Job Portal</span>
+    </div>
+    <span class="example-spacer"></span>
+    <div class="flex gap-1 items-center">
+      <div>
+        <button mat-stroked-button class="matButtons">Login</button>
+      </div>
+      <span class="example-spacer"></span>
+      <div>
+        <button mat-flat-button class="matButtons">Register</button>
+      </div>
+      <div>
+        <span class="align-middle text-gray-400">|</span>
+      </div>
+
+      <div>
+        <button mat-button [matMenuTriggerFor]="menu">
+          <div style="display: flex; align-items: center">
+            <div><span class="text-base font-normal">For Employers</span></div>
+            <mat-icon>expand_more</mat-icon>
+          </div>
+        </button>
+        <mat-menu #menu="matMenu" >
+          <div class="menuClass">
+          <button mat-menu-item>Login</button>
+          <button mat-menu-item>Register</button></div>
+        </mat-menu>
+      </div>
+    </div>
+  </mat-toolbar>
+</div>
+
+<div class="heroSection py-20 flex items-center flex-col">
+  <h1 class=" customH">Find your dream job now</h1>
+
+  <p class="text-center text-xl">50K+ jobs for you to explore</p>
+  <div
+    class="flex gap-3 rounded-[40px] items-center bg-white shadow-xl py-5 px-10 mx-auto w-fit"
+  >
+    <div>
+      <mat-icon class="text-gray-400 text-3xl" style="height: 29px; width: 27px;">search</mat-icon>
+    </div>
+
+    <div>
+      <input
+        type="text"
+        class="text-xl h-10 w-96 pl-5 rounded-full focus:outline-none border border-gray-300"
+        placeholder="Type Something ..."
+      />
+    </div>
+    <div>
+      <button mat-flat-button class="custom">Search</button>
+    </div>
+  </div>
+</div>
