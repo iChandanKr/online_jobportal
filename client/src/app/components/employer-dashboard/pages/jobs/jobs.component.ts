@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
@@ -7,7 +7,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { JobsService } from '../../../../services/jobs.service';
 import { Router } from '@angular/router';
 import { debounceTime, Subject } from 'rxjs';
-import { query, response } from 'express';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 export interface Job {
   title: string;
@@ -26,11 +28,19 @@ export interface Job {
     MatSortModule,
     MatCardModule,
     MatFormFieldModule,
+    MatDialogModule,
+    MatSnackBarModule
   ],
   templateUrl: './jobs.component.html',
   styleUrl: './jobs.component.css'
 })
 export class JobsComponent implements OnInit {
+  @ViewChild('confirmDialog')confirmDialog!:TemplateRef<any>
+  dialogData = {
+    title: 'Confirm Delete',
+    message: 'Are you sure you want to delete this item?'
+  };
+  private dialogRef: MatDialogRef<any> | null = null;
   displayedColumns: string[] = ['title', 'location', 'role', 'minSalary', 'maxSalary', 'actions'];
   datasource = new MatTableDataSource<Job>([]);
   pageSize = 5;
@@ -38,8 +48,10 @@ export class JobsComponent implements OnInit {
   totalRecords = 0;
   sortOrder = '';
   searchQuery = '';
-  private searchSubject: Subject<string> = new Subject<string>()
-  constructor(private jobsservice: JobsService, private router: Router) { }
+  private searchSubject: Subject<string> = new Subject<string>();
+  private jobIdToDelete!: string;
+  private currentDialog: MatDialogRef<any> | null = null;
+  constructor(private jobsservice: JobsService, private router: Router,private dialog:MatDialog,private snackbar:MatSnackBar) { }
 
   ngOnInit() {
     this.getJobs();
@@ -90,16 +102,45 @@ export class JobsComponent implements OnInit {
   }
 
   onDelete(jobId: string) {
-    // console.log(jobId);
-    this.jobsservice.deleteJob(jobId).subscribe(
-      response=>{
-        this.getJobs()
-      },
-      error => {
-        
-        console.error('Error deleting job:', error);
+    this.jobIdToDelete = jobId;
+    this.currentDialog = this.dialog.open(this.confirmDialog, {
+      width: '300px',
+      disableClose: false
+    });
+
+    this.currentDialog.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.deleteJob();
       }
-    )
-    
+    });
   }
+
+  private deleteJob() {
+    this.jobsservice.deleteJob(this.jobIdToDelete).subscribe({
+      next: () => {
+        this.getJobs();
+        this.snackbar.open('Job Deleted Successfully!','Close',{
+          duration:3000,
+        })
+      },
+      error: (error) => {
+        console.error('Error deleting job:', error);
+        this.snackbar.open('Error Deleting the job!','Close',{
+          duration:3000,
+        })
+      }
+    });
+  }
+
+  onYesClick() {
+    this.currentDialog?.close(true);
+  }
+
+  onNoClick() {
+    this.currentDialog?.close(false);
+  }
+
+ 
+
+
 }
