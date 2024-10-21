@@ -22,13 +22,20 @@ const getAllJobs = async (req, res, next) => {
   }
 };
 
-// const updateJob=async(req,res,next)=>{
-//   try {
-//     const updateJob=await JobService
-//   } catch (error) {
+const updateJobPost = async (req, res, next) => {
+  const id = req.params.id;
 
-//   }
-// }
+  const updatedData = req.body;
+
+  try {
+    const updatedJobPost = await JobService.updateJobService(id, updatedData);
+    if (updatedJobPost) {
+      respondOk(res, 200, "Job post updated successfully!", updatedJobPost);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 
 const deleteJob = async (req, res, next) => {
   const id = req.params.id;
@@ -61,5 +68,6 @@ module.exports = {
   createJobPost,
   getAllJobs,
   deleteJob,
+  updateJobPost,
   applyJob,
 };
