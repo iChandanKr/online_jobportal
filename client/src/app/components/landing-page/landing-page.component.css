@@ -28,14 +28,3 @@
   padding: 22px 30px;
   font-size: large;
 }
-.menuClass{
-  --mat-menu-container-color:green !important;
-  background-color: white;
-}
-.mat-mdc-menu-panel{
-  --mat-menu-container-color:green !important;
-
-}
-.mat-mdc-menu-content{
-  padding: 0 !important;
-}

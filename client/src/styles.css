@@ -2,20 +2,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-html, body { height: 100%; }
-*{
-  box-sizing: border-box;
-
+html,
+body {
+  height: 100%;
 }
 
-.mdc-notched-outline__notch{
+
+* {
+  box-sizing: border-box;
+}
+
+.mdc-notched-outline__notch {
   border: none; /* added due to dialog box in changePassword */
 }
 
-
+.mat-typography h2 {
+  margin-bottom: 0px !important; /* added due automatically applied margin bottom in heading */
+  line-height: normal;
+}
 /* Another way */
 /* div:has(> label){
   border: none;
 } */
 
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

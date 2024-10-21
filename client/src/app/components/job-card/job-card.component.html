@@ -1,0 +1,67 @@
+@for (item of [1,2,3]; track $index) {
+
+<div class="bg-white shadow-md rounded-3xl mb-10 p-6 max-w-lg mx-auto border  border-gray-200">
+    <!-- First Row: Job Title and Icon -->
+    <div class="flex items-center justify-between mb-2">
+        <!-- Job Title -->
+        <div>
+
+            <h2 class="text-md customH font-bold text-gray-800">{{ job.title }}</h2>
+        </div>
+        <!-- Icon -->
+        <div class="bg-white-100 text-gray-200 h-9 w-9   rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="text-gray-600" fill="currentColor">
+                <path
+                    d="M176 56l0 40 160 0 0-40c0-4.4-3.6-8-8-8L184 48c-4.4 0-8 3.6-8 8zM128 96l0-40c0-30.9 25.1-56 56-56L328 0c30.9 0 56 25.1 56 56l0 40 0 32 0 352-256 0 0-352 0-32zM64 96l32 0 0 384-32 0c-35.3 0-64-28.7-64-64L0 160c0-35.3 28.7-64 64-64zM448 480l-32 0 0-384 32 0c35.3 0 64 28.7 64 64l0 256c0 35.3-28.7 64-64 64z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Middle Row: Company Details, Role, and Location in Two Columns -->
+    <div class="grid grid-cols-2 gap-4 mb-2">
+        <!-- Left Column: Company and Role -->
+        <div>
+            <p class="text-lg text-gray-700">Company: {{ job.companyName }}</p>
+            <p class="text-md text-gray-700">Role: {{ job.role }}</p>
+        </div>
+
+        <!-- Right Column: Location -->
+        <div>
+            <p class="text-md text-gray-700">Location: {{ job.location }}</p>
+            <p class="text-md text-gray-700">Location: {{ job.location }}</p>
+        </div>
+    </div>
+
+    <!-- Bottom Section: Salary and Category -->
+    <div class="grid grid-cols-2 gap-4 mb-2">
+        <!-- Left Column: Salary -->
+        <div>
+            <p class="text-sm text-gray-700">Salary: {{ job.minSalary }} - {{ job.maxSalary }} USD/year
+            </p>
+        </div>
+
+        <!-- Right Column: Category -->
+        <div>
+            <p class="text-sm text-gray-700">Category:{{ job.category }}</p>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-between mt-2">
+
+        <!-- <button class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-300">
+            Register
+        </button> -->
+        <button mat-stroked-button class="matButtons">Register to apply</button>
+
+        <button mat-flat-button class="matButtons">Login to apply</button>
+
+        <!-- <button class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">
+            Apply Now
+        </button> -->
+
+    </div>
+</div>
+
+
+}
