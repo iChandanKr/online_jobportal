@@ -9,6 +9,7 @@ const {
   updatePasswordSchema,
   addEducationSchema,
   addSkillSchema,
+  applyJob,
 } = require("../utils/apiSchema");
 const { CustomError } = require("../utils/apiResponse");
 
@@ -101,6 +102,15 @@ const addSkillValidation = (req, res, next) => {
     next();
   }
 };
+
+const applyJobValidation = (req, res, next) => {
+  const { error } = applyJob.validate(req.body);
+  if (error) {
+    next(new CustomError(error.message, 400));
+  } else {
+    next();
+  }
+};
 module.exports = {
   loginValidation,
   logoutValidator,
@@ -112,4 +122,5 @@ module.exports = {
   updatePasswordValidation,
   addEducationValidation,
   addSkillValidation,
+  applyJobValidation,
 };
