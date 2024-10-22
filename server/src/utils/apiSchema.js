@@ -63,16 +63,10 @@ const user = {
 };
 // ---LOGIN SCHEMA---------
 const loginSchema = Joi.object({
-  email: Joi.string()
-    .email({
-      minDomainSegments: 2,
-      tlds: { allow: ["com", "net"] },
-    })
-    .required()
-    .messages({
-      "string.empty": "please Enter your Email",
-      "any.required": "please Enter your email",
-    }),
+  email: Joi.string().email().required().messages({
+    "string.empty": "please Enter your Email",
+    "any.required": "please Enter your email",
+  }),
 
   password: Joi.string().pattern(new RegExp("^.{8,}$")).required().messages({
     "string.empty": "please Enter your Password",
