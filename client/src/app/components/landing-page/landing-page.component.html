@@ -56,16 +56,22 @@
         >search</mat-icon
       >
     </div>
-
     <div>
       <input
         type="text"
         class="text-xl h-10 w-96 pl-5 rounded-full focus:outline-none border border-gray-300"
         placeholder="Type Something ..."
+        [formControl]="searchString"
       />
     </div>
     <div>
-      <button mat-flat-button class="custom">Search</button>
+      <button
+        mat-flat-button
+        class="custom"
+        (click)="onSearch(searchString.value!)"
+      >
+        Search
+      </button>
     </div>
   </div>
 </div>
