@@ -6,6 +6,7 @@ const {
   deleteJobDB,
   updateJobDB,
   applyForJobDB,
+  getAllOpenJobsDB,
   getJobByIdDB
 } = require("./jobs.repo");
 const { sort, limitFields, search, paginate } = require("../utils/apiFeatures");
@@ -62,6 +63,7 @@ class JobService {
           "applicationDeadline",
           "jobType",
           "shift",
+          "companyName",
         ];
     const jobs = await getAllJobsDB(
       req.empId,
@@ -87,8 +89,19 @@ class JobService {
     return await applyForJobDB(userId, jobId);
   };
 
+  static getAllOpenJobService = async (req) => {
+    let searchFields = req.query.search || "%";
+    if (req.query.search) {
+      searchFields = search(searchFields);
+    }
+    const jobDetails = await getAllOpenJobsDB(searchFields);
+
+    return jobDetails;
+  };
+
   static getJobByIdService=async(id)=>{
     return await getJobByIdDB(id)
   }
+
 }
 module.exports = JobService;

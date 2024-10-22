@@ -17,6 +17,7 @@ const createJobPostDb = async (jobPostData, t) => {
       applicationDeadline: jobPostData.applicationDeadline,
       jobType: jobPostData.jobType,
       shift: jobPostData.shift,
+      companyName: jobPostData.companyName,
     },
     { transaction: t }
   );
@@ -88,4 +89,42 @@ const applyForJobDB = async (userId, jobId) => {
 const getJobByIdDB=async(id)=>{
   return await JobPost.findByPk(id)
 }
-module.exports = { createJobPostDb, getAllJobsDB, deleteJobDB, applyForJobDB,updateJobDB,getJobByIdDB };
+
+
+const getAllOpenJobsDB = async (searchFields) => {
+  return await JobPost.findAll({
+    where: {
+      applicationDeadline: {
+        [Op.gt]: Date.now(),
+      },
+      [Op.or]: [
+        {
+          title: {
+            [Op.iLike]: searchFields,
+          },
+        },
+        {
+          role: {
+            [Op.iLike]: searchFields,
+          },
+        },
+        {
+          city: {
+            [Op.iLike]: searchFields,
+          },
+        },
+      ],
+    },
+  });
+};
+module.exports = {
+  createJobPostDb,
+  getAllJobsDB,
+  deleteJobDB,
+  applyForJobDB,
+  getAllOpenJobsDB,
+  updateJobDB,
+  getJobByIdDB
+};
+
+

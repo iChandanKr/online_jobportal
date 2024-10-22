@@ -42,6 +42,7 @@ export class PostJobComponent implements OnInit {
     minSalary: new FormControl(0, [Validators.required]),
     jobType: new FormControl('', [Validators.required]),
     shift: new FormControl('', [Validators.required]),
+    companyName: new FormControl('', [Validators.required]),
   });
   jobId: string | null = null;
   currentTime = signal(new Date().toISOString);

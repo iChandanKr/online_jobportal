@@ -12,6 +12,7 @@ export const API_URLS = {
   getJobs: `${environment.apiUrl}/job/jobs`,
   updateEmployer: `${environment.apiUrl}/users/update-employer`,
   updatePassword: `${environment.apiUrl}/users/password-update`,
+  jobOpenings: `${environment.apiUrl}/job/jobs-opening`,
   deleteJob:`${environment.apiUrl}/job/delete-job`,
   updateJob:`${environment.apiUrl}/job/update-job`,
   getJobById:`${environment.apiUrl}/job/getJob`

@@ -5,6 +5,7 @@ const {
   getAllJobs,
   deleteJob,
   applyJob,
+  getAllOpenJobs,
   updateJobPost,
   getJobById
 } = require("./jobs.controller");
@@ -28,4 +29,5 @@ router.route("/getJob/:id").get(authMiddleware,checkEmployerRole,getJobById)
 router
   .route("/apply-job")
   .post(applyJobValidation, authMiddleware, checkJobseekerRole, applyJob);
+router.route("/jobs-opening").get(getAllOpenJobs);
 module.exports = router;

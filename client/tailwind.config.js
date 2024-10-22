@@ -4,14 +4,13 @@ module.exports = {
     theme: {
       extend: {
         width: {
-          '96': '28rem', 
+          '96': '28rem',
         },
         height: {
-          '80': '20rem',  
+          '80': '20rem',
           '96':'24rem',
         },
       },
     },
     plugins: [],
   }
-  
