@@ -48,4 +48,6 @@ export class JobsService {
   getJobOpenings(): Observable<any> {
     return this.httpClient.get<JobResponse>(this.jobOpeningUrl);
   }
+
+ 
 }

@@ -4,8 +4,10 @@ const {
   createJobPostDb,
   getAllJobsDB,
   deleteJobDB,
+  updateJobDB,
   applyForJobDB,
   getAllOpenJobsDB,
+  getJobByIdDB
 } = require("./jobs.repo");
 const { sort, limitFields, search, paginate } = require("../utils/apiFeatures");
 
@@ -75,6 +77,10 @@ class JobService {
     return jobs;
   };
 
+  static updateJobService=async (id,updatedData)=>{
+    return await updateJobDB(id,updatedData)
+  }
+
   static deleteJobService = async (id) => {
     return await deleteJobDB(id);
   };
@@ -92,5 +98,10 @@ class JobService {
 
     return jobDetails;
   };
+
+  static getJobByIdService=async(id)=>{
+    return await getJobByIdDB(id)
+  }
+
 }
 module.exports = JobService;

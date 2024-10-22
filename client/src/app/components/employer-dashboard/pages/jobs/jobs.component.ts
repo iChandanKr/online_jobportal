@@ -98,7 +98,8 @@ export class JobsComponent implements OnInit {
   }
 
   onEdit(jobId: string) {
-
+    this.router.navigate(['/employer/post-job',jobId])
+    
   }
 
   onDelete(jobId: string) {

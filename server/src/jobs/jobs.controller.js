@@ -22,19 +22,37 @@ const getAllJobs = async (req, res, next) => {
   }
 };
 
-// const updateJob=async(req,res,next)=>{
-//   try {
-//     const updateJob=await JobService
-//   } catch (error) {
+const updateJobPost = async (req, res, next) => {
+  const id = req.params.id;
 
-//   }
-// }
+  const updatedData = req.body;
+
+  try {
+    const updatedJobPost = await JobService.updateJobService(id, updatedData);
+    if (updatedJobPost) {
+      respondOk(res, 200, "Job post updated successfully!", updatedJobPost);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 
 const deleteJob = async (req, res, next) => {
   const id = req.params.id;
   try {
     await JobService.deleteJobService(id);
     respondOk(res, 200, "Job post deleted successfully (soft delete)");
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getJobById = async (req, res, next) => {
+  const id = req.params.id;
+
+  try {
+    const job = await JobService.getJobByIdService(id);
+    respondOk(res, 200, "Job retrieved successfully!", job);
   } catch (error) {
     next(error);
   }
@@ -77,6 +95,8 @@ module.exports = {
   createJobPost,
   getAllJobs,
   deleteJob,
+  updateJobPost,
   applyJob,
   getAllOpenJobs,
+  getJobById,
 };

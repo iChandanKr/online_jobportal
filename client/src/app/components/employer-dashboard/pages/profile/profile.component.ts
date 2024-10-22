@@ -152,7 +152,6 @@ export class ProfileComponent implements OnInit {
       exitAnimationDuration,
     });
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('dialog closed');
     });
   }
 }

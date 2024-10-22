@@ -68,6 +68,9 @@ export const routes: Routes = [
         redirectTo: 'dashboard',
         pathMatch: 'full',
       },
+      { path: 'post-job/:id',
+        component: PostJobComponent 
+      },
     ],
   },
 ];

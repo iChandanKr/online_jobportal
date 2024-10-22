@@ -74,12 +74,22 @@ const deleteJobDB = async (id) => {
   await jobPost.destroy();
 };
 
+const updateJobDB=async (id,updatedData)=>{
+  const job=await JobPost.findByPk(id)
+  return await job.update(updatedData)
+}
+
 const applyForJobDB = async (userId, jobId) => {
   return await Application.create({
     JobPostId: jobId,
     UserId: userId,
   });
 };
+
+const getJobByIdDB=async(id)=>{
+  return await JobPost.findByPk(id)
+}
+
 
 const getAllOpenJobsDB = async (searchFields) => {
   return await JobPost.findAll({
@@ -113,4 +123,8 @@ module.exports = {
   deleteJobDB,
   applyForJobDB,
   getAllOpenJobsDB,
+  updateJobDB,
+  getJobByIdDB
 };
+
+
