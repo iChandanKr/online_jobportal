@@ -74,10 +74,10 @@ const deleteJobDB = async (id) => {
   await jobPost.destroy();
 };
 
-const updateJobDB=async (id,updatedData)=>{
-  const job=await JobPost.findByPk(id)
-  return await job.update(updatedData)
-}
+const updateJobDB = async (id, updatedData) => {
+  const job = await JobPost.findByPk(id);
+  return await job.update(updatedData);
+};
 
 const applyForJobDB = async (userId, jobId) => {
   return await Application.create({
@@ -86,10 +86,9 @@ const applyForJobDB = async (userId, jobId) => {
   });
 };
 
-const getJobByIdDB=async(id)=>{
-  return await JobPost.findByPk(id)
-}
-
+const getJobByIdDB = async (id) => {
+  return await JobPost.findByPk(id);
+};
 
 const getAllOpenJobsDB = async (searchFields) => {
   return await JobPost.findAll({
@@ -113,6 +112,11 @@ const getAllOpenJobsDB = async (searchFields) => {
             [Op.iLike]: searchFields,
           },
         },
+        {
+          companyName: {
+            [Op.iLike]: searchFields,
+          },
+        },
       ],
     },
   });
@@ -124,7 +128,5 @@ module.exports = {
   applyForJobDB,
   getAllOpenJobsDB,
   updateJobDB,
-  getJobByIdDB
+  getJobByIdDB,
 };
-
-

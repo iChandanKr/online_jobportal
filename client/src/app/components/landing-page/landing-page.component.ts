@@ -7,6 +7,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { JobCardComponent } from '../job-card/job-card.component';
 import { JobsService } from '../../services/jobs.service';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  debounce,
+  debounceTime,
+  distinct,
+  distinctUntilChanged,
+  switchMap,
+} from 'rxjs';
 
 @Component({
   selector: 'app-landing-page',
@@ -17,6 +25,8 @@ import { JobsService } from '../../services/jobs.service';
     MatToolbarModule,
     MatMenuModule,
     JobCardComponent,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css',
@@ -25,6 +35,8 @@ export class LandingPageComponent implements OnInit {
   openJobs = signal<OpenJob[]>([]);
   private router = inject(Router);
   private jobService = inject(JobsService);
+  searchString = new FormControl('');
+
   ngOnInit(): void {
     this.jobService.getJobOpenings().subscribe({
       next: (res) => {
@@ -34,11 +46,31 @@ export class LandingPageComponent implements OnInit {
         console.log(err);
       },
     });
+
+    this.searchString.valueChanges
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe({
+        next: (res) => {
+          this.onSearch(res as string);
+        },
+      });
   }
   onLogin() {
     this.router.navigate(['login']);
   }
+  onSearch(input: string) {
 
+    this.jobService.getJobOpenings(input).subscribe({
+      next: (res) => {
+        this.openJobs.set(res.data);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  // onInput()
   onJobseekerRegister() {
     this.router.navigate(['signup']);
   }

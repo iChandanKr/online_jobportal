@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_URLS } from '../constants/api-urls';
 import { type JobResponse } from '../model/job.model';
@@ -11,6 +11,7 @@ export class JobsService {
   private readonly apiUrl = API_URLS.getJobs;
   private readonly deleteJobUrl = API_URLS.deleteJob;
   private readonly jobOpeningUrl = API_URLS.jobOpenings;
+  queryStr = signal('');
   constructor(private httpClient: HttpClient) {}
 
   getJobs(
@@ -45,9 +46,8 @@ export class JobsService {
     });
   }
 
-  getJobOpenings(): Observable<any> {
-    return this.httpClient.get<JobResponse>(this.jobOpeningUrl);
+  getJobOpenings(str: string = ''): Observable<any> {
+    const queryString = `${this.jobOpeningUrl}?search=${str}`;
+    return this.httpClient.get<JobResponse>(queryString);
   }
-
- 
 }
