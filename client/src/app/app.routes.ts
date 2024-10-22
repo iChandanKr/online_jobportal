@@ -17,7 +17,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'signup',
+    redirectTo: 'landing-page',
     pathMatch: 'full',
   },
   {

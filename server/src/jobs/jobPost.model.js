@@ -51,6 +51,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(100),
         allowNull: false,
       },
+      companyName: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Please enter the companyName",
+          },
+        },
+        set(value) {
+          this.setDataValue("companyName", value?.trim());
+        },
+      },
 
       industryName: {
         type: DataTypes.ENUM(

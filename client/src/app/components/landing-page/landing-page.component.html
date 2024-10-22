@@ -6,11 +6,19 @@
     <span class="example-spacer"></span>
     <div class="flex gap-1 items-center">
       <div>
-        <button mat-stroked-button class="matButtons">Login</button>
+        <button mat-stroked-button class="matButtons" (click)="onLogin()">
+          Login
+        </button>
       </div>
       <span class="example-spacer"></span>
       <div>
-        <button mat-flat-button class="matButtons">Register</button>
+        <button
+          mat-flat-button
+          class="matButtons"
+          (click)="onJobseekerRegister()"
+        >
+          Register
+        </button>
       </div>
       <div>
         <span class="align-middle text-gray-400">|</span>
@@ -25,8 +33,10 @@
         </button>
         <mat-menu #menu="matMenu">
           <div>
-            <button mat-menu-item>Login</button>
-            <button mat-menu-item>Register</button>
+            <button mat-menu-item (click)="onLogin()">Login</button>
+            <button mat-menu-item (click)="onEmployerRegister()">
+              Register
+            </button>
           </div>
         </mat-menu>
       </div>
@@ -34,18 +44,25 @@
   </mat-toolbar>
 </div>
 
-<div class=" heroSection py-20 flex items-center flex-col">
-  <h1 class=" customH">Find your dream job now</h1>
+<div class="heroSection py-20 flex items-center flex-col">
+  <h1 class="customH">Find your dream job now</h1>
 
   <p class="text-center text-xl">50K+ jobs for you to explore</p>
-  <div class="flex gap-3 rounded-[40px] items-center bg-white shadow-xl py-5 px-10 mx-auto w-fit">
+  <div
+    class="flex gap-3 rounded-[40px] items-center bg-white shadow-xl py-5 px-10 mx-auto w-fit"
+  >
     <div>
-      <mat-icon class="text-gray-400 text-3xl" style="height: 29px; width: 27px;">search</mat-icon>
+      <mat-icon class="text-gray-400 text-3xl" style="height: 29px; width: 27px"
+        >search</mat-icon
+      >
     </div>
 
     <div>
-      <input type="text" class="text-xl h-10 w-96 pl-5 rounded-full focus:outline-none border border-gray-300"
-        placeholder="Type Something ..." />
+      <input
+        type="text"
+        class="text-xl h-10 w-96 pl-5 rounded-full focus:outline-none border border-gray-300"
+        placeholder="Type Something ..."
+      />
     </div>
     <div>
       <button mat-flat-button class="custom">Search</button>
@@ -53,14 +70,20 @@
   </div>
 </div>
 
-
-
-<app-job-card [job]="{
-    title: 'Frontend Developer',
-    companyName: 'Tech Corp',
-    role: 'Full-time',
-    minSalary: 60000,
-    maxSalary: 80000,
-    location: 'New York, USA',
-    category: 'Software Development'
-  }">/>
+@for (item of openJobs(); track item.id) {
+<app-job-card
+  [job]="{
+    id: item.id,
+    title: item.title,
+    role: item.role,
+    type: item.industryName,
+    minSalary: +item.minSalary!,
+    location: item.location,
+    maxSalary: +item.maxSalary!,
+    category: item.shift,
+    companyName: item.companyName,
+    applyTill: item.applicationDeadline,
+    city: item.city
+  }"
+/>
+}

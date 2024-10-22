@@ -57,9 +57,26 @@ const applyJob = async (req, res, next) => {
   }
 };
 
+const getAllOpenJobs = async (req, res, next) => {
+  try {
+    const jobsOpening = await JobService.getAllOpenJobService(req);
+    if (jobsOpening) {
+      respondOk(
+        res,
+        200,
+        "[Here are the jobs which might suits you!]",
+        jobsOpening
+      );
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createJobPost,
   getAllJobs,
   deleteJob,
   applyJob,
+  getAllOpenJobs,
 };

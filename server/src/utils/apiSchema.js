@@ -419,6 +419,12 @@ const jobPostSchema = Joi.object({
     "any.only": "Shift must be either morning or evening",
     "any.required": "Shift is required",
   }),
+  companyName: Joi.string().trim().max(100).required().messages({
+    "string.base": "Company name must be a string",
+    "string.empty": "Please enter the company name",
+    "string.max": "Company name must not exceed 100 characters",
+    "any.required": "Company name is required",
+  }),
 });
 
 // --------------UPDATE PASSWORD SCHEMA--------
