@@ -36,7 +36,7 @@ export class EmployerDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.postJobService.fetchExistingSkills().subscribe({
-      next:res=>{
+      next: res => {
         // this.postJobService.skills.next(res.data);
         this.postJobService.skills.set(res.data);
       },
@@ -45,13 +45,11 @@ export class EmployerDashboardComponent implements OnInit {
       },
     });
 
-    // console.log('[Inside dashboard]',this.postJobService.existingSkills);
   }
 
   onLogout() {
     this.logoutService.logoutUser().subscribe({
       next: (data) => {
-        console.log(data);
         if (localStorage.getItem('userFullName')) {
           localStorage.removeItem('userFullName');
         }

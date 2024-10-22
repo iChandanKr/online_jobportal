@@ -50,7 +50,7 @@ export class SignupComponent {
     private jobSeekerSignupService: JobseekerSignupService,
     private loginService: LoginService,
     private router: Router,
-    private userDataSharingService:UserDataSharingService
+    private userDataSharingService: UserDataSharingService
   ) {
     this.signupForm = this.formBuilder.group(
       {
@@ -71,19 +71,14 @@ export class SignupComponent {
   }
 
   onSubmit() {
-    console.log(this.signupForm.valid);
-    console.log(this.signupForm.value);
-
     if (this.signupForm.invalid) {
       return;
     }
-
-    console.log('Signup details:', this.signupForm.value);
     this.jobSeekerSignupService
       .signupJobseeker(this.signupForm.value)
       .subscribe({
         next: (data) => {
-          this.userDataSharingService.setLoginUserData(this.signupForm.value)
+          this.userDataSharingService.setLoginUserData(this.signupForm.value);
           this.router.navigate(['/employer']);
 
           this.signupForm.reset();

@@ -32,7 +32,6 @@ class JobseekerService {
   static findJobseekerService = async (id) => {
     const user = await findJobseekerDB(id);
     if (!user) {
-      console.log("inside user not found");
       throw new CustomError("user not found", 404);
     }
     return user;

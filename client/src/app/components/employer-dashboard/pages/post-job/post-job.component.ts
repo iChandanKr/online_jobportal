@@ -20,7 +20,6 @@ import { ActivatedRoute } from '@angular/router';
 import { response } from 'express';
 
 const currentTime = new Date().toISOString();
-console.log(currentTime);
 @Component({
   selector: 'app-post-job',
   standalone: true,

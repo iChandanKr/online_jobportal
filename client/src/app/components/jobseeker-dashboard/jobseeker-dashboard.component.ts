@@ -38,7 +38,6 @@ export class JobseekerDashboardComponent {
   onLogout() {
     this.logoutService.logoutUser().subscribe({
       next: (data) => {
-        console.log(data);
         if (localStorage.getItem('userFullName')) {
           localStorage.removeItem('userFullName');
         }

@@ -19,7 +19,8 @@ export type MenuItem = {
 export class CustomSidenavComponent {
   sideNavCollapsed = input<boolean>(false);
   profilePicSize = computed(() => (this.sideNavCollapsed() ? '40' : '100'));
-  menuItem = signal<MenuItem[]>([
+
+  employerMenuItems = signal<MenuItem[]>([
     {
       icon: 'dashboard',
       label: 'Dashboard',
@@ -46,11 +47,36 @@ export class CustomSidenavComponent {
       route: 'applications',
     },
   ]);
+
+  jobseekerMenuItems = signal<MenuItem[]>([
+    {
+      icon: 'dashboard',
+      label: 'Dashboard',
+      route: 'dashboard',
+    },
+    {
+      icon: 'search',
+      label: 'Search Jobs',
+      route: 'post-job',
+    },
+    {
+      icon: 'check_circle',
+      label: 'My Applications',
+      route: 'my-applications',
+    },
+    {
+      icon: 'person',
+      label: 'Profile',
+      route: 'profile',
+    },
+  ]);
+  menuItem = signal<MenuItem[]>([]);
   public userDataSharingService = inject(UserDataSharingService);
   user = signal<CurrentUser | undefined>(undefined);
   fullName = signal('');
   ngOnInit(): void {
     this.user.set(this.userDataSharingService.getLoginData());
+
     const userName = computed(
       () => this.user()?.firstName + ' ' + this.user()?.lastName
     );
@@ -62,5 +88,12 @@ export class CustomSidenavComponent {
     persistentName
       ? this.fullName.set(persistentName)
       : this.fullName.set(userName());
+
+    if (this.user()?.role === 'employer') {
+
+      this.menuItem.set(this.employerMenuItems());
+    } else if (this.user()?.role === 'jobseeker') {
+      this.menuItem.set(this.jobseekerMenuItems());
+    }
   }
 }

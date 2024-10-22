@@ -78,10 +78,10 @@ export const routes: Routes = [
       path:'jobseeker',
       title:'jobseeker',
       component:JobseekerDashboardComponent,
-      children:[
-        // {
-        //   path:
-        // }
-      ]
+      // children:[
+      //   {
+      //     path:
+      //   }
+      // ]
   }
 ];

@@ -120,7 +120,6 @@ export class EmployerSignupComponent implements OnInit {
       // console.log(combinedDetails);
       this.employerSignupService.signupEmployer(combinedDetails).subscribe({
         next: (data) => {
-          console.log(data);
           this.userDataSharingService.setLoginUserData(combinedDetails)
           this.router.navigate(['/employer'])
           
