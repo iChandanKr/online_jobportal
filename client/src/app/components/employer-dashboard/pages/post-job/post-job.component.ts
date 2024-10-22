@@ -83,6 +83,7 @@ export class PostJobComponent implements OnInit {
       minSalary: job.minSalary,
       jobType: job.jobType,
       shift: job.shift,
+      companyName:job.companyName
     });
   }
   skills = computed(() => this.postJobService.skills());

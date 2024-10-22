@@ -10,6 +10,7 @@ import { JobsComponent } from './components/employer-dashboard/pages/jobs/jobs.c
 import { ProfileComponent } from './components/employer-dashboard/pages/profile/profile.component';
 import { ApplicationsComponent } from './components/employer-dashboard/pages/applications/applications.component';
 import { authGuard } from './guards/auth.guard';
+import { JobseekerDashboardComponent } from './components/jobseeker-dashboard/jobseeker-dashboard.component';
 export const routes: Routes = [
   {
     path: 'landing-page',
@@ -73,4 +74,14 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+      path:'jobseeker',
+      title:'jobseeker',
+      component:JobseekerDashboardComponent,
+      children:[
+        // {
+        //   path:
+        // }
+      ]
+  }
 ];
