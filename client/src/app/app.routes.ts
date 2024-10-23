@@ -82,6 +82,7 @@ export const routes: Routes = [
     path: 'jobseeker',
     title: 'jobseeker',
     component: JobseekerDashboardComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: 'apply-job',

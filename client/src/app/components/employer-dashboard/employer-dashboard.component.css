@@ -13,7 +13,7 @@ mat-sidenav-container {
   height: calc(100vh - 64px);
   /* background-color: rgb(185, 179, 179); */
   /* background-color: #f1f9ec; */
-  background-color: #F6F5F2;
+  background-color: #f6f5f2;
 }
 mat-sidenav,
 mat-sidenav-content {

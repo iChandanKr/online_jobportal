@@ -59,7 +59,6 @@ export class LandingPageComponent implements OnInit {
     this.router.navigate(['login']);
   }
   onSearch(input: string) {
-
     this.jobService.getJobOpenings(input).subscribe({
       next: (res) => {
         this.openJobs.set(res.data);

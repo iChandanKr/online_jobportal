@@ -1,1 +1,50 @@
-<p>apply-job works!</p>
+<div class="heroSection py-20 flex items-center flex-col">
+  <h1 class="customH">Find your dream job now</h1>
+
+  <p class="text-center text-xl">50K+ jobs for you to explore</p>
+  <div
+    class="flex gap-3 rounded-[40px] items-center bg-white shadow-xl py-5 px-10 mx-auto w-fit"
+  >
+    <div>
+      <mat-icon class="text-gray-400 text-3xl" style="height: 29px; width: 27px"
+        >search</mat-icon
+      >
+    </div>
+    <div>
+      <input
+        type="text"
+        class="text-xl h-10 w-96 pl-5 rounded-full focus:outline-none border border-gray-300"
+        placeholder="Type Something ..."
+        [formControl]="searchString"
+      />
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="custom"
+        (click)="onSearch(searchString.value!)"
+      >
+        Search
+      </button>
+    </div>
+  </div>
+</div>
+
+@for (item of openJobs(); track $index) {
+
+<app-open-jobcard
+  [job]="{
+    id: item.id,
+    title: item.title,
+    role: item.role,
+    type: item.industryName,
+    minSalary: +item.minSalary!,
+    location: item.location,
+    maxSalary: +item.maxSalary!,
+    category: item.shift,
+    companyName: item.companyName,
+    applyTill: item.applicationDeadline,
+    city: item.city
+  }"
+/>
+}

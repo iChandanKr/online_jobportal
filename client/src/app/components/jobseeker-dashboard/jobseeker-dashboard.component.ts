@@ -27,7 +27,7 @@ import { JobseekerSidenavComponent } from "./jobseeker-sidenav/jobseeker-sidenav
 })
 export class JobseekerDashboardComponent {
   constructor(private router:Router,private logoutService:LogoutService){}
-  collapsed=new BehaviorSubject<boolean>(true)
+  collapsed=new BehaviorSubject<boolean>(false)
 
   get sideNavWidth(){
     return this.collapsed.getValue()?'65px':'250px'

@@ -91,6 +91,17 @@ const getAllOpenJobs = async (req, res, next) => {
   }
 };
 
+const getJobDetails = async (req, res, next) => {
+  try {
+    const jobDetils = await JobService.getJobDetailsService(req.params.id);
+    if (jobDetils) {
+      respondOk(res, 200, "[Job with Skills required]", jobDetils);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createJobPost,
   getAllJobs,
@@ -99,4 +110,5 @@ module.exports = {
   applyJob,
   getAllOpenJobs,
   getJobById,
+  getJobDetails,
 };
