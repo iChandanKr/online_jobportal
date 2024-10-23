@@ -10,30 +10,21 @@ export type MenuItem = {
   route?: string;
 };
 @Component({
-  selector: 'app-custom-sidenav',
+  selector: 'app-jobseeker-sidenav',
   standalone: true,
   imports: [MatListModule, MatIconModule, RouterModule],
-  templateUrl: './custom-sidenav.component.html',
-  styleUrl: './custom-sidenav.component.css',
+  templateUrl: './jobseeker-sidenav.component.html',
+  styleUrl: './jobseeker-sidenav.component.css'
 })
-export class CustomSidenavComponent {
+export class JobseekerSidenavComponent {
   sideNavCollapsed = input<boolean>(false);
   profilePicSize = computed(() => (this.sideNavCollapsed() ? '40' : '100'));
   menuItem = signal<MenuItem[]>([
-    {
-      icon: 'dashboard',
-      label: 'Dashboard',
-      route: 'dashboard',
-    },
+
     {
       icon: 'add',
-      label: 'Post Jobs',
-      route: 'post-job',
-    },
-    {
-      icon: 'work',
-      label: 'Jobs',
-      route: 'jobs',
+      label: 'Apply Jobs',
+      route: 'apply-job',
     },
     {
       icon: 'person',
@@ -42,8 +33,8 @@ export class CustomSidenavComponent {
     },
     {
       icon: 'check_circle',
-      label: 'Applications',
-      route: 'applications',
+      label: 'Job Applications',
+      route: 'job-applications',
     },
   ]);
   public userDataSharingService = inject(UserDataSharingService);
@@ -64,3 +55,4 @@ export class CustomSidenavComponent {
       : this.fullName.set(userName());
   }
 }
+

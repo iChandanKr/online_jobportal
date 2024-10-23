@@ -11,6 +11,9 @@ import { ProfileComponent } from './components/employer-dashboard/pages/profile/
 import { ApplicationsComponent } from './components/employer-dashboard/pages/applications/applications.component';
 import { authGuard } from './guards/auth.guard';
 import { JobseekerDashboardComponent } from './components/jobseeker-dashboard/jobseeker-dashboard.component';
+import { ApplyJobComponent } from './components/jobseeker-dashboard/pages/apply-job/apply-job.component';
+import { JobseekerProfileComponent } from './components/jobseeker-dashboard/pages/jobseeker-profile/jobseeker-profile.component';
+import { JobApplicationsComponent } from './components/jobseeker-dashboard/pages/job-applications/job-applications.component';
 export const routes: Routes = [
   {
     path: 'landing-page',
@@ -69,19 +72,37 @@ export const routes: Routes = [
         redirectTo: 'dashboard',
         pathMatch: 'full',
       },
-      { path: 'post-job/:id',
-        component: PostJobComponent 
+      {
+        path: 'post-job/:id',
+        component: PostJobComponent
       },
     ],
   },
   {
-      path:'jobseeker',
-      title:'jobseeker',
-      component:JobseekerDashboardComponent,
-      // children:[
-      //   {
-      //     path:
-      //   }
-      // ]
+    path: 'jobseeker',
+    title: 'jobseeker',
+    component: JobseekerDashboardComponent,
+    children: [
+      {
+        path: 'apply-job',
+        title: 'ApplyJob',
+        component: ApplyJobComponent
+      },
+      {
+        path: 'profile',
+        title: 'Profile',
+        component: JobseekerProfileComponent
+      },
+      {
+        path: 'job-applications',
+        title: 'JobApplications',
+        component: JobApplicationsComponent
+      },
+      {
+        path: '',
+        redirectTo: 'apply-job',
+        pathMatch: 'full',
+      },
+    ]
   }
 ];
