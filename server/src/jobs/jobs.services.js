@@ -7,7 +7,8 @@ const {
   updateJobDB,
   applyForJobDB,
   getAllOpenJobsDB,
-  getJobByIdDB
+  getJobByIdDB,
+  jobWithSkillDetails,
 } = require("./jobs.repo");
 const { sort, limitFields, search, paginate } = require("../utils/apiFeatures");
 
@@ -77,9 +78,9 @@ class JobService {
     return jobs;
   };
 
-  static updateJobService=async (id,updatedData)=>{
-    return await updateJobDB(id,updatedData)
-  }
+  static updateJobService = async (id, updatedData) => {
+    return await updateJobDB(id, updatedData);
+  };
 
   static deleteJobService = async (id) => {
     return await deleteJobDB(id);
@@ -99,9 +100,16 @@ class JobService {
     return jobDetails;
   };
 
-  static getJobByIdService=async(id)=>{
-    return await getJobByIdDB(id)
-  }
-
+  static getJobByIdService = async (id) => {
+    return await getJobByIdDB(id);
+  };
+  static getJobDetailsService = async (id) => {
+    const jobDetails = await jobWithSkillDetails(id);
+    const skills = jobDetails.Skills.map((skill) => skill.skillName);
+    delete jobDetails.dataValues.skillId;
+    delete jobDetails.dataValues.Skills;
+    const jobWithSkill = { ...jobDetails.dataValues, skills };
+    return jobWithSkill;
+  };
 }
 module.exports = JobService;

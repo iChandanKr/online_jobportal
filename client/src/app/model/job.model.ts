@@ -33,3 +33,20 @@ export interface JobResponse {
   message: string;
   data: Job;
 }
+
+export interface JobDetailsRes {
+  id: string;
+  title: string;
+  description: string;
+  role: string;
+  location: string;
+  city: string;
+  industryName: string;
+  skills: string[];
+  minSalary: string | undefined;
+  maxSalary: string | undefined;
+  applicationDeadline: string;
+  jobType: string;
+  shift: string;
+  companyName: string;
+}

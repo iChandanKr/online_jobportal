@@ -47,25 +47,26 @@ export class PostJobComponent implements OnInit {
   currentTime = signal(new Date().toISOString);
   private postJobService = inject(PostJobService);
   private toaster = inject(ToastrService);
-  private activeRoute = inject(ActivatedRoute)
+  private activeRoute = inject(ActivatedRoute);
 
   ngOnInit(): void {
     // console.log('[Inside On Init post job component]');
-    this.activeRoute.paramMap.subscribe(params => {
-      this.jobId = params.get('id')
-
-    })
+    this.activeRoute.paramMap.subscribe((params) => {
+      this.jobId = params.get('id');
+    });
 
     if (this.jobId) {
       this.postJobService.getJob(this.jobId).subscribe(
-        response => {
-          response.data.applicationDeadline = this.formatDateForInput(response.data.applicationDeadline);
-          this.populateForm(response?.data)
+        (response) => {
+          response.data.applicationDeadline = this.formatDateForInput(
+            response.data.applicationDeadline
+          );
+          this.populateForm(response?.data);
         },
-        error => {
-          this.toaster.error('Failed to load the job details!', 'Error')
+        (error) => {
+          this.toaster.error('Failed to load the job details!', 'Error');
         }
-      )
+      );
     }
   }
   populateForm(job: any) {
@@ -91,16 +92,16 @@ export class PostJobComponent implements OnInit {
       console.log('INVALID FORM');
       return;
     }
-  
+
     const jobData = this.jobForm.value;
-  
+
     if (this.jobId) {
       this.postJobService.updateJob(this.jobId, jobData).subscribe({
         next: (response) => {
           this.toaster.success('Job updated successfully', 'Success', {
             timeOut: 1500,
           });
-          this.jobForm.reset(); 
+          this.jobForm.reset();
         },
         error: (err) => {
           this.toaster.error(err.error.message, 'Error', {
@@ -114,7 +115,7 @@ export class PostJobComponent implements OnInit {
           this.toaster.success('Job created successfully', 'Success', {
             timeOut: 1500,
           });
-          this.jobForm.reset(); 
+          this.jobForm.reset();
         },
         error: (err) => {
           this.toaster.error(err.error.message, 'Error', {
@@ -124,7 +125,6 @@ export class PostJobComponent implements OnInit {
       });
     }
   }
-  
 
   onReset() {
     this.jobForm.reset();

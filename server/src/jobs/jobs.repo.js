@@ -1,5 +1,5 @@
 const { dataModel } = require("../dbConnection");
-const { JobPost, JobSkills, Application } = dataModel;
+const { JobPost, JobSkills, Application, Skill } = dataModel;
 const { Op } = require("sequelize");
 const createJobPostDb = async (jobPostData, t) => {
   const newJobData = await JobPost.create(
@@ -121,6 +121,23 @@ const getAllOpenJobsDB = async (searchFields) => {
     },
   });
 };
+
+const jobWithSkillDetails = async (id) => {
+  return await JobPost.findOne({
+    where: {
+      id,
+    },
+    attributes: {
+      exclude: ["createdAt", "deletedAt", "updatedAt", "empId"],
+    },
+    include: [
+      {
+        model: Skill,
+        attributes: ["skillName"],
+      },
+    ],
+  });
+};
 module.exports = {
   createJobPostDb,
   getAllJobsDB,
@@ -129,4 +146,5 @@ module.exports = {
   getAllOpenJobsDB,
   updateJobDB,
   getJobByIdDB,
+  jobWithSkillDetails,
 };

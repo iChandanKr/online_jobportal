@@ -11,6 +11,7 @@ export class JobsService {
   private readonly apiUrl = API_URLS.getJobs;
   private readonly deleteJobUrl = API_URLS.deleteJob;
   private readonly jobOpeningUrl = API_URLS.jobOpenings;
+  private readonly jobWithSkillUrl = API_URLS.getJobWithSkills;
   queryStr = signal('');
   constructor(private httpClient: HttpClient) {}
 
@@ -49,5 +50,14 @@ export class JobsService {
   getJobOpenings(str: string = ''): Observable<any> {
     const queryString = `${this.jobOpeningUrl}?search=${str}`;
     return this.httpClient.get<JobResponse>(queryString);
+  }
+
+  getJobWithSkills(id: string): Observable<any> {
+    const url = `${this.jobWithSkillUrl}/${id}`;
+    return this.httpClient.get<{
+      status: string;
+      message: string;
+      data: object;
+    }>(url);
   }
 }

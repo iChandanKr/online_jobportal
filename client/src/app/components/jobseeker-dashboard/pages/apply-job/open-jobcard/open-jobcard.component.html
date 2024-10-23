@@ -1,0 +1,78 @@
+<div
+  class="bgColor shadow-md rounded-3xl mb-10 p-6 max-w-lg mx-auto border border-gray-200"
+>
+  <div class="flex items-center justify-between mb-2">
+    <div>
+      <h2 class="text-md customH font-bold text-gray-800">
+        {{ job().title | titlecase }}
+      </h2>
+    </div>
+    <div class="bg-white-100 text-gray-200 h-9 w-9 rounded-full">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 512 512"
+        class="text-gray-600"
+        fill="currentColor"
+      >
+        <path
+          d="M176 56l0 40 160 0 0-40c0-4.4-3.6-8-8-8L184 48c-4.4 0-8 3.6-8 8zM128 96l0-40c0-30.9 25.1-56 56-56L328 0c30.9 0 56 25.1 56 56l0 40 0 32 0 352-256 0 0-352 0-32zM64 96l32 0 0 384-32 0c-35.3 0-64-28.7-64-64L0 160c0-35.3 28.7-64 64-64zM448 480l-32 0 0-384 32 0c35.3 0 64 28.7 64 64l0 256c0 35.3-28.7 64-64 64z"
+        />
+      </svg>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4 mb-2">
+    <div>
+      <p class="text-lg text-gray-700">
+        Company: {{ job().companyName | titlecase }}
+      </p>
+      <p class="text-md text-gray-700">Role: {{ job().role | titlecase }}</p>
+    </div>
+
+    <div>
+      <p class="text-md text-gray-700">
+        ApplyTill: {{ job().applyTill | date }}
+      </p>
+      @if(job().location === 'onsite'){
+      <p class="text-md text-gray-700">
+        Location: {{ job().city | titlecase }}
+      </p>
+
+      }@else {
+
+      <p class="text-md text-gray-700">
+        Location: {{ job().location | titlecase }}
+      </p>
+      }
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4 mb-2">
+    <div>
+      <p class="text-sm text-gray-700">
+        Salary: {{ job().minSalary | currency : "INR" : "symbol" : "1.0-0" }} -
+        {{ job().maxSalary | currency : "INR" : "symbol" : "1.0-0" }} LPA
+      </p>
+    </div>
+
+    <div>
+      <p class="text-sm text-gray-700">
+        Shift: {{ job().category | titlecase }}
+      </p>
+    </div>
+  </div>
+
+  <div class="flex justify-between mt-2">
+    <button
+      mat-stroked-button
+      class="matButtons"
+      (click)="onViewDetails('300ms', '300ms')"
+    >
+      View Details
+    </button>
+
+    <button mat-flat-button class="matButtons" (click)="onApply()">
+      Apply
+    </button>
+  </div>
+</div>
