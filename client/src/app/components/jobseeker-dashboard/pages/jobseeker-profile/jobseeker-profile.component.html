@@ -1,1 +1,177 @@
-<p>jobseeker-profile works!</p>
+<mat-tab-group>
+    <mat-tab label="User Info">
+      <form [formGroup]="jobSeekerProfileForm" class="form-container">
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" placeholder="Enter first name">
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" placeholder="Enter last name">
+          </mat-form-field>
+        </div>
+  
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" placeholder="Enter email" type="email">
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline">
+            <mat-label>Contact Number</mat-label>
+            <input matInput formControlName="contact" placeholder="Enter contact number">
+          </mat-form-field>
+        </div>
+  
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dob">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+  
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>City</mat-label>
+            <input matInput formControlName="city" placeholder="Enter city">
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline">
+            <mat-label>State</mat-label>
+            <input matInput formControlName="state" placeholder="Enter state">
+          </mat-form-field>
+        </div>
+  
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Pin Code</mat-label>
+            <input matInput formControlName="pinCode" placeholder="Enter pin code">
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline">
+            <mat-label>Country</mat-label>
+            <input matInput formControlName="country" placeholder="Enter country">
+          </mat-form-field>
+        </div>
+  
+        <div class="form-actions">
+          <button mat-raised-button color="primary">Save Profile</button>
+        </div>
+      </form>
+    </mat-tab>
+    <mat-tab label="Education Details">
+        <form [formGroup]="educationDetailsForm" class="form-container">
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>10th Marks Percent</mat-label>
+              <input matInput formControlName="tenthMarksPercent" placeholder="Enter 10th marks percentage">
+            </mat-form-field>
+    
+            <mat-form-field appearance="outline">
+              <mat-label>10th Passing Year</mat-label>
+              <input matInput formControlName="tenthPassingYear" placeholder="Enter 10th passing year" type="number">
+            </mat-form-field>
+          </div>
+    
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>12th Marks Percent</mat-label>
+              <input matInput formControlName="twelfthMarksPercent" placeholder="Enter 12th marks percentage">
+            </mat-form-field>
+    
+            <mat-form-field appearance="outline">
+              <mat-label>12th Passing Year</mat-label>
+              <input matInput formControlName="twelfthPassingYear" placeholder="Enter 12th passing year" type="number">
+            </mat-form-field>
+          </div>
+    
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>UG Stream</mat-label>
+              <input matInput formControlName="ugStream" placeholder="Enter UG stream">
+            </mat-form-field>
+    
+            <mat-form-field appearance="outline">
+              <mat-label>UG Branch</mat-label>
+              <input matInput formControlName="ugBranch" placeholder="Enter UG branch">
+            </mat-form-field>
+          </div>
+    
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>UG CGPA</mat-label>
+              <input matInput formControlName="ugCGPA" placeholder="Enter UG CGPA">
+            </mat-form-field>
+    
+            <mat-form-field appearance="outline">
+              <mat-label>UG Passing Year</mat-label>
+              <input matInput formControlName="ugPassingYear" placeholder="Enter UG passing year" type="number">
+            </mat-form-field>
+          </div>
+    
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>PG Stream (optional)</mat-label>
+              <input matInput formControlName="pgStream" placeholder="Enter PG stream">
+            </mat-form-field>
+    
+            <mat-form-field appearance="outline">
+              <mat-label>PG Passing Year (optional)</mat-label>
+              <input matInput formControlName="pgPassingYear" placeholder="Enter PG passing year" type="number">
+            </mat-form-field>
+          </div>
+    
+          <div class="form-actions">
+            <button mat-raised-button color="primary">Save Education</button>
+          </div>
+        </form>
+      </mat-tab>
+
+      <mat-tab label="Skills">
+        <form [formGroup]="skillsForm" class="form-container" (ngSubmit)="onSubmitSkills()">
+          <div class="form-row">
+            <mat-form-field>
+                <mat-label>Skills</mat-label>
+                <mat-chip-grid #chipGrid aria-label="Skill selection">
+                  <mat-chip-row
+                    *ngFor="let skill of selectedSkills"
+                    (removed)="remove(skill)">
+                    {{skill.skillName}}
+                    <button matChipRemove>
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip-row>
+                </mat-chip-grid>
+                <input
+                  placeholder="New skill..."
+                  #skillInput
+                  [formControl]="skillAutocomplete"
+                  [matAutocomplete]="auto"
+                  [matChipInputFor]="chipGrid"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  (matChipInputTokenEnd)="add($event)">
+                <mat-autocomplete #auto="matAutocomplete"
+                  [displayWith]="displayFn"
+                  (optionSelected)="selected($event)">
+                  <mat-option *ngFor="let skill of filteredSkills | async" [value]="skill">
+                    {{skill.skillName}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+          </div>
+          <div class="form-row submit-row">
+            <button 
+              mat-raised-button 
+              color="primary" 
+              type="submit"
+              [disabled]="selectedSkills.length === 0">
+              Save Skills
+            </button>
+          </div>
+        </form>
+      </mat-tab>
+  </mat-tab-group>
