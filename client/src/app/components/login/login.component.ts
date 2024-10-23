@@ -49,7 +49,7 @@ export class LoginComponent {
           this.toastr.success(response.body?.message, 'success');
           user?.role === 'employer'
             ? this.router.navigate(['/employer'])
-            : this.router.navigate(['/employer']);
+            : this.router.navigate(['/jobseeker']);
           this.loginForm.reset();
         },
         error: (err) => {

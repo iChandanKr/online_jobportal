@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { LogoutService } from '../../services/logout.service';
 import { response } from 'express';
 import { error } from 'console';
+import { JobseekerSidenavComponent } from "./jobseeker-sidenav/jobseeker-sidenav.component";
 
 @Component({
   selector: 'app-jobseeker-dashboard',
@@ -18,8 +19,9 @@ import { error } from 'console';
     MatIconModule,
     MatSidenavModule,
     CustomSidenavComponent,
-    RouterOutlet
-  ],
+    RouterOutlet,
+    JobseekerSidenavComponent
+],
   templateUrl: './jobseeker-dashboard.component.html',
   styleUrl: './jobseeker-dashboard.component.css'
 })
