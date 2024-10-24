@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { type JobDetailsRes } from '../../../../../model/job.model';
+import { DatePipe, CurrencyPipe, TitleCasePipe } from '@angular/common';
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
@@ -10,7 +11,13 @@ import { JobsService } from '../../../../../services/jobs.service';
 @Component({
   selector: 'app-job-details-dialog',
   standalone: true,
-  imports: [MatDialogModule, MatButtonModule],
+  imports: [
+    MatDialogModule,
+    MatButtonModule,
+    DatePipe,
+    CurrencyPipe,
+    TitleCasePipe,
+  ],
   templateUrl: './job-details-dialog.component.html',
   styleUrl: './job-details-dialog.component.css',
 })

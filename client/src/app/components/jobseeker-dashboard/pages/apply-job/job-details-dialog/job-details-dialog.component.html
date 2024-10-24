@@ -1,6 +1,48 @@
 <h2 mat-dialog-title>Detailed information of Job</h2>
 <mat-dialog-content>
-  <p>skills: {{jobDetails()?.skills}}</p>
+  <div class="grid grid-cols-1 gap-4 mb-2">
+    <div>
+      <p class="font-medium">Title: {{ jobDetails()?.title | titlecase }}</p>
+      <p>Description: {{ jobDetails()?.description }}</p>
+    </div>
+  </div>
+  <div class="grid grid-cols-2 gap-4 mb-2">
+    <div>
+      <p class="font-medium">
+        Company: {{ jobDetails()?.companyName | titlecase }}
+      </p>
+      <p class="font-medium">Role: {{ jobDetails()?.role | titlecase }}</p>
+    </div>
+    <div>
+      @if (jobDetails()?.location ==='onsite') {
+      <p>Location: {{ jobDetails()?.city | titlecase }}</p>
+      }@else {
+      <p>Location: {{ jobDetails()?.location | titlecase }}</p>
+      }
+      <p>Company Industry: {{ jobDetails()?.industryName }}</p>
+    </div>
+    <div class="w-full">
+      <p class="w-full">
+        Salary:
+        {{ jobDetails()?.minSalary | currency : "INR" : "symbol" : "1.0-0" }} -
+        {{ jobDetails()?.maxSalary | currency : "INR" : "symbol" : "1.0-0" }}
+        LPA
+      </p>
+      <p>Apply Till: {{ jobDetails()?.applicationDeadline | date }}</p>
+    </div>
+
+    <div>
+      <p>Job Type: {{ jobDetails()?.jobType | titlecase }}</p>
+      <p>Shift: {{ jobDetails()?.shift | titlecase }}</p>
+    </div>
+    <div>
+      <p>
+        Required Skills: @for (skill of jobDetails()?.skills; track $index) {
+        <span> {{ skill | titlecase }}, </span>
+        }
+      </p>
+    </div>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-buton (click)="onCancel()">Cancel</button>

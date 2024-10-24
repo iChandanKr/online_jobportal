@@ -15,9 +15,7 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { PostJobService } from '../../../../services/post-job.service';
 import { Skill } from '../../../../model/skill.model';
-import { error, log } from 'console';
 import { ActivatedRoute } from '@angular/router';
-import { response } from 'express';
 
 const currentTime = new Date().toISOString();
 @Component({
@@ -50,7 +48,6 @@ export class PostJobComponent implements OnInit {
   private activeRoute = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    // console.log('[Inside On Init post job component]');
     this.activeRoute.paramMap.subscribe((params) => {
       this.jobId = params.get('id');
     });

@@ -8,7 +8,8 @@ const {
   getAllOpenJobs,
   updateJobPost,
   getJobById,
-  getJobDetails
+  getJobDetails,
+  jobsUserCanApply,
 } = require("./jobs.controller");
 const authMiddleware = require("../middleware/auth.middleware");
 const checkEmployerRole = require("../middleware/checkEmployerRole.middleware");
@@ -25,11 +26,14 @@ router.route("/jobs").get(authMiddleware, checkEmployerRole, getAllJobs);
 router
   .route("/delete-job/:id")
   .delete(authMiddleware, checkEmployerRole, deleteJob);
-router.route("/update-job/:id").put(authMiddleware, checkEmployerRole,updateJobPost);
-router.route("/getJob/:id").get(authMiddleware,checkEmployerRole,getJobById)
-router.route("/job-details/:id").get(getJobDetails)
+router
+  .route("/update-job/:id")
+  .put(authMiddleware, checkEmployerRole, updateJobPost);
+router.route("/getJob/:id").get(authMiddleware, checkEmployerRole, getJobById);
+router.route("/job-details/:id").get(getJobDetails);
 router
   .route("/apply-job")
   .post(applyJobValidation, authMiddleware, checkJobseekerRole, applyJob);
 router.route("/jobs-opening").get(getAllOpenJobs);
+router.route("/jobs-userCanApply").get(authMiddleware, jobsUserCanApply);
 module.exports = router;

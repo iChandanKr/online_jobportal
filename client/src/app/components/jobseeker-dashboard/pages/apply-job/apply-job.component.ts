@@ -26,7 +26,7 @@ export class ApplyJobComponent implements OnInit {
   searchString = new FormControl('');
 
   ngOnInit(): void {
-    this.jobService.getJobOpenings().subscribe({
+    this.jobService.getAllJobsUserCanApply().subscribe({
       next: (res) => {
         this.openJobs.set(res.data);
       },
@@ -45,7 +45,7 @@ export class ApplyJobComponent implements OnInit {
   }
 
   onSearch(input: string) {
-    this.jobService.getJobOpenings(input).subscribe({
+    this.jobService.getAllJobsUserCanApply(input).subscribe({
       next: (res) => {
         this.openJobs.set(res.data);
       },

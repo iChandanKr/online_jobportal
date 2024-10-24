@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_URLS } from '../constants/api-urls';
@@ -12,6 +12,8 @@ export class JobsService {
   private readonly deleteJobUrl = API_URLS.deleteJob;
   private readonly jobOpeningUrl = API_URLS.jobOpenings;
   private readonly jobWithSkillUrl = API_URLS.getJobWithSkills;
+  private readonly jobsUserCanApplyUrl = API_URLS.jobsUserCanApply;
+  private readonly applyJobUrl = API_URLS.applyJob;
   queryStr = signal('');
   constructor(private httpClient: HttpClient) {}
 
@@ -52,6 +54,14 @@ export class JobsService {
     return this.httpClient.get<JobResponse>(queryString);
   }
 
+  getAllJobsUserCanApply(str: string = ''): Observable<any> {
+    const queryString = `${this.jobsUserCanApplyUrl}?search=${str}`;
+
+    return this.httpClient.get<JobResponse>(queryString, {
+      withCredentials: true,
+    });
+  }
+
   getJobWithSkills(id: string): Observable<any> {
     const url = `${this.jobWithSkillUrl}/${id}`;
     return this.httpClient.get<{
@@ -59,5 +69,27 @@ export class JobsService {
       message: string;
       data: object;
     }>(url);
+  }
+
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      'Content-type': 'application/json',
+    });
+  }
+  applyJob(jobId: string): Observable<any> {
+    return this.httpClient.post<{
+      status: string;
+      message: string;
+      data: object;
+    }>(
+      this.applyJobUrl,
+      {
+        jobId,
+      },
+      {
+        headers: this.getHeaders(),
+        withCredentials: true,
+      }
+    );
   }
 }
