@@ -36,7 +36,7 @@ export class OpenJobcardComponent {
     exitAnimationDuration: string
   ): void {
     const dialogRef = this.dialog.open(JobDetailsDialogComponent, {
-      width: '400px',
+      width: '600px',
       enterAnimationDuration,
       exitAnimationDuration,
       data: {
