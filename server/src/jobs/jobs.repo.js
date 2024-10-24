@@ -122,6 +122,46 @@ const getAllOpenJobsDB = async (searchFields) => {
   });
 };
 
+const jobsToApplyDB = async (userId, searchFields) => {
+  const appliedJobApplications = await Application.findAll({
+    where: { UserId: userId },
+    attributes: ["JobPostId"],
+  });
+  const appliedJobPostIds = appliedJobApplications.map((app) => app.JobPostId);
+  return await JobPost.findAll({
+    where: {
+      id: {
+        [Op.notIn]: appliedJobPostIds,
+      },
+      [Op.or]: [
+        {
+          title: {
+            [Op.iLike]: searchFields,
+          },
+        },
+        {
+          role: {
+            [Op.iLike]: searchFields,
+          },
+        },
+        {
+          city: {
+            [Op.iLike]: searchFields,
+          },
+        },
+        {
+          companyName: {
+            [Op.iLike]: searchFields,
+          },
+        },
+      ],
+    },
+    attributes: {
+      exclude: ["createdAt", "deletedAt", "updatedAt", "empId"],
+    },
+  });
+};
+
 const jobWithSkillDetails = async (id) => {
   return await JobPost.findOne({
     where: {
@@ -147,4 +187,5 @@ module.exports = {
   updateJobDB,
   getJobByIdDB,
   jobWithSkillDetails,
+  jobsToApplyDB,
 };

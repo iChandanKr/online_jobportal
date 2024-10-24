@@ -11,7 +11,7 @@
       <p class="font-medium">
         Company: {{ jobDetails()?.companyName | titlecase }}
       </p>
-      <p>Role:{{ jobDetails()?.role | titlecase }}</p>
+      <p class="font-medium">Role: {{ jobDetails()?.role | titlecase }}</p>
     </div>
     <div>
       @if (jobDetails()?.location ==='onsite') {

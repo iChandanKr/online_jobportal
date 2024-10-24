@@ -102,6 +102,22 @@ const getJobDetails = async (req, res, next) => {
   }
 };
 
+const jobsUserCanApply = async (req, res, next) => {
+  try {
+    const applicableJobs = await JobService.jobsToApplyService(req);
+    if (applicableJobs) {
+      respondOk(
+        res,
+        200,
+        "[These are jobs you can apply for.]",
+        applicableJobs
+      );
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createJobPost,
   getAllJobs,
@@ -111,4 +127,5 @@ module.exports = {
   getAllOpenJobs,
   getJobById,
   getJobDetails,
+  jobsUserCanApply,
 };
