@@ -66,6 +66,14 @@ const getEducationDetailsDb = async (userId) => {
   return educationDetails;
 };
 
+const updateEducationDetailsDb = async (userId, educationDetails) => {
+  return await Education.update(educationDetails, {
+    where: { userId },
+  });
+  
+  
+};
+
 module.exports = {
   createJobseekerDb,
   findJobseekerDB,
@@ -73,4 +81,5 @@ module.exports = {
   addEducationDB,
   addSkillsDb,
   getEducationDetailsDb,
+  updateEducationDetailsDb,
 };

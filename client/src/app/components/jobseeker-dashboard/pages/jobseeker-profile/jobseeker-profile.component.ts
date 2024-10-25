@@ -17,6 +17,7 @@ import { PostJobService } from '../../../../services/post-job.service';
 import { Skill } from '../../../../model/skill.model';
 import { log } from 'console';
 import { UpdateJobseekerService } from '../../../../services/update-jobseeker.service';
+import { response } from 'express';
 
 @Component({
   selector: 'app-jobseeker-profile',
@@ -50,6 +51,7 @@ export class JobseekerProfileComponent implements OnInit {
   filteredSkills!: Observable<Skill[]>;
   selectedSkills: Skill[] = [];
   skillAutocomplete = new FormControl('');
+  isEducationDataAvailable: boolean = false;
   constructor(private fb: FormBuilder, private postJobService: PostJobService,
     private updateJobseekerService: UpdateJobseekerService) { }
 
@@ -111,7 +113,7 @@ export class JobseekerProfileComponent implements OnInit {
     })
     this.populateJobSeekerProfile();
 
-    this.populateEducationDetails()
+    this.populateEducationDetails();
   }
 
 
@@ -142,21 +144,29 @@ export class JobseekerProfileComponent implements OnInit {
       next: data => {
         const educationFetchData = data.data;
 
-        this.educationDetailsForm.patchValue({
-          tenthMarksPercent: educationFetchData.tenthMarksPercent,
-          tenthPassingYear: educationFetchData.tenthPassingYear,
-          twelfthMarksPercent: educationFetchData.twelfthMarksPercent,
-          twelfthPassingYear: educationFetchData.twelfthPassingYear,
-          ugStream: educationFetchData.ugStream,
-          ugBranch: educationFetchData.ugBranch,
-          ugCGPA: educationFetchData.ugCGPA,
-          ugPassingYear: educationFetchData.ugPassingYear,
-          pgStream: educationFetchData.pgStream,
-          pgPassingYear: educationFetchData.pgPassingYear
-        });
+        if (educationFetchData) {
+          this.isEducationDataAvailable = true;
+          this.educationDetailsForm.patchValue({
+            tenthMarksPercent: educationFetchData.tenthMarksPercent,
+            tenthPassingYear: educationFetchData.tenthPassingYear,
+            twelfthMarksPercent: educationFetchData.twelfthMarksPercent,
+            twelfthPassingYear: educationFetchData.twelfthPassingYear,
+            ugStream: educationFetchData.ugStream,
+            ugBranch: educationFetchData.ugBranch,
+            ugCGPA: educationFetchData.ugCGPA,
+            ugPassingYear: educationFetchData.ugPassingYear,
+            pgStream: educationFetchData.pgStream,
+            pgPassingYear: educationFetchData.pgPassingYear
+          });
+        } else {
+          // If no data, set the flag to false
+          this.isEducationDataAvailable = false;
+        }
+
       },
       error: err => {
         console.log(err);
+        this.isEducationDataAvailable = false;
       }
     });
   }
@@ -258,4 +268,44 @@ export class JobseekerProfileComponent implements OnInit {
       // });
     }
   }
+
+  onSubmitProfile() {
+    if (this.jobSeekerProfileForm.value) {
+      const data = this.jobSeekerProfileForm.value;
+      this.updateJobseekerService.updateJobseeker(data).subscribe({
+        next: (response) => {
+          console.log('Profile updated successfully', response);
+        },
+        error: (err) => {
+          console.log('Error updating profile', err);
+
+        }
+      })
+    }
+  }
+
+  onSubmitEducation() {
+    const data = this.educationDetailsForm.value;
+
+    if (this.isEducationDataAvailable) {
+      this.updateJobseekerService.updateEducationDetails(data).subscribe({
+        next: (response) => {
+          console.log('Education Details updated successfully', response);
+        },
+        error: (err) => {
+          console.log('Error updating education details', err);
+        }
+      });
+    } else {
+      this.updateJobseekerService.addEducationDetails(data).subscribe({
+        next: (response) => {
+          console.log("Education details added successfully!", response);
+        },
+        error: (err) => {
+          console.log("Error in adding education details", err);
+        }
+      });
+    }
+  }
+
 }

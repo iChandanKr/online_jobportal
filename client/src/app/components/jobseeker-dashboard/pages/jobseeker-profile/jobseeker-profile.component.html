@@ -1,6 +1,6 @@
 <mat-tab-group>
     <mat-tab label="User Info">
-      <form [formGroup]="jobSeekerProfileForm" class="form-container">
+      <form [formGroup]="jobSeekerProfileForm" class="form-container"  (ngSubmit)="onSubmitProfile()">
         <div class="form-row">
           <mat-form-field appearance="outline">
             <mat-label>First Name</mat-label>
@@ -63,8 +63,8 @@
         </div>
       </form>
     </mat-tab>
-    <mat-tab label="Education Details">
-        <form [formGroup]="educationDetailsForm" class="form-container">
+    <mat-tab label="Education Details" >
+        <form [formGroup]="educationDetailsForm" class="form-container" (ngSubmit)="onSubmitEducation()">
           <div class="form-row">
             <mat-form-field appearance="outline">
               <mat-label>10th Marks Percent</mat-label>
