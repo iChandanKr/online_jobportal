@@ -109,28 +109,6 @@ export class JobseekerProfileComponent implements OnInit {
 
       }
     })
-
-    // this.updateJobseekerService.getEducationDetails().subscribe({
-    //   next: data => {
-    //     console.log(data);
-
-    //   },
-    //   error: err => {
-    //     console.log(err);
-
-    //   }
-    // })
-
-    // this.updateJobseekerService.getJobseeker().subscribe({
-    //   next: data => {
-    //     console.log(data);
-    //   },
-    //   error: err => {
-    //     console.log(err);
-
-    //   }
-    // })
-
     this.populateJobSeekerProfile();
 
     this.populateEducationDetails()
@@ -140,18 +118,17 @@ export class JobseekerProfileComponent implements OnInit {
   private populateJobSeekerProfile() {
     this.updateJobseekerService.getJobseeker().subscribe({
       next: data => {
-        console.log(data);
-        
+        const jobseekerFetchedData = data.data
         this.jobSeekerProfileForm.patchValue({
-          firstName: data.firstName,
-          lastName: data.lastName,
-          email: data.email,
-          contact: data.contact,
-          dob: new Date(data.dob),  
-          city: data.city,
-          state: data.state,
-          pinCode: data.pinCode,
-          country: data.country
+          firstName: jobseekerFetchedData.firstName,
+          lastName: jobseekerFetchedData.lastName,
+          email: jobseekerFetchedData.email,
+          contact: jobseekerFetchedData.contact,
+          dob: new Date(jobseekerFetchedData.dob),
+          city: jobseekerFetchedData.city,
+          state: jobseekerFetchedData.state,
+          pinCode: jobseekerFetchedData.pinCode,
+          country: jobseekerFetchedData.country
         });
       },
       error: err => {
@@ -163,17 +140,19 @@ export class JobseekerProfileComponent implements OnInit {
   private populateEducationDetails() {
     this.updateJobseekerService.getEducationDetails().subscribe({
       next: data => {
+        const educationFetchData = data.data;
+
         this.educationDetailsForm.patchValue({
-          tenthMarksPercent: data.tenthMarksPercent,
-          tenthPassingYear: data.tenthPassingYear,
-          twelfthMarksPercent: data.twelfthMarksPercent,
-          twelfthPassingYear: data.twelfthPassingYear,
-          ugStream: data.ugStream,
-          ugBranch: data.ugBranch,
-          ugCGPA: data.ugCGPA,
-          ugPassingYear: data.ugPassingYear,
-          pgStream: data.pgStream,
-          pgPassingYear: data.pgPassingYear
+          tenthMarksPercent: educationFetchData.tenthMarksPercent,
+          tenthPassingYear: educationFetchData.tenthPassingYear,
+          twelfthMarksPercent: educationFetchData.twelfthMarksPercent,
+          twelfthPassingYear: educationFetchData.twelfthPassingYear,
+          ugStream: educationFetchData.ugStream,
+          ugBranch: educationFetchData.ugBranch,
+          ugCGPA: educationFetchData.ugCGPA,
+          ugPassingYear: educationFetchData.ugPassingYear,
+          pgStream: educationFetchData.pgStream,
+          pgPassingYear: educationFetchData.pgPassingYear
         });
       },
       error: err => {
