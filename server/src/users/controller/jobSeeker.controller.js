@@ -38,7 +38,7 @@ const findJobseeker = async (req, res, next) => {
 };
 const updateJobseeker = async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const id = req.user.id;
     const userData = req.body;
 
     const updatedUser = await JobseekerService.updateJobseekerService(
@@ -107,6 +107,24 @@ const getEducationDetails = async (req, res, next) => {
   }
 };
 
+const updateEducationDetails = async (req, res, next) => {
+  try {
+    const updatedDetails = await JobseekerService.updateEducationDetailsService(
+      req.user.id,
+      req.body
+    );
+
+    respondOk(
+      res,
+      200,
+      "Education Details Updated Successfuly!",
+      updatedDetails
+    );
+  } catch (error) {
+    next(error);
+  }
+}
+
 const getJobseekerDetails = async (req, res, next) => {
   try {
     const jobSeekerSkills = await JobseekerService.getJobseekerDetailService(
@@ -139,4 +157,5 @@ module.exports = {
   getEducationDetails,
   getJobseekerDetails,
   getJobseekerSkills,
+  updateEducationDetails,
 };

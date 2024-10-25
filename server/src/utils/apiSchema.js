@@ -502,15 +502,14 @@ const addEducationSchema = Joi.object({
       "number.integer": "Under graduate passing year must be an integer.",
       "any.required": "Please enter under graduate passing year.",
     }),
-  pgStream: Joi.string().max(200).optional().messages({
+  pgStream: Joi.string().max(200).optional().allow(null,'').messages({
     "string.base": "Post graduate stream must be a string.",
-    "string.empty": "Post graduate stream cannot be empty.",
   }),
   pgPassingYear: Joi.number()
-    .integer()
     .min(1900)
     .max(new Date().getFullYear())
     .optional()
+    .allow(null,'')
     .messages({
       "number.base": "Post graduate passing year must be a number.",
       "number.integer": "Post graduate passing year must be an integer.",

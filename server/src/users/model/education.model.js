@@ -93,12 +93,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     pgStream: {
       type: DataTypes.STRING(200),
+      allowNull:true,
       set(value) {
         this.setDataValue("pgStream", value?.trim());
       },
     },
     pgPassingYear: {
       type: DataTypes.INTEGER,
+      allowNull:true,
       validate: {
         isInt: true,
         min: 1900,

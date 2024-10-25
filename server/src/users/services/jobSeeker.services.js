@@ -5,6 +5,7 @@ const {
   addEducationDB,
   addSkillsDb,
   getEducationDetailsDb,
+  updateEducationDetailsDb,
   jobseekerDetailsDB,
   jobSeekerSkills,
 } = require("../repo/jobSeeker.repo");
@@ -69,6 +70,10 @@ class JobseekerService {
     console.log(skills);
     return skills;
   };
+
+  static updateEducationDetailsService=async(userId,educationDetails)=>{
+    return await updateEducationDetailsDb(userId,educationDetails)
+  }
 }
 
 module.exports = JobseekerService;

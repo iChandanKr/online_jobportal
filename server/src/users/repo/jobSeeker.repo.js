@@ -66,6 +66,12 @@ const getEducationDetailsDb = async (userId) => {
   return educationDetails;
 };
 
+const updateEducationDetailsDb = async (userId, educationDetails) => {
+  return await Education.update(educationDetails, {
+    where: { userId },
+  });
+};
+
 const jobseekerDetailsDB = async (userId) => {
   return User.findOne({
     where: {
@@ -116,6 +122,7 @@ const checkSkillDB = async (userId) => {
     },
   });
 };
+
 module.exports = {
   createJobseekerDb,
   findJobseekerDB,
@@ -126,4 +133,5 @@ module.exports = {
   jobseekerDetailsDB,
   jobSeekerSkills,
   checkSkillDB,
+  updateEducationDetailsDb,
 };

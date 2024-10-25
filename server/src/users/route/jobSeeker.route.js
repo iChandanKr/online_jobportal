@@ -6,6 +6,7 @@ const {
   addEducationDetails,
   addSkills,
   getEducationDetails,
+  updateEducationDetails,
   getJobseekerDetails,
   getJobseekerSkills,
 } = require("../controller/jobSeeker.controller");
@@ -25,8 +26,8 @@ router
   .route("/jobseeker")
   .get(authMiddleware, checkJobseekerRole, findJobseeker);
 router
-  .route("/update-jobseeker/:id")
-  .put(updateJobseekerValidation, updateJobseeker);
+  .route("/update-jobseeker")
+  .put(updateJobseekerValidation,authMiddleware,checkJobseekerRole, updateJobseeker);
 router
   .route("/add-educationDetails")
   .post(
@@ -41,6 +42,7 @@ router
 router
   .route("/get-educationDetails")
   .get(authMiddleware, checkJobseekerRole, getEducationDetails);
+router.route('/update-educationDetails').put(authMiddleware,checkJobseekerRole,updateEducationDetails)
 router
   .route("/jobseeker-skills")
   .get(authMiddleware, checkJobseekerRole, getJobseekerSkills);
