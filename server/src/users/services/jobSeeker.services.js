@@ -4,7 +4,8 @@ const {
   updateJobseekerDb,
   addEducationDB,
   addSkillsDb,
-  getEducationDetailsDb
+  getEducationDetailsDb,
+  jobseekerDetailsDB,
 } = require("../repo/jobSeeker.repo");
 const { generateAccessToken } = require("../../utils/tokenGenerator");
 const { dataModel } = require("../../dbConnection");
@@ -50,9 +51,17 @@ class JobseekerService {
     return await addSkillsDb(userId, skills);
   };
 
-  static getEducationDetailsService=async(userId)=>{
-    return await getEducationDetailsDb(userId)
-  }
+  static getEducationDetailsService = async (userId) => {
+    return await getEducationDetailsDb(userId);
+  };
+  static getJobseekerDetailService = async (userId) => {
+    const skills = await jobseekerDetailsDB(userId);
+    const jobseekerSkills = skills.Skills.map((skill) => {
+      return { id: skill.id, name: skill.skillName };
+    });
+    console.log(jobseekerSkills);
+    return skills;
+  };
 }
 
 module.exports = JobseekerService;

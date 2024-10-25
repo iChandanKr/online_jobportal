@@ -1,5 +1,5 @@
 const { dataModel } = require("../../dbConnection");
-const { Role, UserRole, User, Education, UserSkills } = dataModel;
+const { Role, UserRole, User, Education, UserSkills, Skill } = dataModel;
 
 const createJobseekerDb = async (userData, t) => {
   const role = await Role.findOne({
@@ -66,6 +66,32 @@ const getEducationDetailsDb = async (userId) => {
   return educationDetails;
 };
 
+const jobseekerDetailsDB = async (userId) => {
+  return User.findOne({
+    where: {
+      id: userId,
+    },
+    attributes: {
+      exclude: ["password", "passwordChangedAt", "createdAt", "updatedAt"],
+    },
+    include: [
+      {
+        model: Skill,
+        through: {
+          attributes: [],
+        },
+      },
+      {
+        model: Education,
+        as: "Education_Details",
+        attributes: {
+          exclude: ["id", "createdAt", "updatedAt", "userId"],
+        },
+      },
+    ],
+  });
+};
+
 module.exports = {
   createJobseekerDb,
   findJobseekerDB,
@@ -73,4 +99,5 @@ module.exports = {
   addEducationDB,
   addSkillsDb,
   getEducationDetailsDb,
+  jobseekerDetailsDB,
 };
