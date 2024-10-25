@@ -87,6 +87,7 @@ const updatePasswordValidation = (req, res, next) => {
 };
 
 const addEducationValidation = (req, res, next) => {
+
   const { error } = addEducationSchema.validate(req.body);
   if (error) {
     next(new CustomError(error.message, 400));

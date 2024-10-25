@@ -16,7 +16,8 @@ const registerJobseeker = async (req, res, next) => {
 };
 
 const findJobseeker = async (req, res, next) => {
-  const id = req.params.id;
+  const id = req.user.id;
+
   if (id) {
     const isvalid = uuid.validate(id) && uuid.version(id) === 4;
     if (!isvalid) {
@@ -25,12 +26,10 @@ const findJobseeker = async (req, res, next) => {
   }
 
   try {
-    const jobSeeker = await JobseekerService.findJobseekerService(
-      req.params.id
-    );
+    const jobSeeker = await JobseekerService.findJobseekerService(id);
     res.status(200).json({
       status: "success",
-      message: "User Created successfully",
+      message: "User Retrieved successfully",
       data: jobSeeker,
     });
   } catch (err) {
@@ -91,10 +90,28 @@ const addSkills = async (req, res, next) => {
   }
 };
 
+const getEducationDetails = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const educationDetails = await JobseekerService.getEducationDetailsService(
+      userId
+    );
+    respondOk(
+      res,
+      200,
+      "[Education Details Retrieved Successfully]",
+      educationDetails
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registerJobseeker,
   findJobseeker,
   updateJobseeker,
   addEducationDetails,
   addSkills,
+  getEducationDetails,
 };

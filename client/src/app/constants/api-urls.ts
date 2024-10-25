@@ -19,4 +19,6 @@ export const API_URLS = {
   getJobWithSkills: `${environment.apiUrl}/job/job-details`,
   jobsUserCanApply: `${environment.apiUrl}/job/jobs-userCanApply`,
   applyJob: `${environment.apiUrl}/job/apply-job`,
+  getEducationDetails:`${environment.apiUrl}/users/get-educationDetails`,
+  getJobseeker:`${environment.apiUrl}/users/jobseeker`
 };

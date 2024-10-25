@@ -73,7 +73,7 @@
     
             <mat-form-field appearance="outline">
               <mat-label>10th Passing Year</mat-label>
-              <input matInput formControlName="tenthPassingYear" placeholder="Enter 10th passing year" type="number">
+              <input matInput formControlName="tenthPassingYear" placeholder="Enter 10th passing year" type="number" min="1990" >
             </mat-form-field>
           </div>
     
@@ -85,7 +85,7 @@
     
             <mat-form-field appearance="outline">
               <mat-label>12th Passing Year</mat-label>
-              <input matInput formControlName="twelfthPassingYear" placeholder="Enter 12th passing year" type="number">
+              <input matInput formControlName="twelfthPassingYear" placeholder="Enter 12th passing year" type="number" min="1990">
             </mat-form-field>
           </div>
     
@@ -109,14 +109,14 @@
     
             <mat-form-field appearance="outline">
               <mat-label>UG Passing Year</mat-label>
-              <input matInput formControlName="ugPassingYear" placeholder="Enter UG passing year" type="number">
+              <input matInput formControlName="ugPassingYear" placeholder="Enter UG passing year" type="number" min="1990">
             </mat-form-field>
           </div>
     
           <div class="form-row">
             <mat-form-field appearance="outline">
               <mat-label>PG Stream (optional)</mat-label>
-              <input matInput formControlName="pgStream" placeholder="Enter PG stream">
+              <input matInput formControlName="pgStream" placeholder="Enter PG stream" min="1990">
             </mat-form-field>
     
             <mat-form-field appearance="outline">

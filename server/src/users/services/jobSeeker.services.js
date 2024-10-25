@@ -4,6 +4,7 @@ const {
   updateJobseekerDb,
   addEducationDB,
   addSkillsDb,
+  getEducationDetailsDb
 } = require("../repo/jobSeeker.repo");
 const { generateAccessToken } = require("../../utils/tokenGenerator");
 const { dataModel } = require("../../dbConnection");
@@ -48,6 +49,10 @@ class JobseekerService {
   static addSkillsService = async (userId, skills) => {
     return await addSkillsDb(userId, skills);
   };
+
+  static getEducationDetailsService=async(userId)=>{
+    return await getEducationDetailsDb(userId)
+  }
 }
 
 module.exports = JobseekerService;
