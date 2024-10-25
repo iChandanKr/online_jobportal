@@ -5,7 +5,9 @@ const {
   updateJobseeker,
   addEducationDetails,
   addSkills,
-  getEducationDetails
+  getEducationDetails,
+  getJobseekerDetails,
+  getJobseekerSkills,
 } = require("../controller/jobSeeker.controller");
 const {
   registerJobseekerValidation,
@@ -19,7 +21,9 @@ const router = express.Router();
 router
   .route("/register-jobseeker")
   .post(registerJobseekerValidation, registerJobseeker);
-router.route("/jobseeker").get(authMiddleware,checkJobseekerRole,findJobseeker);
+router
+  .route("/jobseeker")
+  .get(authMiddleware, checkJobseekerRole, findJobseeker);
 router
   .route("/update-jobseeker/:id")
   .put(updateJobseekerValidation, updateJobseeker);
@@ -29,13 +33,18 @@ router
     addEducationValidation,
     authMiddleware,
     checkJobseekerRole,
-    addEducationDetails,
-    
+    addEducationDetails
   );
 router
   .route("/add-skills")
   .post(addSkillValidation, authMiddleware, checkJobseekerRole, addSkills);
-router.
-  route("/get-educationDetails").get(authMiddleware,checkJobseekerRole,getEducationDetails);
+router
+  .route("/get-educationDetails")
+  .get(authMiddleware, checkJobseekerRole, getEducationDetails);
+router
+  .route("/jobseeker-skills")
+  .get(authMiddleware, checkJobseekerRole, getJobseekerSkills);
+
+router.route("/jobseeker-details").get(authMiddleware, getJobseekerDetails);
 
 module.exports = router;

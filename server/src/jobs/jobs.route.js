@@ -12,6 +12,8 @@ const {
   jobsUserCanApply,
 } = require("./jobs.controller");
 const authMiddleware = require("../middleware/auth.middleware");
+const checkEduMiddleware = require("../middleware/checkEducation.middleware");
+const checkSkillMiddleware = require("../middleware/checkSkill.middleware");
 const checkEmployerRole = require("../middleware/checkEmployerRole.middleware");
 const {
   jobPostValidation,
@@ -33,7 +35,14 @@ router.route("/getJob/:id").get(authMiddleware, checkEmployerRole, getJobById);
 router.route("/job-details/:id").get(getJobDetails);
 router
   .route("/apply-job")
-  .post(applyJobValidation, authMiddleware, checkJobseekerRole, applyJob);
+  .post(
+    applyJobValidation,
+    authMiddleware,
+    checkJobseekerRole,
+    checkEduMiddleware,
+    checkSkillMiddleware,
+    applyJob
+  );
 router.route("/jobs-opening").get(getAllOpenJobs);
 router.route("/jobs-userCanApply").get(authMiddleware, jobsUserCanApply);
 module.exports = router;
