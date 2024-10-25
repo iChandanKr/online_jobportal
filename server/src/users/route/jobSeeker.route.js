@@ -7,6 +7,7 @@ const {
   addSkills,
   getEducationDetails,
   getJobseekerDetails,
+  getJobseekerSkills,
 } = require("../controller/jobSeeker.controller");
 const {
   registerJobseekerValidation,
@@ -40,6 +41,9 @@ router
 router
   .route("/get-educationDetails")
   .get(authMiddleware, checkJobseekerRole, getEducationDetails);
+router
+  .route("/jobseeker-skills")
+  .get(authMiddleware, checkJobseekerRole, getJobseekerSkills);
 
 router.route("/jobseeker-details").get(authMiddleware, getJobseekerDetails);
 

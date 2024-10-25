@@ -119,6 +119,17 @@ const getJobseekerDetails = async (req, res, next) => {
     next(error);
   }
 };
+
+const getJobseekerSkills = async (req, res, next) => {
+  try {
+    const skills = await JobseekerService.getJobseekerSkills(req.user.id);
+    if (skills) {
+      respondOk(res, 200, "[Details of Jobseeker Skills]", skills);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   registerJobseeker,
   findJobseeker,
@@ -127,4 +138,5 @@ module.exports = {
   addSkills,
   getEducationDetails,
   getJobseekerDetails,
+  getJobseekerSkills,
 };

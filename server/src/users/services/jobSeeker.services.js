@@ -6,6 +6,7 @@ const {
   addSkillsDb,
   getEducationDetailsDb,
   jobseekerDetailsDB,
+  jobSeekerSkills,
 } = require("../repo/jobSeeker.repo");
 const { generateAccessToken } = require("../../utils/tokenGenerator");
 const { dataModel } = require("../../dbConnection");
@@ -55,11 +56,17 @@ class JobseekerService {
     return await getEducationDetailsDb(userId);
   };
   static getJobseekerDetailService = async (userId) => {
-    const skills = await jobseekerDetailsDB(userId);
-    const jobseekerSkills = skills.Skills.map((skill) => {
+    const jobseekerDetails = await jobseekerDetailsDB(userId);
+
+    return jobseekerDetails;
+  };
+
+  static getJobseekerSkills = async (userId) => {
+    const jobseekerSkills = await jobSeekerSkills(userId);
+    const skills = jobseekerSkills.Skills.map((skill) => {
       return { id: skill.id, name: skill.skillName };
     });
-    console.log(jobseekerSkills);
+    console.log(skills);
     return skills;
   };
 }

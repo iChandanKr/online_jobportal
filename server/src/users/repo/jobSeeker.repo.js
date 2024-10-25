@@ -92,6 +92,30 @@ const jobseekerDetailsDB = async (userId) => {
   });
 };
 
+const jobSeekerSkills = async (userId) => {
+  return User.findOne({
+    where: {
+      id: userId,
+    },
+    attributes: [],
+    include: [
+      {
+        model: Skill,
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+  });
+};
+
+const checkSkillDB = async (userId) => {
+  return await UserSkills.findOne({
+    where: {
+      UserId: userId,
+    },
+  });
+};
 module.exports = {
   createJobseekerDb,
   findJobseekerDB,
@@ -100,4 +124,6 @@ module.exports = {
   addSkillsDb,
   getEducationDetailsDb,
   jobseekerDetailsDB,
+  jobSeekerSkills,
+  checkSkillDB,
 };
