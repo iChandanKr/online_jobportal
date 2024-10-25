@@ -286,20 +286,25 @@ export class JobseekerProfileComponent implements OnInit {
 
   onSubmitEducation() {
     const data = this.educationDetailsForm.value;
+    const pgPassingYear = data.pgPassingYear ? data.pgPassingYear : null;
+    const pgStream = data.pgStream ? data.pgStream : null
+    const payload = { ...data, pgPassingYear, pgStream }
 
     if (this.isEducationDataAvailable) {
-      this.updateJobseekerService.updateEducationDetails(data).subscribe({
+      this.updateJobseekerService.updateEducationDetails(payload).subscribe({
         next: (response) => {
           console.log('Education Details updated successfully', response);
+          this.isEducationDataAvailable = true;
         },
         error: (err) => {
           console.log('Error updating education details', err);
         }
       });
     } else {
-      this.updateJobseekerService.addEducationDetails(data).subscribe({
+      this.updateJobseekerService.addEducationDetails(payload).subscribe({
         next: (response) => {
           console.log("Education details added successfully!", response);
+          this.isEducationDataAvailable = true;
         },
         error: (err) => {
           console.log("Error in adding education details", err);
