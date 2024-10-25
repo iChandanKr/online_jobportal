@@ -19,6 +19,7 @@ const registerEmployer = async (req, res, next) => {
 const updateEmployer = async (req, res, next) => {
   try {
     const id = req.user.id;
+
     const employersData = req.body;
 
     const updatedEmployerData = await EmployerService.updateEmployerService(

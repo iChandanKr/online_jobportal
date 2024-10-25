@@ -59,10 +59,18 @@ const addSkillsDb = async (userId, skills) => {
   return await UserSkills.bulkCreate(userSkills);
 };
 
+const getEducationDetailsDb = async (userId) => {
+  const educationDetails = await Education.findOne({
+    where: { userId },
+  });
+  return educationDetails;
+};
+
 module.exports = {
   createJobseekerDb,
   findJobseekerDB,
   updateJobseekerDb,
   addEducationDB,
   addSkillsDb,
+  getEducationDetailsDb,
 };

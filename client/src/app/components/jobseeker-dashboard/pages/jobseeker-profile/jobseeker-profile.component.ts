@@ -16,6 +16,7 @@ import { AsyncPipe, NgFor } from '@angular/common';
 import { PostJobService } from '../../../../services/post-job.service';
 import { Skill } from '../../../../model/skill.model';
 import { log } from 'console';
+import { UpdateJobseekerService } from '../../../../services/update-jobseeker.service';
 
 @Component({
   selector: 'app-jobseeker-profile',
@@ -49,36 +50,45 @@ export class JobseekerProfileComponent implements OnInit {
   filteredSkills!: Observable<Skill[]>;
   selectedSkills: Skill[] = [];
   skillAutocomplete = new FormControl('');
-  constructor(private fb: FormBuilder, private postJobService: PostJobService) { }
+  constructor(private fb: FormBuilder, private postJobService: PostJobService,
+    private updateJobseekerService: UpdateJobseekerService) { }
 
   ngOnInit() {
-    this.jobSeekerProfileForm = this.fb.group({
-      firstName: ['', [Validators.required]],
-      lastName: [''],
-      email: ['', [Validators.required, Validators.email]],
-      contact: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
-      dob: ['', [Validators.required]],
-      city: ['', [Validators.required]],
-      state: ['', [Validators.required]],
-      pinCode: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]],
-      country: ['', [Validators.required]],
+    this.jobSeekerProfileForm = new FormGroup({
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl(''),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      contact: new FormControl('', [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(10)
+      ]),
+      dob: new FormControl('', [Validators.required]),
+      city: new FormControl('', [Validators.required]),
+      state: new FormControl('', [Validators.required]),
+      pinCode: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(6)
+      ]),
+      country: new FormControl('', [Validators.required]),
     });
 
     this.educationDetailsForm = this.fb.group({
       tenthMarksPercent: ['', [Validators.required, Validators.min(0), Validators.max(100)]],
-      tenthPassingYear: ['', [Validators.required, Validators.min(1900), Validators.max(new Date().getFullYear())]],
+      tenthPassingYear: ['', [Validators.required, Validators.min(1990), Validators.max(new Date().getFullYear())]],
       twelfthMarksPercent: ['', [Validators.required, Validators.min(0), Validators.max(100)]],
-      twelfthPassingYear: ['', [Validators.required, Validators.min(1900), Validators.max(new Date().getFullYear())]],
+      twelfthPassingYear: ['', [Validators.required, Validators.min(1990), Validators.max(new Date().getFullYear())]],
       ugStream: ['', [Validators.required, Validators.maxLength(200)]],
       ugBranch: ['', [Validators.required, Validators.maxLength(200)]],
       ugCGPA: ['', [Validators.required, Validators.min(1), Validators.max(10)]],
-      ugPassingYear: ['', [Validators.required, Validators.min(1900), Validators.max(new Date().getFullYear())]],
+      ugPassingYear: ['', [Validators.required, Validators.min(1990), Validators.max(new Date().getFullYear())]],
       pgStream: ['', [Validators.maxLength(200)]],
-      pgPassingYear: ['', [Validators.min(1900), Validators.max(new Date().getFullYear())]],
+      pgPassingYear: ['', [Validators.min(1990), Validators.max(new Date().getFullYear())]],
     });
     this.skillsForm = this.fb.group({
       selectedSkill: [''],
-      skillAutocomplete:this.skillAutocomplete
+      skillAutocomplete: this.skillAutocomplete
     });
     this.filteredSkills = this.skillsForm.get('skillAutocomplete')!.valueChanges.pipe(
       startWith(''),
@@ -99,6 +109,77 @@ export class JobseekerProfileComponent implements OnInit {
 
       }
     })
+
+    // this.updateJobseekerService.getEducationDetails().subscribe({
+    //   next: data => {
+    //     console.log(data);
+
+    //   },
+    //   error: err => {
+    //     console.log(err);
+
+    //   }
+    // })
+
+    // this.updateJobseekerService.getJobseeker().subscribe({
+    //   next: data => {
+    //     console.log(data);
+    //   },
+    //   error: err => {
+    //     console.log(err);
+
+    //   }
+    // })
+
+    this.populateJobSeekerProfile();
+
+    this.populateEducationDetails()
+  }
+
+
+  private populateJobSeekerProfile() {
+    this.updateJobseekerService.getJobseeker().subscribe({
+      next: data => {
+        console.log(data);
+        
+        this.jobSeekerProfileForm.patchValue({
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          contact: data.contact,
+          dob: new Date(data.dob),  
+          city: data.city,
+          state: data.state,
+          pinCode: data.pinCode,
+          country: data.country
+        });
+      },
+      error: err => {
+        console.log(err);
+      }
+    });
+  }
+
+  private populateEducationDetails() {
+    this.updateJobseekerService.getEducationDetails().subscribe({
+      next: data => {
+        this.educationDetailsForm.patchValue({
+          tenthMarksPercent: data.tenthMarksPercent,
+          tenthPassingYear: data.tenthPassingYear,
+          twelfthMarksPercent: data.twelfthMarksPercent,
+          twelfthPassingYear: data.twelfthPassingYear,
+          ugStream: data.ugStream,
+          ugBranch: data.ugBranch,
+          ugCGPA: data.ugCGPA,
+          ugPassingYear: data.ugPassingYear,
+          pgStream: data.pgStream,
+          pgPassingYear: data.pgPassingYear
+        });
+      },
+      error: err => {
+        console.log(err);
+      }
+    });
   }
 
   private setupFilteredSkills() {
@@ -110,12 +191,12 @@ export class JobseekerProfileComponent implements OnInit {
 
   private filterSkills(value: string | Skill | null): Skill[] {
     if (!value) return this.allSkills;
-    
+
     const searchValue = typeof value === 'string' ? value : value.skillName;
     const filterValue = searchValue.toLowerCase();
-    
-    
-    return this.allSkills.filter(skill => 
+
+
+    return this.allSkills.filter(skill =>
       skill.skillName.toLowerCase().includes(filterValue) &&
       !this.selectedSkills.some(selected => selected.id === skill.id)
     );
@@ -125,7 +206,7 @@ export class JobseekerProfileComponent implements OnInit {
     const filterValue = value.toLowerCase();
     // Filter available skills that aren't already selected
     return this.allSkills
-      .filter(skill => 
+      .filter(skill =>
         skill.skillName.toLowerCase().includes(filterValue) &&
         !this.selectedSkills.some(selected => selected.id === skill.id)
       );
@@ -136,7 +217,7 @@ export class JobseekerProfileComponent implements OnInit {
 
     if (value) {
       // Find the skill object from allSkills
-      const skillToAdd = this.allSkills.find(skill => 
+      const skillToAdd = this.allSkills.find(skill =>
         skill.skillName.toLowerCase() === value.toLowerCase() &&
         !this.selectedSkills.some(selected => selected.id === skill.id)
       );
@@ -162,7 +243,7 @@ export class JobseekerProfileComponent implements OnInit {
     if (!this.selectedSkills.some(skill => skill.id === selectedSkill.id)) {
       this.selectedSkills.push(selectedSkill);
       console.log(this.selectedSkills);
-      
+
     }
     this.skillsForm.get('skillAutocomplete')!.setValue(null);
   }
@@ -182,8 +263,8 @@ export class JobseekerProfileComponent implements OnInit {
       // };
       const skillsPayload = this.selectedSkills.map(skill => skill.id);
       console.log(skillsPayload);
-      
-  
+
+
       // Add your API call here
       // this.postJobService.saveJobSeekerSkills(skillsPayload).subscribe({
       //   next: (response) => {

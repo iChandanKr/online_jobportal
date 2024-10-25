@@ -5,6 +5,7 @@ const { CustomError } = require("../utils/apiResponse");
 const checkEmployerRole = async (req, res, next) => {
   try {
     const userId = req.user.id;
+
     const employer = await Employer.findOne({
       where: { userId: userId },
     });
