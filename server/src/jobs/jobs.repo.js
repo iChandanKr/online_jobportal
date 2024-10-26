@@ -179,7 +179,7 @@ const jobWithSkillDetails = async (id) => {
   });
 };
 
-const applicantOFaJob = async (id, searchFields, orderBy) => {
+const applicantOFaJob = async (id, orderBy) => {
   const sorting = orderBy.map((item) => {
     item.unshift(User);
     return item;

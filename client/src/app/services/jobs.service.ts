@@ -3,6 +3,7 @@ import { Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_URLS } from '../constants/api-urls';
 import { type JobResponse } from '../model/job.model';
+import { type Applicant } from '../model/jobseeker.model';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,7 @@ export class JobsService {
   private readonly jobWithSkillUrl = API_URLS.getJobWithSkills;
   private readonly jobsUserCanApplyUrl = API_URLS.jobsUserCanApply;
   private readonly applyJobUrl = API_URLS.applyJob;
+  private readonly fetchApplicants = API_URLS.fetchAllApplicantsOfJob;
   queryStr = signal('');
   constructor(private httpClient: HttpClient) {}
 
@@ -91,5 +93,15 @@ export class JobsService {
         withCredentials: true,
       }
     );
+  }
+
+  getApplicantsOfJob(id: string): Observable<any> {
+    const apiUrl = `${this.fetchApplicants}/${id}`;
+    console.log(apiUrl);
+    return this.httpClient.get<{
+      status: string;
+      message: string;
+      data: Applicant[];
+    }>(apiUrl, { withCredentials: true });
   }
 }
