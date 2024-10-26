@@ -10,6 +10,7 @@ const {
   getJobByIdDB,
   jobWithSkillDetails,
   jobsToApplyDB,
+  applicantOFaJob,
 } = require("./jobs.repo");
 const { sort, limitFields, search, paginate } = require("../utils/apiFeatures");
 
@@ -119,6 +120,20 @@ class JobService {
       searchFields = search(searchFields);
     }
     return await jobsToApplyDB(req.user.id, searchFields);
+  };
+
+  static applicantOfAjobService = async (req) => {
+    let orderBy;
+    let searchFields = req.query.search || "%";
+    if (req.query.search) {
+      searchFields = search(searchFields);
+    }
+    if (req.query.sort) {
+      orderBy = sort(req.query.sort);
+    } else {
+      orderBy = sort("-updatedAt");
+    }
+    return await applicantOFaJob(req.params.id, searchFields, orderBy);
   };
 }
 module.exports = JobService;

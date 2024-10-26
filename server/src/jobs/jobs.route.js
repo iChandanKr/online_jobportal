@@ -10,6 +10,7 @@ const {
   getJobById,
   getJobDetails,
   jobsUserCanApply,
+  applicantOfAJob,
 } = require("./jobs.controller");
 const authMiddleware = require("../middleware/auth.middleware");
 const checkEduMiddleware = require("../middleware/checkEducation.middleware");
@@ -45,4 +46,7 @@ router
   );
 router.route("/jobs-opening").get(getAllOpenJobs);
 router.route("/jobs-userCanApply").get(authMiddleware, jobsUserCanApply);
+router
+  .route("/applicants/:id")
+  .get(authMiddleware, checkEmployerRole, applicantOfAJob);
 module.exports = router;
