@@ -1,5 +1,5 @@
 const { dataModel } = require("../dbConnection");
-const { JobPost, JobSkills, Application, Skill } = dataModel;
+const { JobPost, JobSkills, Application, Skill, User } = dataModel;
 const { Op } = require("sequelize");
 const createJobPostDb = async (jobPostData, t) => {
   const newJobData = await JobPost.create(
@@ -178,6 +178,28 @@ const jobWithSkillDetails = async (id) => {
     ],
   });
 };
+
+const applicantOFaJob = async (id, searchFields, orderBy) => {
+  const sorting = orderBy.map((item) => {
+    item.unshift(User);
+    return item;
+  });
+  return JobPost.findByPk(id, {
+    attributes: [],
+    include: {
+      model: User,
+      attributes: {
+        exclude: ["password", "passwordChangedAt", "createdAt", "updatedAt"],
+      },
+      through: {
+        attributes: ["updatedAt"],
+      },
+    },
+    order: sorting, // to produce [ [ User, 'firstName', 'ASC' ], [ User, 'lastName', 'ASC' ] ]
+
+    // logging: console.log,
+  });
+};
 module.exports = {
   createJobPostDb,
   getAllJobsDB,
@@ -188,4 +210,5 @@ module.exports = {
   getJobByIdDB,
   jobWithSkillDetails,
   jobsToApplyDB,
+  applicantOFaJob,
 };

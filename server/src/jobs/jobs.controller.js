@@ -118,6 +118,17 @@ const jobsUserCanApply = async (req, res, next) => {
   }
 };
 
+const applicantOfAJob = async (req, res, next) => {
+  try {
+    const applicants = await JobService.applicantOfAjobService(req);
+    if (applicants) {
+      respondOk(res, 200, "All applicants of this jobs.", applicants);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createJobPost,
   getAllJobs,
@@ -128,4 +139,5 @@ module.exports = {
   getJobById,
   getJobDetails,
   jobsUserCanApply,
+  applicantOfAJob,
 };
