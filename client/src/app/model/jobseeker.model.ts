@@ -37,3 +37,8 @@ export interface JobSeekerDetails {
     pinCode: string;
     country: string;
 }
+
+export interface skills{
+    id:string;
+    skillName:string;
+}

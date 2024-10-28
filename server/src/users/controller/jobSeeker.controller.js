@@ -123,7 +123,7 @@ const updateEducationDetails = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 const getJobseekerDetails = async (req, res, next) => {
   try {

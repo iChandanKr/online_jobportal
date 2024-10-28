@@ -114,6 +114,17 @@ export class JobseekerProfileComponent implements OnInit {
     this.populateJobSeekerProfile();
 
     this.populateEducationDetails();
+
+    this.updateJobseekerService.getSkillsJobseeker().subscribe({
+      next:data=>{
+        console.log('Skills fetched successfully',data);
+        
+      },
+      error:err=>{
+        console.log('Error fetching skills',err);
+        
+      }
+    })
   }
 
 
@@ -244,15 +255,21 @@ export class JobseekerProfileComponent implements OnInit {
   onSubmitSkills() {
     if (this.selectedSkills.length > 0) {
       // Create the payload with selected skills
-      // const skillsPayload = {
-      //   skills: this.selectedSkills.map(skill => ({
-      //     skillId: skill.id,
-      //     skillName: skill.skillName
-      //   }))
-      // };
-      const skillsPayload = this.selectedSkills.map(skill => skill.id);
-      console.log(skillsPayload);
+      const skillsPayload = {
+        skills: this.selectedSkills.map(skill => skill.id)
+      };
+      // const skillsPayload = this.selectedSkills.map(skill => skill.id);
+      // console.log(skillsPayload);
 
+      this.updateJobseekerService.addSkillsJobseeker(skillsPayload).subscribe({
+        next:(response)=>{
+          console.log('Skills saved successfully',response); 
+        },
+        error:(err)=>{
+          console.log('Error adding skills',err);
+          
+        }
+      })
 
       // Add your API call here
       // this.postJobService.saveJobSeekerSkills(skillsPayload).subscribe({

@@ -38,7 +38,7 @@ router
   );
 router
   .route("/add-skills")
-  .post(addSkillValidation, authMiddleware, checkJobseekerRole, addSkills);
+  .post(addSkillValidation,authMiddleware, checkJobseekerRole, addSkills);
 router
   .route("/get-educationDetails")
   .get(authMiddleware, checkJobseekerRole, getEducationDetails);
