@@ -123,6 +123,17 @@ const checkSkillDB = async (userId) => {
   });
 };
 
+const updateJobseekerSkillsDb = async (userId, skills) => {
+  await UserSkills.destroy({
+    where: { UserId: userId },
+  });
+  const userSkills = skills.map((skillId) => ({
+    UserId: userId,
+    SkillId: skillId,
+  }));
+  return await UserSkills.bulkCreate(userSkills);
+};
+
 module.exports = {
   createJobseekerDb,
   findJobseekerDB,
@@ -134,4 +145,5 @@ module.exports = {
   jobSeekerSkills,
   checkSkillDB,
   updateEducationDetailsDb,
+  updateJobseekerSkillsDb,
 };

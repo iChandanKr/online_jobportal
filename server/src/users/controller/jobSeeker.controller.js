@@ -83,7 +83,7 @@ const addSkills = async (req, res, next) => {
       req.body.skills
     );
     if (addedSkills) {
-      respondOk(res, 201, "[Skill AddeaddSkillsd successfylly]", addedSkills);
+      respondOk(res, 201, "[Skill added successfully]", addedSkills);
     }
   } catch (error) {
     next(error);
@@ -123,7 +123,7 @@ const updateEducationDetails = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 const getJobseekerDetails = async (req, res, next) => {
   try {
@@ -148,6 +148,20 @@ const getJobseekerSkills = async (req, res, next) => {
     next(error);
   }
 };
+
+const updateJobseekerSkills = async (req, res, next) => {
+  try {
+    const { skills } = req.body;
+    const updatedSkills = await JobseekerService.updateJobseekerSkillsService(
+      req.user.id,
+      skills
+    );
+    respondOk(res, 200, "Skills Updated successfully", updatedSkills);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registerJobseeker,
   findJobseeker,
@@ -158,4 +172,5 @@ module.exports = {
   getJobseekerDetails,
   getJobseekerSkills,
   updateEducationDetails,
+  updateJobseekerSkills,
 };
