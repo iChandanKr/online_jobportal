@@ -17,7 +17,7 @@ import { PostJobService } from '../../../../services/post-job.service';
 import { Skill } from '../../../../model/skill.model';
 import { log } from 'console';
 import { UpdateJobseekerService } from '../../../../services/update-jobseeker.service';
-import { response } from 'express';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-jobseeker-profile',
@@ -52,8 +52,9 @@ export class JobseekerProfileComponent implements OnInit {
   selectedSkills: Skill[] = [];
   skillAutocomplete = new FormControl('');
   isEducationDataAvailable: boolean = false;
+  hasExistingSkills: boolean = false;
   constructor(private fb: FormBuilder, private postJobService: PostJobService,
-    private updateJobseekerService: UpdateJobseekerService) { }
+    private updateJobseekerService: UpdateJobseekerService, private toaster: ToastrService) { }
 
   ngOnInit() {
     this.jobSeekerProfileForm = new FormGroup({
@@ -114,6 +115,9 @@ export class JobseekerProfileComponent implements OnInit {
     this.populateJobSeekerProfile();
 
     this.populateEducationDetails();
+
+    this.populateSkills();
+
   }
 
 
@@ -167,6 +171,25 @@ export class JobseekerProfileComponent implements OnInit {
       error: err => {
         console.log(err);
         this.isEducationDataAvailable = false;
+      }
+    });
+  }
+
+  private populateSkills() {
+    this.updateJobseekerService.getSkillsJobseeker().subscribe({
+      next: (data) => {
+        const skillsFetchedData = data.data;
+        this.selectedSkills = skillsFetchedData;
+        this.hasExistingSkills = skillsFetchedData && skillsFetchedData.length > 0
+
+        const skillNames = skillsFetchedData.map((skill: any) => skill.skillName);
+        this.skillsForm.patchValue({
+          selectedSkill: skillNames
+        });
+      },
+      error: (err) => {
+        console.log('Error fetching skills', err);
+        this.hasExistingSkills = false;
       }
     });
   }
@@ -243,29 +266,43 @@ export class JobseekerProfileComponent implements OnInit {
 
   onSubmitSkills() {
     if (this.selectedSkills.length > 0) {
-      // Create the payload with selected skills
-      // const skillsPayload = {
-      //   skills: this.selectedSkills.map(skill => ({
-      //     skillId: skill.id,
-      //     skillName: skill.skillName
-      //   }))
-      // };
-      const skillsPayload = this.selectedSkills.map(skill => skill.id);
-      console.log(skillsPayload);
+      const skillsPayload = {
+        skills: this.selectedSkills.map(skill => skill.id)
+      };
+      // const skillsPayload = this.selectedSkills.map(skill => skill.id);
+      // console.log(skillsPayload);
 
 
-      // Add your API call here
-      // this.postJobService.saveJobSeekerSkills(skillsPayload).subscribe({
-      //   next: (response) => {
-      //     // Show success message
-      //     console.log('Skills saved successfully', response);
-      //     // You might want to show a snackbar or alert here
-      //   },
-      //   error: (error) => {
-      //     console.error('Error saving skills', error);
-      //     // Handle error appropriately
-      //   }
-      // });
+      if (!this.hasExistingSkills) {
+
+        this.updateJobseekerService.addSkillsJobseeker(skillsPayload).subscribe({
+          next: (response) => {
+            this.toaster.success('Skills added successfully');
+            console.log('Skills saved successfully', response);
+            this.hasExistingSkills = true;
+          },
+          error: (err) => {
+            this.toaster.error('Error adding skills');
+            console.log('Error adding skills', err);
+
+          }
+        })
+      }
+
+      else {
+        this.updateJobseekerService.updateSkillsJobseeker(skillsPayload).subscribe({
+          next: (response) => {
+            this.toaster.success('Skills updated successfully');
+            console.log('Skills updated successfully', response);
+
+          },
+          error: (err) => {
+            this.toaster.error('Error updating skills');
+            console.log('Error updating skills', err);
+          }
+        })
+      }
+
     }
   }
 
@@ -274,9 +311,11 @@ export class JobseekerProfileComponent implements OnInit {
       const data = this.jobSeekerProfileForm.value;
       this.updateJobseekerService.updateJobseeker(data).subscribe({
         next: (response) => {
+          this.toaster.success('Profile updated successfully')
           console.log('Profile updated successfully', response);
         },
         error: (err) => {
+          this.toaster.error('Error updating profile')
           console.log('Error updating profile', err);
 
         }
@@ -293,20 +332,24 @@ export class JobseekerProfileComponent implements OnInit {
     if (this.isEducationDataAvailable) {
       this.updateJobseekerService.updateEducationDetails(payload).subscribe({
         next: (response) => {
+          this.toaster.success('Education Details updated successfully');
           console.log('Education Details updated successfully', response);
           this.isEducationDataAvailable = true;
         },
         error: (err) => {
+          this.toaster.error('Error updating education details')
           console.log('Error updating education details', err);
         }
       });
     } else {
       this.updateJobseekerService.addEducationDetails(payload).subscribe({
         next: (response) => {
+          this.toaster.success('Education Details added successfully');
           console.log("Education details added successfully!", response);
           this.isEducationDataAvailable = true;
         },
         error: (err) => {
+          this.toaster.error('Error adding education details')
           console.log("Error in adding education details", err);
         }
       });

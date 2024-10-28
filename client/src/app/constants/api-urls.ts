@@ -23,7 +23,11 @@ export const API_URLS = {
   getJobseeker: `${environment.apiUrl}/users/jobseeker`,
   updateJobseeker: `${environment.apiUrl}/users/update-jobseeker`,
   updateEducationDetails: `${environment.apiUrl}/users/update-educationDetails`,
-  addEducationDetails: `${environment.apiUrl}/users//add-educationDetails`,
+  addEducationDetails: `${environment.apiUrl}/users/add-educationDetails`,
   fetchAllApplicantsOfJob: `${environment.apiUrl}/job/applicants`,
   fetchAllApplicantOfEmployer: `${environment.apiUrl}/job/applicants/all`,
+  addSkills:`${environment.apiUrl}/users/add-skills`,
+  getSkills:`${environment.apiUrl}/users/jobseeker-skills`,
+  updateSkills:`${environment.apiUrl}/users/update-skills`
+
 };
