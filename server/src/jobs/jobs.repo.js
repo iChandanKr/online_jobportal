@@ -1,5 +1,5 @@
 const { dataModel } = require("../dbConnection");
-const { JobPost, JobSkills, Application, Skill, User } = dataModel;
+const { JobPost, JobSkills, Application, Skill, User, Employer } = dataModel;
 const { Op } = require("sequelize");
 const createJobPostDb = async (jobPostData, t) => {
   const newJobData = await JobPost.create(
@@ -179,7 +179,7 @@ const jobWithSkillDetails = async (id) => {
   });
 };
 
-const applicantOFaJob = async (id, searchFields, orderBy) => {
+const applicantOFaJob = async (id, orderBy) => {
   const sorting = orderBy.map((item) => {
     item.unshift(User);
     return item;
@@ -200,6 +200,40 @@ const applicantOFaJob = async (id, searchFields, orderBy) => {
     // logging: console.log,
   });
 };
+
+const getAllApplicantsDB = async (empId) => {
+  // const sorting = orderBy.map((item) => {
+  //   item.unshift(User);
+  //   return item;
+  // });
+  return User.findAll({
+    include: [
+      {
+        model: JobPost,
+        attributes: [],
+        through: {
+          attributes: [],
+        },
+        include: {
+          model: Employer,
+          where: { empId },
+        },
+      },
+    ],
+
+    where: {
+      "$JobPosts.Employer.empId$": empId, // Ensures we only get users who applied to job posts by the specific employer
+    },
+    distinct: true,
+    attributes: {
+      exclude: ["password", "passwordChangedAt", "createdAt", "updatedAt"],
+    },
+   
+
+    // order: sorting, // to produce [ [ User, 'firstName', 'ASC' ], [ User, 'lastName', 'ASC' ] ]
+  });
+};
+
 module.exports = {
   createJobPostDb,
   getAllJobsDB,
@@ -211,4 +245,5 @@ module.exports = {
   jobWithSkillDetails,
   jobsToApplyDB,
   applicantOFaJob,
+  getAllApplicantsDB,
 };

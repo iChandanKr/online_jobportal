@@ -11,6 +11,7 @@ const {
   jobWithSkillDetails,
   jobsToApplyDB,
   applicantOFaJob,
+  getAllApplicantsDB,
 } = require("./jobs.repo");
 const { sort, limitFields, search, paginate } = require("../utils/apiFeatures");
 
@@ -124,16 +125,42 @@ class JobService {
 
   static applicantOfAjobService = async (req) => {
     let orderBy;
-    let searchFields = req.query.search || "%";
-    if (req.query.search) {
-      searchFields = search(searchFields);
-    }
     if (req.query.sort) {
       orderBy = sort(req.query.sort);
     } else {
       orderBy = sort("-updatedAt");
     }
-    return await applicantOFaJob(req.params.id, searchFields, orderBy);
+    const applicants = await applicantOFaJob(req.params.id, orderBy);
+    const clonedRes = JSON.parse(JSON.stringify(applicants.dataValues.Users));
+    // console.log(clonedRes);
+    const modifiedRes = clonedRes.map((user) => {
+      const appliedDate = user.Application.updatedAt;
+      delete user.Application;
+      return { ...user, appliedOn: appliedDate };
+    });
+    // console.log(modifiedRes);
+    return modifiedRes;
+  };
+
+  static getAllapplicantService = async (req) => {
+    // let orderBy;
+    // if (req.query.sort) {
+    //   orderBy = sort(req.query.sort);
+    // } else {
+    //   orderBy = sort("-updatedAt");
+    // }
+    const applicants = await getAllApplicantsDB(req.empId);
+    // console.log(applicants);
+    return applicants;
+    // const clonedRes = JSON.parse(JSON.stringify(applicants.dataValues.Users));
+    // // console.log(clonedRes);
+    // const modifiedRes = clonedRes.map((user) => {
+    //   const appliedDate = user.Application.updatedAt;
+    //   delete user.Application;
+    //   return { ...user, appliedOn: appliedDate };
+    // });
+    // // console.log(modifiedRes);
+    // return modifiedRes;
   };
 }
 module.exports = JobService;

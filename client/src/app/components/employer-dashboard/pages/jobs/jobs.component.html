@@ -68,6 +68,19 @@
               </button>
             </td>
           </ng-container>
+          <ng-container matColumnDef="Applicants">
+            <th mat-header-cell *matHeaderCellDef>Applicants</th>
+            <td mat-cell *matCellDef="let job">
+              <button
+                mat-button
+                color="accent"
+                class="btnColor"
+                (click)="onView(job.id)"
+              >
+                View All
+              </button>
+            </td>
+          </ng-container>
 
           <!-- Header Row -->
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -95,13 +108,15 @@
     </mat-card-footer>
   </mat-card>
   <ng-template #confirmDialog>
-    <h2 mat-dialog-title>{{dialogData.title}}</h2>
+    <h2 mat-dialog-title>{{ dialogData.title }}</h2>
     <mat-dialog-content>
-      <p>{{dialogData.message}}</p>
+      <p>{{ dialogData.message }}</p>
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button (click)="onNoClick()">Cancel</button>
-      <button mat-raised-button color="warn" (click)="onYesClick()">Delete</button>
+      <button mat-raised-button color="warn" (click)="onYesClick()">
+        Delete
+      </button>
     </mat-dialog-actions>
   </ng-template>
 </div>

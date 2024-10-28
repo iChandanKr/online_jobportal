@@ -19,12 +19,15 @@ export const API_URLS = {
   getJobWithSkills: `${environment.apiUrl}/job/job-details`,
   jobsUserCanApply: `${environment.apiUrl}/job/jobs-userCanApply`,
   applyJob: `${environment.apiUrl}/job/apply-job`,
-  getEducationDetails:`${environment.apiUrl}/users/get-educationDetails`,
-  getJobseeker:`${environment.apiUrl}/users/jobseeker`,
-  updateJobseeker:`${environment.apiUrl}/users/update-jobseeker`,
-  updateEducationDetails:`${environment.apiUrl}/users/update-educationDetails`,
-  addEducationDetails:`${environment.apiUrl}/users//add-educationDetails`,
+  getEducationDetails: `${environment.apiUrl}/users/get-educationDetails`,
+  getJobseeker: `${environment.apiUrl}/users/jobseeker`,
+  updateJobseeker: `${environment.apiUrl}/users/update-jobseeker`,
+  updateEducationDetails: `${environment.apiUrl}/users/update-educationDetails`,
+  addEducationDetails: `${environment.apiUrl}/users/add-educationDetails`,
+  fetchAllApplicantsOfJob: `${environment.apiUrl}/job/applicants`,
+  fetchAllApplicantOfEmployer: `${environment.apiUrl}/job/applicants/all`,
   addSkills:`${environment.apiUrl}/users/add-skills`,
   getSkills:`${environment.apiUrl}/users/jobseeker-skills`,
   updateSkills:`${environment.apiUrl}/users/update-skills`
+
 };
