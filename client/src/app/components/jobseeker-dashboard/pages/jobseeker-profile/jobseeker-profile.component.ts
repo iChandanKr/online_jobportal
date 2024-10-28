@@ -54,7 +54,7 @@ export class JobseekerProfileComponent implements OnInit {
   isEducationDataAvailable: boolean = false;
   hasExistingSkills: boolean = false;
   constructor(private fb: FormBuilder, private postJobService: PostJobService,
-    private updateJobseekerService: UpdateJobseekerService,private toaster:ToastrService) { }
+    private updateJobseekerService: UpdateJobseekerService, private toaster: ToastrService) { }
 
   ngOnInit() {
     this.jobSeekerProfileForm = new FormGroup({
@@ -181,8 +181,6 @@ export class JobseekerProfileComponent implements OnInit {
         const skillsFetchedData = data.data;
         this.selectedSkills = skillsFetchedData;
         this.hasExistingSkills = skillsFetchedData && skillsFetchedData.length > 0
-
-        console.log('Skills fetched successfully:', skillsFetchedData);
 
         const skillNames = skillsFetchedData.map((skill: any) => skill.skillName);
         this.skillsForm.patchValue({
