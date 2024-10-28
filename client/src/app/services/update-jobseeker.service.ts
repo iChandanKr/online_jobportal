@@ -17,7 +17,8 @@ export class UpdateJobseekerService {
   private readonly updateEducationDetailsUrl = API_URLS.updateEducationDetails;
   private readonly addEducationDetailsUrl = API_URLS.addEducationDetails;
   private readonly addSkills=API_URLS.addSkills;
-  private readonly getSkills=API_URLS.getSkills
+  private readonly getSkills=API_URLS.getSkills;
+  private readonly updateSkills=API_URLS.updateSkills;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -72,6 +73,10 @@ export class UpdateJobseekerService {
   
   getSkillsJobseeker():Observable<any>{
     return this.httpClient.get<{status: string; message: string; data: Skill}>(this.getSkills,{withCredentials:true})
+  }
+
+  updateSkillsJobseeker(skills:any):Observable<any>{
+    return this.httpClient.put<{status:string;message:string;data:object}>(this.updateSkills,skills,{withCredentials:true})
   }
 
 }

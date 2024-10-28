@@ -52,6 +52,7 @@ export class JobseekerProfileComponent implements OnInit {
   selectedSkills: Skill[] = [];
   skillAutocomplete = new FormControl('');
   isEducationDataAvailable: boolean = false;
+  hasExistingSkills: boolean = false;
   constructor(private fb: FormBuilder, private postJobService: PostJobService,
     private updateJobseekerService: UpdateJobseekerService) { }
 
@@ -115,16 +116,8 @@ export class JobseekerProfileComponent implements OnInit {
 
     this.populateEducationDetails();
 
-    this.updateJobseekerService.getSkillsJobseeker().subscribe({
-      next:data=>{
-        console.log('Skills fetched successfully',data);
-        
-      },
-      error:err=>{
-        console.log('Error fetching skills',err);
-        
-      }
-    })
+    this.populateSkills();
+
   }
 
 
@@ -178,6 +171,27 @@ export class JobseekerProfileComponent implements OnInit {
       error: err => {
         console.log(err);
         this.isEducationDataAvailable = false;
+      }
+    });
+  }
+
+  private populateSkills() {
+    this.updateJobseekerService.getSkillsJobseeker().subscribe({
+      next: (data) => {
+        const skillsFetchedData = data.data;
+        this.selectedSkills = skillsFetchedData;
+        this.hasExistingSkills = skillsFetchedData && skillsFetchedData.length > 0
+
+        console.log('Skills fetched successfully:', skillsFetchedData);
+
+        const skillNames = skillsFetchedData.map((skill: any) => skill.skillName);
+        this.skillsForm.patchValue({
+          selectedSkill: skillNames
+        });
+      },
+      error: (err) => {
+        console.log('Error fetching skills', err);
+        this.hasExistingSkills = false;
       }
     });
   }
@@ -254,35 +268,39 @@ export class JobseekerProfileComponent implements OnInit {
 
   onSubmitSkills() {
     if (this.selectedSkills.length > 0) {
-      // Create the payload with selected skills
       const skillsPayload = {
         skills: this.selectedSkills.map(skill => skill.id)
       };
       // const skillsPayload = this.selectedSkills.map(skill => skill.id);
       // console.log(skillsPayload);
 
-      this.updateJobseekerService.addSkillsJobseeker(skillsPayload).subscribe({
-        next:(response)=>{
-          console.log('Skills saved successfully',response); 
-        },
-        error:(err)=>{
-          console.log('Error adding skills',err);
-          
-        }
-      })
 
-      // Add your API call here
-      // this.postJobService.saveJobSeekerSkills(skillsPayload).subscribe({
-      //   next: (response) => {
-      //     // Show success message
-      //     console.log('Skills saved successfully', response);
-      //     // You might want to show a snackbar or alert here
-      //   },
-      //   error: (error) => {
-      //     console.error('Error saving skills', error);
-      //     // Handle error appropriately
-      //   }
-      // });
+      if (!this.hasExistingSkills) {
+
+        this.updateJobseekerService.addSkillsJobseeker(skillsPayload).subscribe({
+          next: (response) => {
+            console.log('Skills saved successfully', response);
+            this.hasExistingSkills = true;
+          },
+          error: (err) => {
+            console.log('Error adding skills', err);
+
+          }
+        })
+      }
+
+      else {
+        this.updateJobseekerService.updateSkillsJobseeker(skillsPayload).subscribe({
+          next: (response) => {
+            console.log('Skills updated successfully', response);
+
+          },
+          error: (err) => {
+            console.log('Error updating skills', err);
+          }
+        })
+      }
+
     }
   }
 
