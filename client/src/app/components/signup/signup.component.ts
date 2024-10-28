@@ -79,7 +79,7 @@ export class SignupComponent {
       .subscribe({
         next: (data) => {
           this.userDataSharingService.setLoginUserData(this.signupForm.value);
-          this.router.navigate(['/employer']);
+          this.router.navigate(['/jobseeker']);
 
           this.signupForm.reset();
         },
