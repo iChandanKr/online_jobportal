@@ -1,31 +1,81 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { type AllApplicants } from './../../../../model/jobseeker.model';
+import { Component, inject, input, Input, OnInit, signal } from '@angular/core';
+import { MatTableModule } from '@angular/material/table';
 import { JobsService } from '../../../../services/jobs.service';
 import { type Applicant } from '../../../../model/jobseeker.model';
 import { DatePipe } from '@angular/common';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-applications',
   standalone: true,
-  imports: [MatTableModule, DatePipe],
+  imports: [MatTableModule, DatePipe, MatCheckboxModule],
   templateUrl: './applications.component.html',
   styleUrl: './applications.component.css',
 })
 export class ApplicationsComponent implements OnInit {
   private jobService = inject(JobsService);
-  jobId = signal('89c97246-5a0a-4050-9098-1a1078b42133');
-  applicants = signal<Applicant[] | undefined>(undefined);
-  datasource = signal<Applicant[]>([]);
-
+  jobId = input.required<string>();
+  datasource = signal<Applicant[] | AllApplicants[]>([]);
+  allApplicants = signal<boolean>(false);
+  displayedColumns: string[] = [
+    'select',
+    'firstName',
+    'lastName',
+    'email',
+    'appliedOn',
+  ];
+  selection = new SelectionModel<Applicant>(true, []);
   ngOnInit(): void {
-    this.jobService.getApplicantsOfJob(this.jobId()).subscribe({
-      next: (res) => {
-        this.applicants.set(res.data);
-        this.datasource.set(res.data);
-        console.log(this.datasource(), this.applicants());
-      },
-    });
+    if (this.jobId()) {
+      this.jobService.getApplicantsOfJob(this.jobId()).subscribe({
+        next: (res) => {
+          this.datasource.set(res.data);
+        },
+      });
+    } else {
+      this.jobService.getAllApplicantsOfEmployer().subscribe({
+        next: (res) => {
+          this.datasource.set(res.data);
+          this.allApplicants.set(true);
+          this.columnDetails();
+        },
+      });
+    }
   }
 
-  displayedColumns: string[] = ['firstName', 'lastName', 'email', 'appliedOn'];
+  columnDetails() {
+    this.allApplicants() === false
+      ? (this.displayedColumns = [
+          'select',
+          'firstName',
+          'lastName',
+          'email',
+          'appliedOn',
+        ])
+      : (this.displayedColumns = ['firstName', 'lastName', 'email', 'city']);
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.datasource().length;
+    return numSelected == numRows;
+  }
+  toggleAllRows() {
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.datasource().forEach((row) =>
+          this.selection.select(row as Applicant)
+        );
+  }
+
+  getSelectedApplicants(): Applicant[] {
+    return this.selection.selected;
+  }
+
+  handleSelectedApplicants() {
+    const selectedApplicants = this.getSelectedApplicants();
+    console.log('[selected applicants]', selectedApplicants);
+  }
 }

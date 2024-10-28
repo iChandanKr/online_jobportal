@@ -76,6 +76,10 @@ export const routes: Routes = [
         path: 'post-job/:id',
         component: PostJobComponent
       },
+      {
+        path: 'applications/:jobId',
+        component: ApplicationsComponent,
+      },
     ],
   },
   {

@@ -50,3 +50,15 @@ export interface Applicant {
   country: string;
   appliedOn: Date;
 }
+
+export interface AllApplicants {
+  firstName: string;
+  lastName: string;
+  email: string;
+  dob: string;
+  contact: string;
+  city: string;
+  state: string;
+  pinCode: string;
+  country: string;
+}

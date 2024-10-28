@@ -25,4 +25,5 @@ export const API_URLS = {
   updateEducationDetails: `${environment.apiUrl}/users/update-educationDetails`,
   addEducationDetails: `${environment.apiUrl}/users//add-educationDetails`,
   fetchAllApplicantsOfJob: `${environment.apiUrl}/job/applicants`,
+  fetchAllApplicantOfEmployer: `${environment.apiUrl}/job/applicants/all`,
 };
