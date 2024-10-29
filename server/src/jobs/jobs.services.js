@@ -12,6 +12,7 @@ const {
   jobsToApplyDB,
   applicantOFaJob,
   getAllApplicantsDB,
+  updateApplicationStatusDB,
 } = require("./jobs.repo");
 const { sort, limitFields, search, paginate } = require("../utils/apiFeatures");
 
@@ -132,13 +133,12 @@ class JobService {
     }
     const applicants = await applicantOFaJob(req.params.id, orderBy);
     const clonedRes = JSON.parse(JSON.stringify(applicants.dataValues.Users));
-    // console.log(clonedRes);
     const modifiedRes = clonedRes.map((user) => {
       const appliedDate = user.Application.updatedAt;
+      const applicationStatus = user.Application.status;
       delete user.Application;
-      return { ...user, appliedOn: appliedDate };
+      return { ...user, appliedOn: appliedDate, status: applicationStatus };
     });
-    // console.log(modifiedRes);
     return modifiedRes;
   };
 
@@ -161,6 +161,11 @@ class JobService {
     // });
     // // console.log(modifiedRes);
     // return modifiedRes;
+  };
+
+  static updateApplicationStatusService = async (payloads) => {
+    const res =  await updateApplicationStatusDB(payloads);
+    return res;
   };
 }
 module.exports = JobService;

@@ -39,6 +39,7 @@ export interface JobSeekerDetails {
 }
 
 export interface Applicant {
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -49,6 +50,7 @@ export interface Applicant {
   pinCode: string;
   country: string;
   appliedOn: Date;
+  status: string;
 }
 
 export interface AllApplicants {
@@ -63,9 +65,7 @@ export interface AllApplicants {
   country: string;
 }
 
-
-export interface skills{
-    id:string;
-    skillName:string;
+export interface skills {
+  id: string;
+  skillName: string;
 }
-

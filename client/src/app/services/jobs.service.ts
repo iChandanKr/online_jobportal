@@ -17,6 +17,8 @@ export class JobsService {
   private readonly applyJobUrl = API_URLS.applyJob;
   private readonly fetchApplicants = API_URLS.fetchAllApplicantsOfJob;
   private readonly fetchAllApplicants = API_URLS.fetchAllApplicantOfEmployer;
+  private readonly updateApplicationStatusUrl =
+    API_URLS.updateApplicationStatus;
   queryStr = signal('');
   constructor(private httpClient: HttpClient) {}
 
@@ -103,6 +105,7 @@ export class JobsService {
       message: string;
       data: Applicant[];
     }>(apiUrl, { withCredentials: true });
+    
   }
 
   getAllApplicantsOfEmployer() {
@@ -111,5 +114,19 @@ export class JobsService {
       message: string;
       data: AllApplicants[];
     }>(this.fetchAllApplicants, { withCredentials: true });
+  }
+
+  updateApplicationStatus(
+    payload: {
+      userId: string;
+      jobId: string;
+      status: string;
+    }[]
+  ): Observable<any> {
+    return this.httpClient.patch<{ status: string; message: string }>(
+      this.updateApplicationStatusUrl,
+      { payload },
+      { headers: this.getHeaders(), withCredentials: true }
+    );
   }
 }

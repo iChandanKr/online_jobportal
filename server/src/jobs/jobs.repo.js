@@ -192,7 +192,7 @@ const applicantOFaJob = async (id, orderBy) => {
         exclude: ["password", "passwordChangedAt", "createdAt", "updatedAt"],
       },
       through: {
-        attributes: ["updatedAt"],
+        attributes: ["updatedAt", "status"],
       },
     },
     order: sorting, // to produce [ [ User, 'firstName', 'ASC' ], [ User, 'lastName', 'ASC' ] ]
@@ -228,12 +228,27 @@ const getAllApplicantsDB = async (empId) => {
     attributes: {
       exclude: ["password", "passwordChangedAt", "createdAt", "updatedAt"],
     },
-   
 
     // order: sorting, // to produce [ [ User, 'firstName', 'ASC' ], [ User, 'lastName', 'ASC' ] ]
   });
 };
-
+const updateApplicationStatusDB = async (payloads) => {
+  const updatedData = await Promise.all(
+    payloads.map((payload) => {
+      return Application.update(
+        { status: payload.status },
+        {
+          where: {
+            UserId: payload.userId,
+            JobPostId: payload.jobId,
+          },
+          returning: true,
+        }
+      );
+    })
+  );
+  return updatedData;
+};
 module.exports = {
   createJobPostDb,
   getAllJobsDB,
@@ -246,4 +261,5 @@ module.exports = {
   jobsToApplyDB,
   applicantOFaJob,
   getAllApplicantsDB,
+  updateApplicationStatusDB,
 };

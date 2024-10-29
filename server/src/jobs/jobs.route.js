@@ -12,6 +12,7 @@ const {
   jobsUserCanApply,
   applicantOfAJob,
   getAllApplicants,
+  updateApplicationStatus,
 } = require("./jobs.controller");
 const authMiddleware = require("../middleware/auth.middleware");
 const checkEduMiddleware = require("../middleware/checkEducation.middleware");
@@ -53,4 +54,8 @@ router
 router
   .route("/applicants/:id")
   .get(authMiddleware, checkEmployerRole, applicantOfAJob);
+
+router
+  .route("/application/update")
+  .patch(authMiddleware, checkEmployerRole, updateApplicationStatus);
 module.exports = router;
