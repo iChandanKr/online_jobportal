@@ -9,6 +9,7 @@ const {
   jobseekerDetailsDB,
   jobSeekerSkills,
   updateJobseekerSkillsDb,
+  getAllApplicationsOfUser,
 } = require("../repo/jobSeeker.repo");
 const { generateAccessToken } = require("../../utils/tokenGenerator");
 const { dataModel } = require("../../dbConnection");
@@ -77,6 +78,10 @@ class JobseekerService {
 
   static updateJobseekerSkillsService = async (userId, skills) => {
     return await updateJobseekerSkillsDb(userId, skills);
+  };
+
+  static getAllApplicationsOfUserService = async (userId) => {
+    return await getAllApplicationsOfUser(userId);
   };
 }
 

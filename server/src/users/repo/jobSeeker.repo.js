@@ -1,5 +1,14 @@
 const { dataModel } = require("../../dbConnection");
-const { Role, UserRole, User, Education, UserSkills, Skill } = dataModel;
+const {
+  Role,
+  UserRole,
+  User,
+  Education,
+  UserSkills,
+  Skill,
+  JobPost,
+  Application,
+} = dataModel;
 
 const createJobseekerDb = async (userData, t) => {
   const role = await Role.findOne({
@@ -134,6 +143,24 @@ const updateJobseekerSkillsDb = async (userId, skills) => {
   return await UserSkills.bulkCreate(userSkills);
 };
 
+const getAllApplicationsOfUser = async (id) => {
+ return await User.findByPk(id, {
+    attributes:[],
+    include: [
+      {
+        model: JobPost,
+        attributes: {
+          exclude: ["createdAt", "updatedAt"],
+        },
+        through: {
+          model: Application,
+          attributes: ["status"],
+        },
+      },
+    ],
+  });
+};
+
 module.exports = {
   createJobseekerDb,
   findJobseekerDB,
@@ -146,4 +173,5 @@ module.exports = {
   checkSkillDB,
   updateEducationDetailsDb,
   updateJobseekerSkillsDb,
+  getAllApplicationsOfUser,
 };

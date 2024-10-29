@@ -162,6 +162,24 @@ const updateJobseekerSkills = async (req, res, next) => {
   }
 };
 
+const getAllApplicationOfUser = async (req, res, next) => {
+  try {
+    const applications = await JobseekerService.getAllApplicationsOfUserService(
+      req.user.id
+    );
+    if (applications) {
+      respondOk(
+        res,
+        200,
+        "There are the applications You have applied for",
+        applications
+      );
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registerJobseeker,
   findJobseeker,
@@ -173,4 +191,5 @@ module.exports = {
   getJobseekerSkills,
   updateEducationDetails,
   updateJobseekerSkills,
+  getAllApplicationOfUser,
 };
