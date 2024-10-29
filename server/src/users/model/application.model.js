@@ -28,9 +28,9 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       status: {
-        type: DataTypes.ENUM("applied", "under review", "accepted", "rejected"),
+        type: DataTypes.ENUM("under review", "accepted", "rejected"),
         allowNull: false,
-        defaultValue: "applied",
+        defaultValue: "under review",
       },
     },
     {

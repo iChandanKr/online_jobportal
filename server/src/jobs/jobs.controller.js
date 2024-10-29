@@ -129,12 +129,30 @@ const applicantOfAJob = async (req, res, next) => {
   }
 };
 
-
 const getAllApplicants = async (req, res, next) => {
   try {
     const applicants = await JobService.getAllapplicantService(req);
     if (applicants) {
       respondOk(res, 200, "All applicants of this jobs.", applicants);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateApplicationStatus = async (req, res, next) => {
+  try {
+    const updatedApplication = await JobService.updateApplicationStatusService(
+      req.body.payload
+    );
+
+    if (updatedApplication) {
+      respondOk(
+        res,
+        200,
+        "Application status updated successfully!"
+        // updatedApplication
+      );
     }
   } catch (error) {
     next(error);
@@ -152,5 +170,6 @@ module.exports = {
   getJobDetails,
   jobsUserCanApply,
   applicantOfAJob,
-  getAllApplicants
+  getAllApplicants,
+  updateApplicationStatus,
 };
