@@ -32,7 +32,6 @@ export class OpenJobcardComponent {
     city: string;
   }>();
 
-  private router = inject(Router);
   onApply(id: string) {
     this.jobService.applyJob(id).subscribe({
       next: (res) => {

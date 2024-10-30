@@ -9,6 +9,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { ToastrService } from 'ngx-toastr';
+import { MatDialog } from '@angular/material/dialog';
+import { ProfileDialogComponent } from './profile-dialog/profile-dialog.component';
 
 @Component({
   selector: 'app-applications',
@@ -37,8 +39,10 @@ export class ApplicationsComponent implements OnInit {
     'email',
     'appliedOn',
     'status',
+    'profile',
   ];
   selection = new SelectionModel<Applicant>(true, []);
+  dialog = inject(MatDialog);
   ngOnInit(): void {
     if (this.jobId()) {
       this.fetchJobApplicants();
@@ -68,6 +72,7 @@ export class ApplicationsComponent implements OnInit {
           'email',
           'appliedOn',
           'status',
+          'profile',
         ])
       : (this.displayedColumns = ['firstName', 'lastName', 'email', 'city']);
   }
@@ -130,7 +135,6 @@ export class ApplicationsComponent implements OnInit {
         };
       }
     );
-    console.log(selectedApplications);
     this.jobService.updateApplicationStatus(selectedApplications).subscribe({
       next: (res) => {
         this.fetchJobApplicants();
@@ -138,6 +142,21 @@ export class ApplicationsComponent implements OnInit {
       },
       error: (err) => {
         this.toaster.error(err.error.message, 'Error');
+      },
+    });
+  }
+
+  onViewProfile(
+    enterAnimationDuration: string,
+    exitAnimationDuration: string,
+    id: string
+  ) {
+    const dialogRef = this.dialog.open(ProfileDialogComponent, {
+      width: '600px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: {
+        id,
       },
     });
   }

@@ -1,0 +1,60 @@
+<h2 mat-dialog-title>Jobseeker Complete Profile</h2>
+<mat-dialog-content>
+  <div class="grid grid-cols-2 gap-2 ">
+    <div>
+      <p >
+        Name:
+        {{
+          (jobseekerProfile()?.firstName || "") +
+            " " +
+            (jobseekerProfile()?.lastName || "")
+        }}
+      </p>
+    </div>
+    <div>
+      <p>Email:{{ jobseekerProfile()?.email }}</p>
+    </div>
+  </div>
+  <div class="grid grid-cols-2 gap-2">
+    <div>
+      <p>City: {{ jobseekerProfile()?.city | titlecase }}</p>
+    </div>
+    <div>
+      <p>Contact: {{ jobseekerProfile()?.contact }}</p>
+    </div>
+    <div class="w-full font-medium">
+      <p class="w-full">Skills: {{ jobseekerProfile()?.skills }}</p>
+    </div>
+
+    <div>
+      <p>10th : {{ jobseekerProfile()?.tenthMarksPercent }}%</p>
+      <p>
+        10th passing year: {{ jobseekerProfile()?.tenthPassingYear | date }}
+      </p>
+    </div>
+    <div>
+      <p>12th : {{ jobseekerProfile()?.twelfthMarksPercent }}%</p>
+      <p>
+        12th passing year : {{ jobseekerProfile()?.twelfthPassingYear | date }}
+      </p>
+      <p>UG Stream : {{ jobseekerProfile()?.ugStream | titlecase }}</p>
+    </div>
+    <div>
+      <p>UG Branch : {{ jobseekerProfile()?.ugBranch | titlecase }}</p>
+      <p>UG CGPA : {{ jobseekerProfile()?.ugCGPA }}</p>
+      <p>UG PassingYear : {{ jobseekerProfile()?.ugPassingYear | date }}</p>
+    </div>
+    <div>
+      <p>
+        PG Stream : {{ (jobseekerProfile()?.pgStream | titlecase) || "NA" }}
+      </p>
+      <p>
+        PG PassingYear :
+        {{ (jobseekerProfile()?.pgPassingYear | date) || "NA" }}
+      </p>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-buton (click)="onCancel()">Cancel</button>
+</mat-dialog-actions>

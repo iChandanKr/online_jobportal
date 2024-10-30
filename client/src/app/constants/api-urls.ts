@@ -30,4 +30,5 @@ export const API_URLS = {
   getSkills: `${environment.apiUrl}/users/jobseeker-skills`,
   updateSkills: `${environment.apiUrl}/users/update-skills`,
   updateApplicationStatus: `${environment.apiUrl}/job/application/update`,
+  jobseekerCompleteProfile: `${environment.apiUrl}/users/jobseeker-details`,
 };

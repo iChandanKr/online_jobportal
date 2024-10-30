@@ -17,6 +17,7 @@ const {
   updateJobseekerValidation,
   addEducationValidation,
   addSkillValidation,
+  getJobseekerProfileValidation,
 } = require("../../middleware/joiValidation.middleware");
 const checkJobseekerRole = require("../../middleware/checkJobseeker.middleware");
 const authMiddleware = require("../../middleware/auth.middleware");
@@ -60,7 +61,9 @@ router
   .route("/jobseeker-skills")
   .get(authMiddleware, checkJobseekerRole, getJobseekerSkills);
 
-router.route("/jobseeker-details").get(authMiddleware, getJobseekerDetails);
+router
+  .route("/jobseeker-details/:id")
+  .get(getJobseekerProfileValidation, authMiddleware, getJobseekerDetails);
 router
   .route("/applications")
   .get(authMiddleware, checkJobseekerRole, getAllApplicationOfUser);

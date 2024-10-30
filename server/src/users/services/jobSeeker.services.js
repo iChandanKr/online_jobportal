@@ -60,8 +60,13 @@ class JobseekerService {
   };
   static getJobseekerDetailService = async (userId) => {
     const jobseekerDetails = await jobseekerDetailsDB(userId);
-
-    return jobseekerDetails;
+    const clonedObj = JSON.parse(JSON.stringify(jobseekerDetails));
+    const education = clonedObj.Education_Details;
+    const skills = clonedObj.Skills.map((skill) => skill.skillName);
+    delete clonedObj.Education_Details;
+    delete clonedObj.Skills;
+    const profile = { ...clonedObj, ...education, skills };
+    return profile;
   };
 
   static getJobseekerSkills = async (userId) => {

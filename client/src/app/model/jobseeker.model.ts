@@ -69,3 +69,27 @@ export interface skills {
   id: string;
   skillName: string;
 }
+
+export interface jobseekerProfile {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  dob: string;
+  contact: string;
+  city: string;
+  state: string;
+  pinCode: string;
+  country: string;
+  tenthMarksPercent: number;
+  tenthPassingYear: number;
+  twelfthMarksPercent: number;
+  twelfthPassingYear: number;
+  ugStream: string;
+  ugBranch: string;
+  ugCGPA: number;
+  ugPassingYear: number;
+  pgStream?: string;
+  pgPassingYear?: number;
+  skills: string[];
+}

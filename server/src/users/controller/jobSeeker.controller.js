@@ -126,9 +126,10 @@ const updateEducationDetails = async (req, res, next) => {
 };
 
 const getJobseekerDetails = async (req, res, next) => {
+  const userId = req.params.id;
   try {
     const jobSeekerSkills = await JobseekerService.getJobseekerDetailService(
-      req.user.id
+      userId
     );
     if (jobSeekerSkills) {
       respondOk(res, 200, "[Jobseeker Profile Details]", jobSeekerSkills);
