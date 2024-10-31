@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, EventEmitter, inject, input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
@@ -18,6 +18,8 @@ export class OpenJobcardComponent {
   private jobService = inject(JobsService);
   private toaster = inject(ToastrService);
   dialog = inject(MatDialog);
+  @Output()
+  jobApplied = new EventEmitter<string>();
   job = input.required<{
     id: string;
     title: string;
@@ -35,6 +37,7 @@ export class OpenJobcardComponent {
   onApply(id: string) {
     this.jobService.applyJob(id).subscribe({
       next: (res) => {
+        this.jobApplied.emit(id);
         this.toaster.success(res.message, 'Success');
       },
       error: (err) => {

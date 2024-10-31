@@ -152,7 +152,7 @@ export class ApplicationsComponent implements OnInit {
     id: string
   ) {
     const dialogRef = this.dialog.open(ProfileDialogComponent, {
-      width: '600px',
+      width: '500px',
       enterAnimationDuration,
       exitAnimationDuration,
       data: {

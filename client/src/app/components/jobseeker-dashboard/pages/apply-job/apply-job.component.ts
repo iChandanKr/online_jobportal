@@ -54,4 +54,9 @@ export class ApplyJobComponent implements OnInit {
       },
     });
   }
+  onJobApplied(id: string) {
+    console.log(id);
+    const restJobs = this.openJobs().filter((job) => job.id !== id);
+    this.openJobs.update(() => [...restJobs]);
+  }
 }

@@ -9,11 +9,8 @@ import { JobCardComponent } from '../job-card/job-card.component';
 import { JobsService } from '../../services/jobs.service';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
-  debounce,
   debounceTime,
-  distinct,
   distinctUntilChanged,
-  switchMap,
 } from 'rxjs';
 
 @Component({
