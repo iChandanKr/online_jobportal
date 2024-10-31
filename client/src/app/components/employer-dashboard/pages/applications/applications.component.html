@@ -14,8 +14,7 @@
 </div>
 
 <table mat-table [dataSource]="datasource()!" class="mat-elevation-z8">
-  <!--- Note that these columns can be defined in any order.
-        The actual rendered columns are set as a property on the row definition" -->
+
 
   <!-- Position Column -->
   @if(allApplicants() === false){
@@ -26,7 +25,6 @@
         (change)="$event ? toggleAllRows() : null"
         [checked]="selection.hasValue() && isAllSelected()"
         [indeterminate]="selection.hasValue() && !isAllSelected()"
-        (change)="handleSelectedApplicants()"
       >
       </mat-checkbox>
     </th>
@@ -36,7 +34,6 @@
         (click)="$event.stopPropagation()"
         (change)="$event ? selection.toggle(row) : null"
         [checked]="selection.isSelected(row)"
-        (change)="handleSelectedApplicants()"
       >
       </mat-checkbox>
     </td>
