@@ -59,8 +59,6 @@ export class ApplicationsComponent implements OnInit {
   fetchJobApplicants() {
     this.jobService.getApplicantsOfJob(this.jobId()).subscribe({
       next: (res) => {
-        console.log(res);
-
         this.datasource.set(res.data);
         this.columnDetails();
       },
