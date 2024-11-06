@@ -196,40 +196,33 @@ const applicantOFaJob = async (id, orderBy) => {
       },
     },
     order: sorting, // to produce [ [ User, 'firstName', 'ASC' ], [ User, 'lastName', 'ASC' ] ]
-
-    // logging: console.log,
   });
 };
-
 const getAllApplicantsDB = async (empId) => {
-  // const sorting = orderBy.map((item) => {
-  //   item.unshift(User);
-  //   return item;
-  // });
   return User.findAll({
     include: [
       {
         model: JobPost,
-        attributes: [],
+        attributes: ["title"], // Fetches job post titles for which the user has applied
         through: {
-          attributes: [],
+          attributes: [], // No additional fields are needed from the join table
         },
-        include: {
-          model: Employer,
-          where: { empId },
-        },
+        include: [
+          {
+            model: Employer,
+            where: { empId },
+            attributes: [], // Exclude Employer attributes as only the empId filter is needed
+          },
+        ],
       },
     ],
-
     where: {
-      "$JobPosts.Employer.empId$": empId, // Ensures we only get users who applied to job posts by the specific employer
+      "$JobPosts.Employer.empId$": empId,
     },
     distinct: true,
     attributes: {
       exclude: ["password", "passwordChangedAt", "createdAt", "updatedAt"],
     },
-
-    // order: sorting, // to produce [ [ User, 'firstName', 'ASC' ], [ User, 'lastName', 'ASC' ] ]
   });
 };
 const updateApplicationStatusDB = async (payloads) => {

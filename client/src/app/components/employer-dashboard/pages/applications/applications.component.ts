@@ -32,26 +32,27 @@ export class ApplicationsComponent implements OnInit {
   datasource = signal<Applicant[] | AllApplicants[]>([]);
   allApplicants = signal<boolean>(false);
   private toaster = inject(ToastrService);
-  displayedColumns: string[] = [
-    'select',
-    'firstName',
-    'lastName',
-    'email',
-    'appliedOn',
-    'status',
-    'profile',
-  ];
+  displayedColumns!: string[];
   selection = new SelectionModel<Applicant>(true, []);
   dialog = inject(MatDialog);
   ngOnInit(): void {
+
     if (this.jobId()) {
       this.fetchJobApplicants();
+      console.log(this.fetchJobApplicants());
+
     } else {
       this.jobService.getAllApplicantsOfEmployer().subscribe({
         next: (res) => {
-          this.datasource.set(res.data);
+          const applicantWithJobs = res.data.map(applicant => ({
+            ...applicant,
+            appliedJobs: applicant.JobPosts.map(post => post.title).join(', ')
+          }));
+          this.datasource.set(applicantWithJobs);
           this.allApplicants.set(true);
           this.columnDetails();
+          // console.log(applicantWithJobs);
+
         },
       });
     }
@@ -66,16 +67,23 @@ export class ApplicationsComponent implements OnInit {
   columnDetails() {
     this.allApplicants() === false
       ? (this.displayedColumns = [
-          'select',
-          'firstName',
-          'lastName',
-          'email',
-          'appliedOn',
-          'status',
-          'profile',
-        ])
-      : (this.displayedColumns = ['firstName', 'lastName', 'email', 'city']);
+        'select',
+        'firstName',
+        'lastName',
+        'email',
+        'appliedOn',
+        'status',
+        'profile',
+
+      ])
+      : (this.displayedColumns = ['firstName', 'lastName', 'email', 'city', 'appliedJobs']);
   }
+
+  // columnDetails() {
+  //   this.displayedColumns = this.allApplicants() 
+  //     ? ['firstName', 'lastName', 'email', 'city','appliedJobs'] 
+  //     : ['select', 'firstName', 'lastName', 'email', 'appliedOn', 'status', 'profile'];
+  // }
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -86,8 +94,8 @@ export class ApplicationsComponent implements OnInit {
     this.isAllSelected()
       ? this.selection.clear()
       : this.datasource().forEach((row) =>
-          this.selection.select(row as Applicant)
-        );
+        this.selection.select(row as Applicant)
+      );
   }
 
   getSelectedApplicants(): Applicant[] {

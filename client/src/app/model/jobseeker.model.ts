@@ -51,9 +51,15 @@ export interface Applicant {
   country: string;
   appliedOn: Date;
   status: string;
+  JobPosts:JobPost[];
+}
+
+export interface JobPost{
+  title:string;
 }
 
 export interface AllApplicants {
+  JobPosts: JobPost[];
   firstName: string;
   lastName: string;
   email: string;
