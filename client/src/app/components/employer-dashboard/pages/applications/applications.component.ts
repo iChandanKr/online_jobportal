@@ -38,6 +38,7 @@ export class ApplicationsComponent implements OnInit {
   ngOnInit(): void {
 
     if (this.jobId()) {
+
       this.fetchJobApplicants();
       console.log(this.fetchJobApplicants());
 
@@ -51,8 +52,6 @@ export class ApplicationsComponent implements OnInit {
           this.datasource.set(applicantWithJobs);
           this.allApplicants.set(true);
           this.columnDetails();
-          // console.log(applicantWithJobs);
-
         },
       });
     }
@@ -60,7 +59,10 @@ export class ApplicationsComponent implements OnInit {
   fetchJobApplicants() {
     this.jobService.getApplicantsOfJob(this.jobId()).subscribe({
       next: (res) => {
+        console.log(res);
+
         this.datasource.set(res.data);
+        this.columnDetails();
       },
     });
   }
@@ -78,12 +80,6 @@ export class ApplicationsComponent implements OnInit {
       ])
       : (this.displayedColumns = ['firstName', 'lastName', 'email', 'city', 'appliedJobs']);
   }
-
-  // columnDetails() {
-  //   this.displayedColumns = this.allApplicants() 
-  //     ? ['firstName', 'lastName', 'email', 'city','appliedJobs'] 
-  //     : ['select', 'firstName', 'lastName', 'email', 'appliedOn', 'status', 'profile'];
-  // }
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
