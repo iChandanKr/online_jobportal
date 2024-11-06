@@ -1,1 +1,57 @@
-<p>job-applications works!</p>
+<div class="job-applications-table">
+    <table mat-table [dataSource]="datasource" class="mat-elevation-z8">
+  
+      <!-- Title Column -->
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef> Title </th>
+        <td mat-cell *matCellDef="let application"> {{ application.title }} </td>
+      </ng-container>
+  
+      <!-- Role Column -->
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef> Role </th>
+        <td mat-cell *matCellDef="let application"> {{ application.role }} </td>
+      </ng-container>
+  
+      <!-- Company Name Column -->
+      <ng-container matColumnDef="companyName">
+        <th mat-header-cell *matHeaderCellDef> Company Name </th>
+        <td mat-cell *matCellDef="let application"> {{ application.companyName }} </td>
+      </ng-container>
+  
+      <!-- Location Column -->
+      <ng-container matColumnDef="location">
+        <th mat-header-cell *matHeaderCellDef> Location </th>
+        <td mat-cell *matCellDef="let application"> {{ application.location }} </td>
+      </ng-container>
+  
+      <!-- City Column -->
+      <ng-container matColumnDef="city">
+        <th mat-header-cell *matHeaderCellDef> City </th>
+        <td mat-cell *matCellDef="let application"> {{ application.city }} </td>
+      </ng-container>
+  
+      <!-- Min Salary Column -->
+      <ng-container matColumnDef="minSalary">
+        <th mat-header-cell *matHeaderCellDef> Min Salary </th>
+        <td mat-cell *matCellDef="let application"> {{ application.minSalary }} </td>
+      </ng-container>
+  
+      <!-- Max Salary Column -->
+      <ng-container matColumnDef="maxSalary">
+        <th mat-header-cell *matHeaderCellDef> Max Salary </th>
+        <td mat-cell *matCellDef="let application"> {{ application.maxSalary }} </td>
+      </ng-container>
+  
+      <!-- Job Type Column -->
+      <ng-container matColumnDef="jobType">
+        <th mat-header-cell *matHeaderCellDef> Job Type </th>
+        <td mat-cell *matCellDef="let application"> {{ application.jobType }} </td>
+      </ng-container>
+  
+      <!-- Header and Row Definitions -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  

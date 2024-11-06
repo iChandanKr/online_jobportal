@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { jobseekerProfile, type Education } from '../model/jobseeker.model';
 import { type JobSeekerDetails } from '../model/jobseeker.model';
 import { type Skill } from '../model/skill.model';
+import { type Applications } from '../model/applications.model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,7 @@ export class UpdateJobseekerService {
   private readonly getSkills = API_URLS.getSkills;
   private readonly updateSkills = API_URLS.updateSkills;
   private readonly jobseekerProfileUrl = API_URLS.jobseekerCompleteProfile;
+  private readonly getAllApplicationsJobseeker=API_URLS.getAllApplicationsJobseeker;
 
   constructor(private httpClient: HttpClient) {}
 
@@ -101,5 +103,13 @@ export class UpdateJobseekerService {
       message: string;
       data: jobseekerProfile;
     }>(profileUrl, { withCredentials: true });
+  }
+
+  getAllApplications():Observable<any>{
+    return this.httpClient.get<{
+      status: string; 
+    message: string; 
+    data: Applications[] 
+    }>(this.getAllApplicationsJobseeker,{withCredentials:true})
   }
 }
