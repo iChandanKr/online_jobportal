@@ -19,7 +19,8 @@ export class JobApplicationsComponent implements OnInit {
     'city',
     'minSalary',
     'maxSalary',
-    'jobType'
+    'jobType',
+    'status'
   ];
   datasource = new MatTableDataSource<Applications>([]);
 
@@ -33,7 +34,11 @@ export class JobApplicationsComponent implements OnInit {
     this.jobseekerService.getAllApplications().subscribe({
       next: (res) => {
 
-        this.datasource.data = res.data.JobPosts;
+        const applicationsWithStatus = res.data.JobPosts.map((jobPost: any) => ({
+          ...jobPost,
+          status: jobPost.Application?.status
+        }));
+        this.datasource.data = applicationsWithStatus;
       },
       error: (err) => {
         console.error('Error fetching applications:', err);

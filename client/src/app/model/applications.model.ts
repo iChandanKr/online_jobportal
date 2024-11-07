@@ -7,4 +7,5 @@ export interface Applications{
     minSalary:string;
     maxSalary:string;
     jobType:string;
+    status:string;
 }
