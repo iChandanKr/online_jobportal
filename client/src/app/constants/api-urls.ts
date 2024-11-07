@@ -10,6 +10,7 @@ export const API_URLS = {
   postJob: `${environment.apiUrl}/job/add-jobpost`,
   fetchEmployer: `${environment.apiUrl}/users/employer`,
   getJobs: `${environment.apiUrl}/job/jobs`,
+
   updateEmployer: `${environment.apiUrl}/users/update-employer`,
   updatePassword: `${environment.apiUrl}/users/password-update`,
   jobOpenings: `${environment.apiUrl}/job/jobs-opening`,
@@ -31,5 +32,6 @@ export const API_URLS = {
   updateSkills: `${environment.apiUrl}/users/update-skills`,
   updateApplicationStatus: `${environment.apiUrl}/job/application/update`,
   jobseekerCompleteProfile: `${environment.apiUrl}/users/jobseeker-details`,
-  getAllApplicationsJobseeker:`${environment.apiUrl}/users/applications`,
+  getAllApplicationsJobseeker: `${environment.apiUrl}/users/applications`,
+  searchApplicant: `${environment.apiUrl}/users/getApplicantsbySearch`
 };

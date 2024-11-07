@@ -13,6 +13,14 @@
   </mat-menu>
 </div>
 
+<div class="search-bar">
+  <input
+    matInput
+    (input)="applySearch($event)"
+    placeholder="Search Applicants"
+  />
+</div>
+
 <table mat-table [dataSource]="datasource()!" class="mat-elevation-z8">
   <!-- Position Column -->
   @if(allApplicants() === false){

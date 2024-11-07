@@ -11,6 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { ProfileDialogComponent } from './profile-dialog/profile-dialog.component';
+import { debounce, debounceTime, Subject } from 'rxjs';
+import { UpdateJobseekerService } from '../../../../services/update-jobseeker.service';
+import { UpdateEmployerService } from '../../../../services/update-employer.service';
 
 @Component({
   selector: 'app-applications',
@@ -33,8 +36,11 @@ export class ApplicationsComponent implements OnInit {
   allApplicants = signal<boolean>(false);
   private toaster = inject(ToastrService);
   displayedColumns!: string[];
+  private searchSubject = new Subject<string>()
   selection = new SelectionModel<Applicant>(true, []);
   dialog = inject(MatDialog);
+  searchQuery = '';
+  constructor(private employerService: UpdateEmployerService) { }
   ngOnInit(): void {
 
     if (this.jobId()) {
@@ -49,13 +55,39 @@ export class ApplicationsComponent implements OnInit {
             ...applicant,
             appliedJobs: applicant.JobPosts.map(post => post.title).join(', ')
           }));
+
           this.datasource.set(applicantWithJobs);
           this.allApplicants.set(true);
           this.columnDetails();
         },
       });
     }
+    this.searchSubject.pipe(debounceTime(300)).subscribe((query) => {
+      this.searchQuery = query;
+      this.getApplicationsBySearch();
+    });
   }
+
+  getApplicationsBySearch() {
+    this.employerService.searchApplicant(this.searchQuery).subscribe({
+      next: (res) => {
+        // const applicantWithJobs = res.data.map(applicant => ({
+        //   ...applicant,
+        //   appliedJobs: applicant.JobPosts
+        //     ? applicant.JobPosts.map(post => post.title).join(', ')
+        //     : ''
+        // }));
+        this.datasource.set(res.data);
+        this.allApplicants.set(true);
+        this.columnDetails();
+      },
+      error: (err) => {
+        this.toaster.error('Failed to fetch search results', 'Error');
+      }
+    });
+  }
+
+
   fetchJobApplicants() {
     this.jobService.getApplicantsOfJob(this.jobId()).subscribe({
       next: (res) => {
@@ -161,5 +193,11 @@ export class ApplicationsComponent implements OnInit {
         id,
       },
     });
+  }
+
+  applySearch(event: Event) {
+    const searchValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    //this.getApplicationsBySearch();
+    this.searchSubject.next(searchValue)
   }
 }

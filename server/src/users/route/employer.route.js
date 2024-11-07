@@ -3,6 +3,7 @@ const {
   registerEmployer,
   updateEmployer,
   getSpecificEmployeer,
+  getApplicantsbySearch
 } = require("../controller/employer.controller");
 const authMiddleware = require("../../middleware/auth.middleware");
 const {
@@ -25,5 +26,8 @@ router
 router
   .route("/employer")
   .get(authMiddleware, checkEmployerRole, getSpecificEmployeer);
+router 
+  .route("/getApplicantsbySearch")
+  .get(authMiddleware,checkEmployerRole,getApplicantsbySearch)
 
 module.exports = router;

@@ -43,8 +43,18 @@ const getSpecificEmployeer = async (req, res, next) => {
   }
 };
 
+const getApplicantsbySearch = async (req, res, next) => {
+  try {
+    const applicants = await EmployerService.getApplicantsService(req);
+    respondOk(res, 200, "Fetched search results", applicants);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registerEmployer,
   updateEmployer,
   getSpecificEmployeer,
+  getApplicantsbySearch,
 };

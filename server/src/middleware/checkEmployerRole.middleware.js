@@ -9,6 +9,7 @@ const checkEmployerRole = async (req, res, next) => {
     const employer = await Employer.findOne({
       where: { userId: userId },
     });
+
     if (!employer) {
       return next(
         new CustomError("You don't have right to perform this operation", 403)

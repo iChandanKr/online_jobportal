@@ -211,10 +211,37 @@ dataModel.JobPost.belongsTo(dataModel.Employer, {
 // ===============User-JobPost:(many to many joining table:- Application)  ========================
 dataModel.User.belongsToMany(dataModel.JobPost, {
   through: dataModel.Application,
+  foreignKey: "UserId",
+  otherKey: "JobPostId",
+  // as: "Applications",
 });
 
 dataModel.JobPost.belongsToMany(dataModel.User, {
   through: dataModel.Application,
+  foreignKey: "JobPostId",
+  otherKey: "UserId",
+  // as: "JobPosts",
+});
+
+// defining relation
+dataModel.User.hasMany(dataModel.Application, {
+  foreignKey: "UserId",
+  as: "Applications",
+});
+
+dataModel.Application.belongsTo(dataModel.User, {
+  foreignKey: "UserId",
+  as: "User",
+});
+
+dataModel.JobPost.hasMany(dataModel.Application, {
+  foreignKey: "JobPostId",
+  as: "Applications",
+});
+
+dataModel.Application.belongsTo(dataModel.JobPost, {
+  foreignKey: "JobPostId",
+  as: "JobPosts",
 });
 
 const dbConnection = async function () {

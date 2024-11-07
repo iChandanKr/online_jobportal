@@ -2,11 +2,13 @@ const {
   createEmployerDb,
   updateEmployerDb,
   findEmployerDB,
+  getApplicantBySearchDB,
 } = require("../repo/employer.repo");
 const { dataModel } = require("../../dbConnection");
 const { sequelize } = dataModel;
 const AuthService = require("../../auth/auth.services");
 const { generateAccessToken } = require("../../utils/tokenGenerator");
+const { search } = require("../../utils/apiFeatures");
 class EmployerService {
   static createEmployerService = async (employerData) => {
     const result = sequelize.transaction(async (t) => {
@@ -80,6 +82,16 @@ class EmployerService {
       companyCountry,
     };
     return sendResponse;
+  };
+
+  static getApplicantsService = async (req) => {
+    // let visibleAttributes;
+
+    let searchFields = req.query.search || `%`;
+    searchFields = search(searchFields);
+
+    const applicants = await getApplicantBySearchDB(searchFields, req.empId);
+    return applicants;
   };
 }
 module.exports = EmployerService;
