@@ -1,4 +1,4 @@
-import { type AllApplicants } from './../../../../model/jobseeker.model';
+import { type AllApplicants, type SearchApplicant } from './../../../../model/jobseeker.model';
 import { Component, inject, input, Input, OnInit, signal } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { JobsService } from '../../../../services/jobs.service';
@@ -44,9 +44,7 @@ export class ApplicationsComponent implements OnInit {
   ngOnInit(): void {
 
     if (this.jobId()) {
-
       this.fetchJobApplicants();
-      console.log(this.fetchJobApplicants());
 
     } else {
       this.jobService.getAllApplicantsOfEmployer().subscribe({
@@ -71,13 +69,14 @@ export class ApplicationsComponent implements OnInit {
   getApplicationsBySearch() {
     this.employerService.searchApplicant(this.searchQuery).subscribe({
       next: (res) => {
-        // const applicantWithJobs = res.data.map(applicant => ({
-        //   ...applicant,
-        //   appliedJobs: applicant.JobPosts
-        //     ? applicant.JobPosts.map(post => post.title).join(', ')
-        //     : ''
-        // }));
-        this.datasource.set(res.data);
+
+        const applicantWithJobs = res.data.map((applicant: SearchApplicant) => ({
+          ...applicant,
+          appliedJobs: applicant.JobPosts
+            ? applicant.JobPosts.map(post => post.title).join(', ')
+            : ''
+        }));
+        this.datasource.set(applicantWithJobs);
         this.allApplicants.set(true);
         this.columnDetails();
       },

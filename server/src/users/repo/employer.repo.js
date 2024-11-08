@@ -1,4 +1,4 @@
-const { Op, where } = require("sequelize");
+const { Op } = require("sequelize");
 const { dataModel } = require("../../dbConnection");
 const { CustomError } = require("../../utils/apiResponse");
 const {
@@ -237,35 +237,6 @@ const findEmployerDB = async (userId) => {
   });
 };
 const getApplicantBySearchDB = async (searchFields, empId) => {
-  console.log("empI", empId);
-
-  const searchViaUser = await User.findAll({
-    where: {
-      [Op.or]: [
-        { firstName: { [Op.iLike]: searchFields } },
-        { lastName: { [Op.iLike]: searchFields } },
-        { email: { [Op.iLike]: searchFields } },
-        { city: { [Op.iLike]: searchFields } },
-      ],
-    },
-    attributes: ["id", "firstName", "lastName", "email", "city"],
-    include: [
-      {
-        model: Application,
-        as: "Applications",
-        attributes: ["JobPostId"],
-        include: {
-          model: JobPost,
-          as: "JobPosts",
-          attributes: ["title", "empId"],
-          where: {
-            empId,
-          },
-        },
-      },
-    ],
-  });
-
   const searchViaJobPosts = await JobPost.findAll({
     attributes: ["title"],
     where: {
@@ -278,52 +249,68 @@ const getApplicantBySearchDB = async (searchFields, empId) => {
       include: {
         model: User,
         as: "User",
-        attributes: ["id", "firstName", "lastName", "email", "city"],
+        attributes: ["id"],
       },
     },
   });
 
-  const formattedJobPostsSearch = searchViaJobPosts.reduce((acc, jobPost) => {
-    if (jobPost.Applications) {
-      const applicantDetails = jobPost.Applications.map((application) => {
-        return {
-          JobPosts: [
-            {
-              title: jobPost.title,
-            },
-          ],
-          firstName: application.User.firstName,
-          lastName: application.User.lastName,
-          id: application.User.id,
-          email: application.User.email,
-          city: application.User.city,
-        };
-      });
-
-      return [...acc, ...applicantDetails];
-    }
+  const searchedUserIds = searchViaJobPosts.reduce((userIds, jobPost) => {
+    return [
+      ...(jobPost.Applications &&
+        jobPost.Applications.map((application) => application.User.id)),
+      ...userIds,
+    ];
   }, []);
 
+  const searchViaUser = await User.findAll({
+    where: {
+      [Op.or]: [
+        { id: { [Op.in]: searchedUserIds } },
+        { firstName: { [Op.iLike]: searchFields } },
+        { lastName: { [Op.iLike]: searchFields } },
+        { email: { [Op.iLike]: searchFields } },
+        { city: { [Op.iLike]: searchFields } },
+      ],
+    },
+    attributes: ["firstName", "lastName", "email", "city"],
+    include: [
+      {
+        model: Application,
+        as: "Applications",
+        attributes: ["JobPostId"],
+        include: {
+          model: JobPost,
+          as: "JobPosts",
+          attributes: ["title"],
+          where: {
+            empId,
+          },
+        },
+      },
+    ],
+  });
+
   const formattedUserSearch = searchViaUser.reduce((acc, users) => {
-    if (users.Applications) {
-      const applicantDetails = users.Applications.map((application) => {
+    if (users.Applications.length !== 0) {
+      users.JobPosts = users.Applications.map((application) => {
         return {
+          title: application.JobPosts.title,
+        };
+      });
+      return [
+        ...acc,
+        {
           firstName: users.firstName,
           lastName: users.lastName,
           email: users.email,
           city: users.city,
-          JobPosts: [
-            {
-              title: application.JobPosts.title,
-            },
-          ],
-        };
-      });
-      return [...acc, ...applicantDetails];
+          JobPosts: users.JobPosts,
+        },
+      ];
     }
   }, []);
 
-  return [...formattedJobPostsSearch, ...formattedUserSearch];
+  return formattedUserSearch;
 };
 
 module.exports = {
