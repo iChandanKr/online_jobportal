@@ -45,20 +45,8 @@ export class ApplicationsComponent implements OnInit {
 
     if (this.jobId()) {
       this.fetchJobApplicants();
-
     } else {
-      this.jobService.getAllApplicantsOfEmployer().subscribe({
-        next: (res) => {
-          const applicantWithJobs = res.data.map(applicant => ({
-            ...applicant,
-            appliedJobs: applicant.JobPosts.map(post => post.title).join(', ')
-          }));
-
-          this.datasource.set(applicantWithJobs);
-          this.allApplicants.set(true);
-          this.columnDetails();
-        },
-      });
+      this.getAllApplicants()
     }
     this.searchSubject.pipe(debounceTime(300)).subscribe((query) => {
       this.searchQuery = query;
@@ -69,20 +57,42 @@ export class ApplicationsComponent implements OnInit {
   getApplicationsBySearch() {
     this.employerService.searchApplicant(this.searchQuery).subscribe({
       next: (res) => {
-
-        const applicantWithJobs = res.data.map((applicant: SearchApplicant) => ({
-          ...applicant,
-          appliedJobs: applicant.JobPosts
-            ? applicant.JobPosts.map(post => post.title).join(', ')
-            : ''
-        }));
-        this.datasource.set(applicantWithJobs);
-        this.allApplicants.set(true);
-        this.columnDetails();
+        if (!this.searchQuery) {
+          this.getAllApplicants();
+        } else {
+          if (Array.isArray(res.data)) {
+            const applicantWithJobs = res.data.map((applicant: SearchApplicant) => ({
+              ...applicant,
+              appliedJobs: applicant.JobPosts
+                ? applicant.JobPosts.map(post => post.title).join(', ')
+                : ''
+            }));
+            this.datasource.set(applicantWithJobs);
+            this.allApplicants.set(true);
+            this.columnDetails();
+          } else {
+            console.error("Error: res.data is not an array");
+          }
+        }
       },
       error: (err) => {
         this.toaster.error('Failed to fetch search results', 'Error');
       }
+    });
+  }
+
+  getAllApplicants() {
+    this.jobService.getAllApplicantsOfEmployer().subscribe({
+      next: (res) => {
+        const applicantWithJobs = res.data.map(applicant => ({
+          ...applicant,
+          appliedJobs: applicant.JobPosts.map(post => post.title).join(', ')
+        }));
+
+        this.datasource.set(applicantWithJobs);
+        this.allApplicants.set(true);
+        this.columnDetails();
+      },
     });
   }
 
