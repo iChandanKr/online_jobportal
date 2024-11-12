@@ -8,4 +8,5 @@ export interface Applications{
     maxSalary:string;
     jobType:string;
     status:string;
+    JobPosts:string[]
 }

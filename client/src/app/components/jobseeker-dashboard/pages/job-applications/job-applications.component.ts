@@ -33,12 +33,14 @@ export class JobApplicationsComponent implements OnInit {
   getAllApplications() {
     this.jobseekerService.getAllApplications().subscribe({
       next: (res) => {
-
-        const applicationsWithStatus = res.data.JobPosts.map((jobPost: any) => ({
+      //  console.log(res?.JobPosts);
+       
+        
+        const applicationsWithStatus = res?.JobPosts.map((jobPost: any) => ({
           ...jobPost,
           status: jobPost.Application?.status
         }));
-        this.datasource.data = applicationsWithStatus;
+        this.datasource.data = applicationsWithStatus||[];
       },
       error: (err) => {
         console.error('Error fetching applications:', err);

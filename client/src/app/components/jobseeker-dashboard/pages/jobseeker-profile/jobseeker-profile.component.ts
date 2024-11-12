@@ -1,6 +1,6 @@
 import { Component, NgModule, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, NgForm, NgModel, Validators } from '@angular/forms';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -102,29 +102,37 @@ export class JobseekerProfileComponent implements OnInit {
     );
 
 
-    this.postJobService.fetchExistingSkills().subscribe({
-      next: data => {
-        this.allSkills = data.data
-        this.setupFilteredSkills();
-      },
-      error: err => {
-        console.log(err);
-
-      }
-    })
+   
     this.populateJobSeekerProfile();
-
-    this.populateEducationDetails();
-
-    this.populateSkills();
 
   }
 
+  onTabChange(event:MatTabChangeEvent){
+    if(event.index===0){
+      this.populateJobSeekerProfile();
+    }
+    else if(event.index===1){
+      this.populateEducationDetails();
+    }
+    else if(event.index===2){
+      this.populateSkills();
+      this.postJobService.fetchExistingSkills().subscribe({
+        next: data => {
+          this.allSkills = data.data
+          this.setupFilteredSkills();
+        },
+        error: err => {
+          console.log(err);
+  
+        }
+      })
+    }
+  }
 
   private populateJobSeekerProfile() {
     this.updateJobseekerService.getJobseeker().subscribe({
       next: data => {
-        const jobseekerFetchedData = data.data
+        const jobseekerFetchedData = data
         this.jobSeekerProfileForm.patchValue({
           firstName: jobseekerFetchedData.firstName,
           lastName: jobseekerFetchedData.lastName,
@@ -146,7 +154,7 @@ export class JobseekerProfileComponent implements OnInit {
   private populateEducationDetails() {
     this.updateJobseekerService.getEducationDetails().subscribe({
       next: data => {
-        const educationFetchData = data.data;
+        const educationFetchData = data;
 
         if (educationFetchData) {
           this.isEducationDataAvailable = true;
@@ -178,7 +186,7 @@ export class JobseekerProfileComponent implements OnInit {
   private populateSkills() {
     this.updateJobseekerService.getSkillsJobseeker().subscribe({
       next: (data) => {
-        const skillsFetchedData = data.data;
+        const skillsFetchedData = data;
         this.selectedSkills = skillsFetchedData;
         this.hasExistingSkills = skillsFetchedData && skillsFetchedData.length > 0
 

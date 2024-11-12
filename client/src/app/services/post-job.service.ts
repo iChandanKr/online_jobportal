@@ -10,12 +10,25 @@ import { log } from 'console';
 export class PostJobService {
   private readonly skillUrl = API_URLS.fetchSkills;
   private readonly postJobUrl = API_URLS.postJob;
-  private readonly getJobById=API_URLS.getJobById;
-  private readonly updateJobUrl=API_URLS.updateJob;
+  private readonly getJobById = API_URLS.getJobById;
+  private readonly updateJobUrl = API_URLS.updateJob;
+  private existingSkillsSubject = new BehaviorSubject<Skill[] | null>(null);
+  existingSkills$ = this.existingSkillsSubject.asObservable();
   skills = signal<Skill[]>([]);
   private httpClient = inject(HttpClient);
-  fetchExistingSkills() {
-    return this.httpClient.get<{ data: Skill[] }>(this.skillUrl);
+  fetchExistingSkills(): Observable<any> {
+    if (!this.existingSkillsSubject.value) {
+      this.httpClient.get<{ data: Skill[] }>(this.skillUrl, { withCredentials: true })
+        .subscribe({
+          next: (response) => {
+            this.existingSkillsSubject.next(response.data);
+          },
+          error: (err) => {
+            console.error('Failed to fetch existing skills data', err);
+          },
+        });
+    }
+    return this.existingSkills$;
   }
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
@@ -30,7 +43,7 @@ export class PostJobService {
   }
 
   getJob(jobId: string): Observable<JobResponse> {
-    const url = `${this.getJobById}/${jobId}`; 
+    const url = `${this.getJobById}/${jobId}`;
     return this.httpClient.get<JobResponse>(url, {
       headers: this.getHeaders(),
       withCredentials: true,

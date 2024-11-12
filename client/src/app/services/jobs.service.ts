@@ -21,10 +21,16 @@ export class JobsService {
     API_URLS.updateApplicationStatus;
   queryStr = signal('');
   private applicantsSubject = new BehaviorSubject<AllApplicants[] | null>(null);
-  constructor(private httpClient: HttpClient) {}
+  private jobSubject = new BehaviorSubject<JobResponse[] | null>(null);
+  private allJobsSubject=new BehaviorSubject<JobResponse[]|null>(null);
+  constructor(private httpClient: HttpClient) { }
 
   get applicants$() {
     return this.applicantsSubject.asObservable();
+  }
+
+  get jobs$() {
+    return this.jobSubject.asObservable(); 
   }
 
   getJobs(
@@ -32,22 +38,34 @@ export class JobsService {
     sort?: string,
     page?: number,
     limit?: number
-  ): Observable<any> {
-    let params = new HttpParams();
+  ): Observable<JobResponse[] | null> {
+    if (this.jobSubject.value) {
+      return this.jobs$;
+    } else {
+      let params = new HttpParams();
 
-    if (search) {
-      params = params.set('search', search);
+      if (search) {
+        params = params.set('search', search);
+      }
+      if (sort) {
+        params = params.set('sort', sort);
+      }
+      if (page) {
+        params = params.set('page', page.toString());
+      }
+      if (limit) {
+        params = params.set('limit', limit.toString());
+      }
+
+      this.httpClient
+        .get<JobResponse[]>(this.apiUrl, { params, withCredentials: true })
+        .subscribe({
+          next: (jobs) => this.jobSubject.next(jobs),
+          error: (err) => console.error('Failed to fetch jobs', err),
+        });
+
+      return this.jobs$;
     }
-    if (sort) {
-      params = params.set('sort', sort);
-    }
-    if (page) {
-      params = params.set('page', page.toString());
-    }
-    if (limit) {
-      params = params.set('limit', limit.toString());
-    }
-    return this.httpClient.get(this.apiUrl, { params, withCredentials: true });
   }
 
   deleteJob(jobId: string): Observable<any> {
@@ -110,16 +128,8 @@ export class JobsService {
       message: string;
       data: Applicant[];
     }>(apiUrl, { withCredentials: true });
-    
-  }
 
-  // getAllApplicantsOfEmployer() {
-  //   return this.httpClient.get<{
-  //     status: string;
-  //     message: string;
-  //     data: AllApplicants[];
-  //   }>(this.fetchAllApplicants, { withCredentials: true });
-  // }
+  }
 
   getAllApplicantsOfEmployer() {
     if (!this.applicantsSubject.value) {

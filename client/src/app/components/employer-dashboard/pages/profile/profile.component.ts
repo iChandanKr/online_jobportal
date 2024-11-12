@@ -77,10 +77,8 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.updateEmployerService.getEmployerDetails().subscribe({
       next: (response) => {
-        // console.log(response);
-        this.employerDetails.set(response.data);
+        this.employerDetails.set(response||undefined);
         this.updateForm();
-        // console.log(this.employerDetails());
       },
     });
   }
