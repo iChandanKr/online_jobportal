@@ -84,12 +84,14 @@ export class ApplicationsComponent implements OnInit {
   getAllApplicants() {
     this.jobService.getAllApplicantsOfEmployer().subscribe({
       next: (res) => {
-        const applicantWithJobs = res.data.map(applicant => ({
+        console.log(res);
+        
+        const applicantWithJobs = res?.map(applicant => ({
           ...applicant,
           appliedJobs: applicant.JobPosts.map(post => post.title).join(', ')
         }));
 
-        this.datasource.set(applicantWithJobs);
+        this.datasource.set(applicantWithJobs||[]);
         this.allApplicants.set(true);
         this.columnDetails();
       },

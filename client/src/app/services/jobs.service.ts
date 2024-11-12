@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { API_URLS } from '../constants/api-urls';
 import { type JobResponse } from '../model/job.model';
 import { type AllApplicants, type Applicant } from '../model/jobseeker.model';
@@ -20,7 +20,12 @@ export class JobsService {
   private readonly updateApplicationStatusUrl =
     API_URLS.updateApplicationStatus;
   queryStr = signal('');
+  private applicantsSubject = new BehaviorSubject<AllApplicants[] | null>(null);
   constructor(private httpClient: HttpClient) {}
+
+  get applicants$() {
+    return this.applicantsSubject.asObservable();
+  }
 
   getJobs(
     search?: string,
@@ -108,13 +113,33 @@ export class JobsService {
     
   }
 
+  // getAllApplicantsOfEmployer() {
+  //   return this.httpClient.get<{
+  //     status: string;
+  //     message: string;
+  //     data: AllApplicants[];
+  //   }>(this.fetchAllApplicants, { withCredentials: true });
+  // }
+
   getAllApplicantsOfEmployer() {
-    return this.httpClient.get<{
-      status: string;
-      message: string;
-      data: AllApplicants[];
-    }>(this.fetchAllApplicants, { withCredentials: true });
+    if (!this.applicantsSubject.value) {
+      this.httpClient
+        .get<{ status: string; message: string; data: AllApplicants[] }>(
+          this.fetchAllApplicants,
+          { withCredentials: true }
+        )
+        .subscribe({
+          next: (response) => {
+            this.applicantsSubject.next(response.data);
+          },
+          error: (err) => {
+            console.error('Failed to fetch applicants', err);
+          },
+        });
+    }
+    return this.applicants$;
   }
+
 
   updateApplicationStatus(
     payload: {
