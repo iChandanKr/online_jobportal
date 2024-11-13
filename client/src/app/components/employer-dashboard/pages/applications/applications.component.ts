@@ -1,11 +1,20 @@
-import { type AllApplicants, type SearchApplicant } from './../../../../model/jobseeker.model';
-import { Component, inject, input, Input, OnInit, signal } from '@angular/core';
+import {
+  type AllApplicants,
+  type SearchApplicant,
+} from './../../../../model/jobseeker.model';
+import {
+  Component,
+  inject,
+  input,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { JobsService } from '../../../../services/jobs.service';
 import { type Applicant } from '../../../../model/jobseeker.model';
 import { DatePipe, TitleCasePipe } from '@angular/common';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { ToastrService } from 'ngx-toastr';
@@ -36,17 +45,16 @@ export class ApplicationsComponent implements OnInit {
   allApplicants = signal<boolean>(false);
   private toaster = inject(ToastrService);
   displayedColumns!: string[];
-  private searchSubject = new Subject<string>()
+  private searchSubject = new Subject<string>();
   selection = new SelectionModel<Applicant>(true, []);
   dialog = inject(MatDialog);
   searchQuery = '';
-  constructor(private employerService: UpdateEmployerService) { }
+  constructor(private employerService: UpdateEmployerService) {}
   ngOnInit(): void {
-
     if (this.jobId()) {
       this.fetchJobApplicants();
     } else {
-      this.getAllApplicants()
+      this.getAllApplicants();
     }
     this.searchSubject.pipe(debounceTime(300)).subscribe((query) => {
       this.searchQuery = query;
@@ -61,23 +69,25 @@ export class ApplicationsComponent implements OnInit {
           this.getAllApplicants();
         } else {
           if (Array.isArray(res.data)) {
-            const applicantWithJobs = res.data.map((applicant: SearchApplicant) => ({
-              ...applicant,
-              appliedJobs: applicant.JobPosts
-                ? applicant.JobPosts.map(post => post.title).join(', ')
-                : ''
-            }));
+            const applicantWithJobs = res.data.map(
+              (applicant: SearchApplicant) => ({
+                ...applicant,
+                appliedJobs: applicant.JobPosts
+                  ? applicant.JobPosts.map((post) => post.title).join(', ')
+                  : '',
+              })
+            );
             this.datasource.set(applicantWithJobs);
             this.allApplicants.set(true);
             this.columnDetails();
           } else {
-            console.error("Error: res.data is not an array");
+            console.error('Error: res.data is not an array');
           }
         }
       },
       error: (err) => {
         this.toaster.error('Failed to fetch search results', 'Error');
-      }
+      },
     });
   }
 
@@ -85,19 +95,18 @@ export class ApplicationsComponent implements OnInit {
     this.jobService.getAllApplicantsOfEmployer().subscribe({
       next: (res) => {
         console.log(res);
-        
-        const applicantWithJobs = res?.map(applicant => ({
+
+        const applicantWithJobs = res?.map((applicant) => ({
           ...applicant,
-          appliedJobs: applicant.JobPosts.map(post => post.title).join(', ')
+          appliedJobs: applicant.JobPosts.map((post) => post.title).join(', '),
         }));
 
-        this.datasource.set(applicantWithJobs||[]);
+        this.datasource.set(applicantWithJobs || []);
         this.allApplicants.set(true);
         this.columnDetails();
       },
     });
   }
-
 
   fetchJobApplicants() {
     this.jobService.getApplicantsOfJob(this.jobId()).subscribe({
@@ -110,16 +119,21 @@ export class ApplicationsComponent implements OnInit {
   columnDetails() {
     this.allApplicants() === false
       ? (this.displayedColumns = [
-        'select',
-        'firstName',
-        'lastName',
-        'email',
-        'appliedOn',
-        'status',
-        'profile',
-
-      ])
-      : (this.displayedColumns = ['firstName', 'lastName', 'email', 'city', 'appliedJobs']);
+          'select',
+          'firstName',
+          'lastName',
+          'email',
+          'appliedOn',
+          'status',
+          'profile',
+        ])
+      : (this.displayedColumns = [
+          'firstName',
+          'lastName',
+          'email',
+          'city',
+          'appliedJobs',
+        ]);
   }
 
   isAllSelected() {
@@ -131,8 +145,8 @@ export class ApplicationsComponent implements OnInit {
     this.isAllSelected()
       ? this.selection.clear()
       : this.datasource().forEach((row) =>
-        this.selection.select(row as Applicant)
-      );
+          this.selection.select(row as Applicant)
+        );
   }
 
   getSelectedApplicants(): Applicant[] {
@@ -159,6 +173,7 @@ export class ApplicationsComponent implements OnInit {
         };
       }
     );
+    this.selection.clear();
     this.jobService.updateApplicationStatus(selectedApplications).subscribe({
       next: (res) => {
         this.fetchJobApplicants();
@@ -180,6 +195,8 @@ export class ApplicationsComponent implements OnInit {
         };
       }
     );
+    this.selection.clear();
+
     this.jobService.updateApplicationStatus(selectedApplications).subscribe({
       next: (res) => {
         this.fetchJobApplicants();
@@ -207,8 +224,10 @@ export class ApplicationsComponent implements OnInit {
   }
 
   applySearch(event: Event) {
-    const searchValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    const searchValue = (event.target as HTMLInputElement).value
+      .trim()
+      .toLowerCase();
     //this.getApplicationsBySearch();
-    this.searchSubject.next(searchValue)
+    this.searchSubject.next(searchValue);
   }
 }
