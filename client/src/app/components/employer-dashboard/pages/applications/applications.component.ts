@@ -2,19 +2,13 @@ import {
   type AllApplicants,
   type SearchApplicant,
 } from './../../../../model/jobseeker.model';
-import {
-  Component,
-  inject,
-  input,
-  OnInit,
-  signal,
-} from '@angular/core';
+import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { JobsService } from '../../../../services/jobs.service';
 import { type Applicant } from '../../../../model/jobseeker.model';
 import { DatePipe, TitleCasePipe } from '@angular/common';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { ToastrService } from 'ngx-toastr';
