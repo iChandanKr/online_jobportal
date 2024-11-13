@@ -118,7 +118,7 @@ export class JobseekerProfileComponent implements OnInit {
       this.populateSkills();
       this.postJobService.fetchExistingSkills().subscribe({
         next: data => {
-          this.allSkills = data.data
+          this.allSkills = data
           this.setupFilteredSkills();
         },
         error: err => {

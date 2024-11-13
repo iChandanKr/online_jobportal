@@ -38,7 +38,7 @@ export class EmployerDashboardComponent implements OnInit {
     this.postJobService.fetchExistingSkills().subscribe({
       next: res => {
         // this.postJobService.skills.next(res.data);
-        this.postJobService.skills.set(res.data);
+        this.postJobService.skills.set(res);
       },
       error: (err) => {
         console.log(err);
