@@ -140,25 +140,43 @@
         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
         >Skills</label
       >
-      @if (selectedSkills().length>0) {
+      @if (selectedSkillIds().length>0) {
       <div>
         <span class="font-medium">Selected Skills: </span>
         {{ selectedSkillsName().join(", ") }}
       </div>
       }
-      <select
-        id="skills"
-        name="skills"
-        multiple
-        formControlName="skillId"
-        [(ngModel)]="selectedSkills"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-      >
-        <option value="" disabled>select</option>
-        @for (skill of skills(); track skill.id) {
-        <option value="{{ skill.id }}">{{ skill.skillName }}</option>
+
+      <div class="relative">
+        <button
+          type="button"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          (click)="toggleDropdown()"
+        >
+          Select Skills
+        </button>
+        @if(dropDownOpen()){
+        <ul
+          class="absolute w-full bg-white border border-gray-300 shadow-lg rounded-lg mt-1 dark:bg-gray-700 dark:border-gray-600 max-h-60 overflow-auto"
+        >
+          @for (skill of skills(); track skill.id) {
+
+          <li class="p-2">
+            <label class="flex items-center">
+              <input
+                type="checkbox"
+                [value]="skill.id"
+                [checked]="isSelected(skill.id)"
+                (change)="toggleSelection(skill.id)"
+                class="mr-2"
+              />
+              {{ skill.skillName }}
+            </label>
+          </li>
+          }
+        </ul>
         }
-      </select>
+      </div>
     </div>
     <div class="control">
       <div class="mb-5">

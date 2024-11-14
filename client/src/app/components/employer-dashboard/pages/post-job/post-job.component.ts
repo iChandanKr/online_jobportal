@@ -16,6 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 import { PostJobService } from '../../../../services/post-job.service';
 import { Skill } from '../../../../model/skill.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { sign } from 'crypto';
 
 const currentTime = new Date().toISOString();
 @Component({
@@ -47,6 +48,7 @@ export class PostJobComponent implements OnInit {
   private toaster = inject(ToastrService);
   private activeRoute = inject(ActivatedRoute);
   private router = inject(Router);
+  dropDownOpen = signal<boolean>(false);
 
   ngOnInit(): void {
     this.activeRoute.paramMap.subscribe((params) => {
@@ -67,6 +69,10 @@ export class PostJobComponent implements OnInit {
       );
     }
   }
+  toggleDropdown() {
+    this.dropDownOpen.set(!this.dropDownOpen());
+  }
+
   populateForm(job: any) {
     this.jobForm.patchValue({
       title: job.title,
@@ -85,12 +91,26 @@ export class PostJobComponent implements OnInit {
     });
   }
   skills = computed(() => this.postJobService.skills());
-  selectedSkills = signal<any>([]);
+  selectedSkillIds = signal<any>([]);
   selectedSkillsName = computed(() =>
     this.skills()
-      .filter((skill) => this.selectedSkills().includes(skill.id))
+      .filter((skill) => this.selectedSkillIds().includes(skill.id))
       .map((skills) => skills.skillName)
   );
+
+  isSelected(skillId: string): boolean {
+    return this.selectedSkillIds().includes(skillId);
+  }
+
+  toggleSelection(skillId: string) {
+    if (this.isSelected(skillId)) {
+      this.selectedSkillIds.set(
+        this.selectedSkillIds().filter((id: string) => id !== skillId)
+      );
+    } else {
+      this.selectedSkillIds.update((prev) => [...prev, skillId]);
+    }
+  }
 
   onSubmit() {
     if (this.jobForm.invalid) {
