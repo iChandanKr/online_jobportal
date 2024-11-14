@@ -11,6 +11,7 @@ import {
 import { UpdateEmployerService } from '../../../../services/update-employer.service';
 import { type EmployerResponse } from '../../../../model/employer.model';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -23,6 +24,7 @@ export class ProfileComponent implements OnInit {
   employerDetails = signal<EmployerResponse | undefined>(undefined);
   private updateEmployerService = inject(UpdateEmployerService);
   private toaster = inject(ToastrService);
+  private router = inject(Router);
   profileForm = new FormGroup({
     firstName: new FormControl(this.employerDetails()?.firstName || '', [
       Validators.required,
@@ -77,7 +79,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.updateEmployerService.getEmployerDetails().subscribe({
       next: (response) => {
-        this.employerDetails.set(response||undefined);
+        this.employerDetails.set(response || undefined);
         this.updateForm();
       },
     });
@@ -129,16 +131,19 @@ export class ProfileComponent implements OnInit {
             data.firstName! + ' ' + data.lastName!
           );
           this.toaster.success(res?.message, res?.status);
+          this.router.navigate(['/employer/dashboard']);
+
         },
         error: (err) => {
-          this.toaster.success(err?.error.message, err?.error.status);
+          this.toaster.error(err?.error.message, err?.error.status);
         },
       });
     }
   }
 
   onCancel() {
-    window.location.reload();
+    this.router.navigate(['/employer/dashboard']);
+    // window.location.reload();
   }
   openChangePasswordDialog(
     enterAnimationDuration: string,
@@ -149,7 +154,6 @@ export class ProfileComponent implements OnInit {
       enterAnimationDuration,
       exitAnimationDuration,
     });
-    dialogRef.afterClosed().subscribe((result) => {
-    });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 }
