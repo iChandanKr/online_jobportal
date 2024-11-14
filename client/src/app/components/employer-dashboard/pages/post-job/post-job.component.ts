@@ -1,11 +1,4 @@
-import {
-  Component,
-  effect,
-  inject,
-  OnInit,
-  signal,
-  computed,
-} from '@angular/core';
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -14,9 +7,7 @@ import {
 } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { PostJobService } from '../../../../services/post-job.service';
-import { Skill } from '../../../../model/skill.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { sign } from 'crypto';
 
 const currentTime = new Date().toISOString();
 @Component({
@@ -34,7 +25,7 @@ export class PostJobComponent implements OnInit {
     industryName: new FormControl('', [Validators.required]),
     location: new FormControl('', [Validators.required]),
     city: new FormControl('', [Validators.required]),
-    skillId: new FormControl([], [Validators.required]),
+    skillId: new FormControl<string[]>([], [Validators.required]),
     applicationDeadline: new FormControl(currentTime, [Validators.required]),
     maxSalary: new FormControl(0, [Validators.required]),
     minSalary: new FormControl(0, [Validators.required]),
@@ -92,24 +83,34 @@ export class PostJobComponent implements OnInit {
   }
   skills = computed(() => this.postJobService.skills());
   selectedSkillIds = signal<any>([]);
-  selectedSkillsName = computed(() =>
-    this.skills()
-      .filter((skill) => this.selectedSkillIds().includes(skill.id))
-      .map((skills) => skills.skillName)
-  );
+  selectedSkillsName = signal<string[]>([]);
+
+  private subscription = this.jobForm.get('skillId')?.valueChanges.subscribe({
+    next: (skills) => {
+      this.selectedSkillIds.set(skills);
+      this.selectedSkillsName.set(
+        this.skills()
+          .filter((skill) => this.selectedSkillIds()?.includes(skill.id))
+          .map((skill) => skill.skillName)
+      );
+    },
+  });
 
   isSelected(skillId: string): boolean {
-    return this.selectedSkillIds().includes(skillId);
+    const selectedSkills = this.jobForm.get('skillId')?.value || [];
+    return selectedSkills.includes(skillId);
   }
 
   toggleSelection(skillId: string) {
-    if (this.isSelected(skillId)) {
-      this.selectedSkillIds.set(
-        this.selectedSkillIds().filter((id: string) => id !== skillId)
-      );
+    const selectedSkills = this.jobForm.get('skillId')?.value || [];
+    const index = selectedSkills.indexOf(skillId);
+
+    if (index === -1) {
+      selectedSkills.push(skillId);
     } else {
-      this.selectedSkillIds.update((prev) => [...prev, skillId]);
+      selectedSkills.splice(index, 1);
     }
+    this.jobForm.get('skillId')?.setValue(selectedSkills);
   }
 
   onSubmit() {
