@@ -83,20 +83,14 @@ export class PostJobComponent implements OnInit {
   }
   skills = computed(() => this.postJobService.skills());
   selectedSkillIds = signal<any>([]);
-  // selectedSkillsName = computed(() =>
-  //   this.skills()
-  //     .filter((skill) => this.selectedSkillIds().includes(skill.id))
-  //     .map((skill) => skill.skillName)
-  // );
   selectedSkillsName = signal<string[]>([]);
 
   private subscription = this.jobForm.get('skillId')?.valueChanges.subscribe({
     next: (skills) => {
       this.selectedSkillIds.set(skills);
-      console.log(this.selectedSkillIds());
       this.selectedSkillsName.set(
         this.skills()
-          .filter((skill) => this.selectedSkillIds().includes(skill.id))
+          .filter((skill) => this.selectedSkillIds()?.includes(skill.id))
           .map((skill) => skill.skillName)
       );
     },
@@ -105,7 +99,6 @@ export class PostJobComponent implements OnInit {
   isSelected(skillId: string): boolean {
     const selectedSkills = this.jobForm.get('skillId')?.value || [];
     return selectedSkills.includes(skillId);
-    // return this.selectedSkillIds().includes(skillId);
   }
 
   toggleSelection(skillId: string) {
@@ -117,9 +110,7 @@ export class PostJobComponent implements OnInit {
     } else {
       selectedSkills.splice(index, 1);
     }
-
     this.jobForm.get('skillId')?.setValue(selectedSkills);
-    // console.log(this.jobForm.get('skillId'));
   }
 
   onSubmit() {
