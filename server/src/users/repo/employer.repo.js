@@ -297,17 +297,15 @@ const getApplicantBySearchDB = async (searchFields, empId) => {
           title: application.JobPosts.title,
         };
       });
-      return [
-        ...acc,
-        {
-          firstName: users.firstName,
-          lastName: users.lastName,
-          email: users.email,
-          city: users.city,
-          JobPosts: users.JobPosts,
-        },
-      ];
+      acc.push({
+        firstName: users.firstName,
+        lastName: users.lastName,
+        email: users.email,
+        city: users.city,
+        JobPosts: users.JobPosts,
+      });
     }
+    return acc;
   }, []);
 
   return formattedUserSearch;
