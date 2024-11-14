@@ -1,3 +1,4 @@
+@if(jobId()){
 <div class="flex float-end mb-5">
   <button
     [disabled]="!isAnyItemSelected()"
@@ -13,6 +14,7 @@
   </mat-menu>
 </div>
 
+}
 <div class="search-bar">
   <input
     matInput
