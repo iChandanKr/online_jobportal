@@ -15,7 +15,7 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { PostJobService } from '../../../../services/post-job.service';
 import { Skill } from '../../../../model/skill.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const currentTime = new Date().toISOString();
 @Component({
@@ -46,6 +46,7 @@ export class PostJobComponent implements OnInit {
   private postJobService = inject(PostJobService);
   private toaster = inject(ToastrService);
   private activeRoute = inject(ActivatedRoute);
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.activeRoute.paramMap.subscribe((params) => {
@@ -80,10 +81,17 @@ export class PostJobComponent implements OnInit {
       minSalary: job.minSalary,
       jobType: job.jobType,
       shift: job.shift,
-      companyName:job.companyName
+      companyName: job.companyName,
     });
   }
   skills = computed(() => this.postJobService.skills());
+  selectedSkills = signal<any>([]);
+  selectedSkillsName = computed(() =>
+    this.skills()
+      .filter((skill) => this.selectedSkills().includes(skill.id))
+      .map((skills) => skills.skillName)
+  );
+
   onSubmit() {
     if (this.jobForm.invalid) {
       console.log('INVALID FORM');
@@ -98,6 +106,7 @@ export class PostJobComponent implements OnInit {
           this.toaster.success('Job updated successfully', 'Success', {
             timeOut: 1500,
           });
+          this.router.navigate(['/employer/jobs']);
           this.jobForm.reset();
         },
         error: (err) => {
@@ -112,6 +121,8 @@ export class PostJobComponent implements OnInit {
           this.toaster.success('Job created successfully', 'Success', {
             timeOut: 1500,
           });
+          this.router.navigate(['/employer/jobs']);
+
           this.jobForm.reset();
         },
         error: (err) => {
@@ -125,6 +136,7 @@ export class PostJobComponent implements OnInit {
 
   onReset() {
     this.jobForm.reset();
+    this.router.navigate(['/employer/dashboard']);
   }
 
   formatDateForInput(dateString: string): string {
