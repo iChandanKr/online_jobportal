@@ -1,0 +1,11 @@
+.dashboard-widgets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.chart-container {
+  margin-top: 50px;
+  width: 50%;
+  height: 250px;
+}
