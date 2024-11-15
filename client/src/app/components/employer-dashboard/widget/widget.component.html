@@ -1,4 +1,4 @@
-<div class="container mat-elevation-z3">
+<div class="container mat-elevation-z3" [style.color]="data().color??'whitesmoke'" [style.background-color]="data().backgroundColor??'#003f5c'">
   <h5 class="m-0">{{ data().label }}</h5>
   <ng-container [ngComponentOutlet]="data().content" />
 </div>

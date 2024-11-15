@@ -18,11 +18,15 @@ export class DashboardService {
       id: 2,
       label: 'Open Jobs',
       content: OpenJobsComponent,
+      color: '#008000',
+      backgroundColor: '#000401',
     },
     {
       id: 3,
       label: 'Closed Jobs',
       content: ClosedJobsComponent,
+      color: '#F5004F',
+      backgroundColor:'#FFEEAD'
     },
   ]);
 }
