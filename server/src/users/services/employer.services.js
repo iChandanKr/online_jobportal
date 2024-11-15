@@ -8,7 +8,7 @@ const { dataModel } = require("../../dbConnection");
 const { sequelize } = dataModel;
 const AuthService = require("../../auth/auth.services");
 const { generateAccessToken } = require("../../utils/tokenGenerator");
-const { search } = require("../../utils/apiFeatures");
+const { search, sort, paginate } = require("../../utils/apiFeatures");
 class EmployerService {
   static createEmployerService = async (employerData) => {
     const result = sequelize.transaction(async (t) => {
@@ -85,12 +85,28 @@ class EmployerService {
   };
 
   static getApplicantsService = async (req) => {
-    // let visibleAttributes;
+    let orderBy;
+    const limit = req.query.limit || 5;
+    let offset;
+    if (req.query.sort) {
+      orderBy = sort(req.query.sort);
+    } else {
+      orderBy = sort("-updatedAt");
+    }
+    if (req.query.page) {
+      offset = paginate(req.query.page, limit);
+    }
 
     let searchFields = req.query.search || `%`;
     searchFields = search(searchFields);
 
-    const applicants = await getApplicantBySearchDB(searchFields, req.empId);
+    const applicants = await getApplicantBySearchDB(
+      searchFields,
+      req.empId,
+      orderBy,
+      limit,
+      offset
+    );
     return applicants;
   };
 }

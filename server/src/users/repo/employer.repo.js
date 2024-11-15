@@ -236,7 +236,13 @@ const findEmployerDB = async (userId) => {
     ],
   });
 };
-const getApplicantBySearchDB = async (searchFields, empId) => {
+const getApplicantBySearchDB = async (
+  searchFields,
+  empId,
+  order,
+  limit,
+  offset
+) => {
   const searchViaJobPosts = await JobPost.findAll({
     attributes: ["title"],
     where: {
@@ -262,7 +268,8 @@ const getApplicantBySearchDB = async (searchFields, empId) => {
     ];
   }, []);
 
-  const searchViaUser = await User.findAll({
+  const searchViaUser = await User.findAndCountAll({
+    distinct: true,
     where: {
       [Op.or]: [
         { id: { [Op.in]: searchedUserIds } },
@@ -272,7 +279,10 @@ const getApplicantBySearchDB = async (searchFields, empId) => {
         { city: { [Op.iLike]: searchFields } },
       ],
     },
-    attributes: ["firstName", "lastName", "email", "city"],
+    attributes: ["firstName", "lastName", "email", "city", "updatedAt"],
+    order,
+    limit,
+    offset,
     include: [
       {
         model: Application,
@@ -290,7 +300,7 @@ const getApplicantBySearchDB = async (searchFields, empId) => {
     ],
   });
 
-  const formattedUserSearch = searchViaUser.reduce((acc, users) => {
+  const formattedUserSearch = searchViaUser.rows.reduce((acc, users) => {
     if (users.Applications.length !== 0) {
       users.JobPosts = users.Applications.map((application) => {
         return {
@@ -308,7 +318,7 @@ const getApplicantBySearchDB = async (searchFields, empId) => {
     return acc;
   }, []);
 
-  return formattedUserSearch;
+  return { rows: formattedUserSearch, count: searchViaUser.count };
 };
 
 module.exports = {

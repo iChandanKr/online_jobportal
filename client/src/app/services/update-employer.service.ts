@@ -10,7 +10,7 @@ export class UpdateEmployerService {
   private readonly getEmployerUrl = API_URLS.fetchEmployer;
   private readonly updateEmployerUrl = API_URLS.updateEmployer;
   private readonly searchApplicantUrl = API_URLS.searchApplicant;
-  private employerDetailsSubject = new BehaviorSubject<EmployerResponse|null>(null);
+  private employerDetailsSubject = new BehaviorSubject<EmployerResponse | null>(null);
   employerDetails$ = this.employerDetailsSubject.asObservable();
   private httpClient = inject(HttpClient);
 
@@ -21,7 +21,7 @@ export class UpdateEmployerService {
   //   );
   // }
 
-  getEmployerDetails(): Observable<EmployerResponse|null> {
+  getEmployerDetails(): Observable<EmployerResponse | null> {
     // Check if employer details are already fetched
     if (!this.employerDetailsSubject.value) {
       this.httpClient
@@ -51,9 +51,25 @@ export class UpdateEmployerService {
     });
   }
 
-  searchApplicant(search: string): Observable<any> {
+  searchApplicant(search?: string, sort?: string, page?: number, limit?: number): Observable<any> {
     let params = new HttpParams();
-    params = params.set('search', search)
+
+    if (search) {
+      params = params.set('search', search)
+    }
+
+    if (sort) {
+      params = params.set('sort', sort)
+    }
+
+    if (page) {
+      params = params.set('page', page)
+    }
+
+    if (limit) {
+      params = params.set('limit', limit)
+    }
+
     return this.httpClient.get(this.searchApplicantUrl, { params, withCredentials: true });
   }
 

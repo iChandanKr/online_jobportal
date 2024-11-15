@@ -22,8 +22,7 @@
     placeholder="Search Applicants"
   />
 </div>
-
-<table mat-table [dataSource]="datasource()!" class="mat-elevation-z8">
+<table mat-table [dataSource]="datasource" class="mat-elevation-z8">
   <!-- Position Column -->
   @if(allApplicants() === false){
   <ng-container matColumnDef="select">
@@ -109,3 +108,15 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
+<div class="pagination-controls">
+  <button (click)="previousPage()" [disabled]="pageIndex === 0">
+    <mat-icon>keyboard_arrow_left</mat-icon>
+  </button>
+  <div>Page {{ pageIndex+1 }} of {{ totalPages() }}</div>
+  <button
+    (click)="nextPage()"
+    [disabled]="(pageIndex + 1) * pageSize >= totalRecords"
+  >
+    <mat-icon>keyboard_arrow_right</mat-icon>
+  </button>
+</div>

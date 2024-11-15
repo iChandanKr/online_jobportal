@@ -65,7 +65,7 @@ export class JobsComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private snackbar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getJobs();
@@ -85,7 +85,9 @@ export class JobsComponent implements OnInit {
         this.pageSize
       )
       .subscribe((response: any) => {
+
         this.totalRecords = response.data.count;
+
         this.datasource.data = response.data.rows;
       });
   }
