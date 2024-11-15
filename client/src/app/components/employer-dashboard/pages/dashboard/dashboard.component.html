@@ -1,1 +1,8 @@
-<p>dashboard works!</p>
+<h4>App Dashboard</h4>
+
+<div class="dashboard-widgets">
+  @for (widget of store.widgets(); track widget.id) {
+
+  <app-widget [data]="widget" />
+  }
+</div>
