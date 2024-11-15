@@ -34,3 +34,11 @@
   margin-top: 10px;
 }
 
+.page-size-select {
+  width: 150px;
+  height: 10px;
+  margin-left: 200px;
+  padding: 2px;
+  display: flex;
+  align-self: center;
+}

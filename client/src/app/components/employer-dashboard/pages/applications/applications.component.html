@@ -22,7 +22,13 @@
     placeholder="Search Applicants"
   />
 </div>
-<table mat-table [dataSource]="datasource" class="mat-elevation-z8">
+<table
+  mat-table
+  [dataSource]="datasource"
+  class="mat-elevation-z8"
+  matSort
+  (matSortChange)="sortData($event)"
+>
   <!-- Position Column -->
   @if(allApplicants() === false){
   <ng-container matColumnDef="select">
@@ -47,21 +53,21 @@
   </ng-container>
   }
   <ng-container matColumnDef="firstName">
-    <th mat-header-cell *matHeaderCellDef>First Name</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>First Name</th>
     <td mat-cell *matCellDef="let applicant">
       {{ applicant.firstName | titlecase }}
     </td>
   </ng-container>
 
   <ng-container matColumnDef="lastName">
-    <th mat-header-cell *matHeaderCellDef>Last Name</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
     <td mat-cell *matCellDef="let applicant">
       {{ applicant.lastName | titlecase }}
     </td>
   </ng-container>
 
   <ng-container matColumnDef="email">
-    <th mat-header-cell *matHeaderCellDef>Email</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
     <td mat-cell *matCellDef="let applicant">{{ applicant.email }}</td>
   </ng-container>
 
@@ -75,7 +81,7 @@
   </ng-container>
   } @if(allApplicants()===true){
   <ng-container matColumnDef="city">
-    <th mat-header-cell *matHeaderCellDef>City</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>City</th>
     <td mat-cell *matCellDef="let applicant">{{ applicant.city }}</td>
   </ng-container>
   } @if(allApplicants()===true){
@@ -108,15 +114,37 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
-<div class="pagination-controls">
-  <button (click)="previousPage()" [disabled]="pageIndex === 0">
-    <mat-icon>keyboard_arrow_left</mat-icon>
-  </button>
-  <div>Page {{ pageIndex+1 }} of {{ totalPages() }}</div>
-  <button
-    (click)="nextPage()"
-    [disabled]="(pageIndex + 1) * pageSize >= totalRecords"
-  >
-    <mat-icon>keyboard_arrow_right</mat-icon>
-  </button>
+<div class="flex flex-1 justify-center mt-10 ">
+  <div class="pagination-controls">
+    <div>
+      <button (click)="previousPage()" [disabled]="pageIndex === 0">
+        <mat-icon>keyboard_arrow_left</mat-icon>
+      </button>
+    </div>
+
+    <div class="text-lg">Page {{ pageIndex + 1 }} of {{ totalPages() }}</div>
+    <div>
+      <button
+        (click)="nextPage()"
+        [disabled]="(pageIndex + 1) * pageSize >= totalRecords"
+      >
+        <mat-icon>keyboard_arrow_right</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div  >
+    <mat-form-field appearance="outline" class="page-size-select">
+      <mat-label>Items per page</mat-label>
+      <mat-select
+        [(value)]="pageSize"
+        (selectionChange)="onPageSizeChange($event)"
+      >
+        @for (size of pageSizeOptions; track size) {
+        <mat-option [value]="size">
+          {{ size }}
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
 </div>

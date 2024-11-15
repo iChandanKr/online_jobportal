@@ -6,7 +6,7 @@ import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { JobsService } from '../../../../services/jobs.service';
 import { type Applicant } from '../../../../model/jobseeker.model';
-import { DatePipe, JsonPipe, TitleCasePipe } from '@angular/common';
+import { DatePipe, TitleCasePipe } from '@angular/common';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
@@ -15,9 +15,12 @@ import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { ProfileDialogComponent } from './profile-dialog/profile-dialog.component';
 import { debounce, debounceTime, Subject } from 'rxjs';
-import { UpdateJobseekerService } from '../../../../services/update-jobseeker.service';
 import { UpdateEmployerService } from '../../../../services/update-employer.service';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSortModule, Sort } from '@angular/material/sort';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-applications',
@@ -30,6 +33,10 @@ import { MatIconModule } from '@angular/material/icon';
     MatMenuModule,
     MatButtonModule,
     MatIconModule,
+    MatSortModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule
   ],
   templateUrl: './applications.component.html',
   styleUrl: './applications.component.css',
@@ -49,6 +56,7 @@ export class ApplicationsComponent implements OnInit {
   pageIndex = 0;
   totalRecords = 0;
   sortOrder = '';
+  pageSizeOptions = [5, 10, 20, 50];
   constructor(private employerService: UpdateEmployerService) { }
   ngOnInit(): void {
     if (this.jobId()) {
@@ -59,6 +67,7 @@ export class ApplicationsComponent implements OnInit {
     }
     this.searchSubject.pipe(debounceTime(300)).subscribe((query) => {
       this.searchQuery = query;
+      this.getApplicants();
       // this.getApplicationsBySearch();
     });
   }
@@ -87,38 +96,12 @@ export class ApplicationsComponent implements OnInit {
 
   }
 
-  // getApplicationsBySearch(searchQuery){
-  //   this.getApplicants(this.searchQuery)
-  // }
-
-  // getApplicationsBySearch() {
-  //   this.employerService.searchApplicant(this.searchQuery,this.sortOrder,this.pageIndex+1,this.pageSize).subscribe({
-  //     next: (res) => {
-  //       if (!this.searchQuery) {
-  //         this.getAllApplicants();
-  //       } else {
-  //         if (Array.isArray(res.data)) {
-  //           const applicantWithJobs = res.data.map(
-  //             (applicant: SearchApplicant) => ({
-  //               ...applicant,
-  //               appliedJobs: applicant.JobPosts
-  //                 ? applicant.JobPosts.map((post) => post.title).join(', ')
-  //                 : '',
-  //             })
-  //           );
-  //           this.datasource.set(applicantWithJobs);
-  //           this.allApplicants.set(true);
-  //           this.columnDetails();
-  //         } else {
-  //           console.error('Error: res.data is not an array');
-  //         }
-  //       }
-  //     },
-  //     error: (err) => {
-  //       this.toaster.error('Failed to fetch search results', 'Error');
-  //     },
-  //   });
-  // }
+  sortData(sort: Sort) {
+    this.sortOrder = sort.direction
+      ? `${sort.direction === 'desc' ? '-' : ''}${sort.active}`
+      : '';
+    this.getApplicants();
+  }
 
   getAllApplicants() {
     this.jobService.getAllApplicantsOfEmployer().subscribe({
@@ -278,5 +261,11 @@ export class ApplicationsComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.totalRecords / this.pageSize);
+  }
+
+  onPageSizeChange(event: any): void {
+    this.pageSize = event.value; 
+    this.pageIndex = 0;
+    this.getApplicants(); 
   }
 }
