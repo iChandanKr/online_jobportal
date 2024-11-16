@@ -8,10 +8,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { JobCardComponent } from '../job-card/job-card.component';
 import { JobsService } from '../../services/jobs.service';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  debounceTime,
-  distinctUntilChanged,
-} from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-landing-page',
@@ -56,16 +53,14 @@ export class LandingPageComponent implements OnInit {
     this.router.navigate(['login']);
   }
   onSearch(input: string) {
-    if (input.length > 0) {
-      this.jobService.getJobOpenings(input).subscribe({
-        next: (res) => {
-          this.openJobs.set(res.data);
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
-    }
+    this.jobService.getJobOpenings(input).subscribe({
+      next: (res) => {
+        this.openJobs.set(res.data);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 
   // onInput()
