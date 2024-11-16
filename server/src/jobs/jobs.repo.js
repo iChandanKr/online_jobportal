@@ -1,6 +1,6 @@
 const { dataModel } = require("../dbConnection");
 const { JobPost, JobSkills, Application, Skill, User, Employer } = dataModel;
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 const createJobPostDb = async (jobPostData, t) => {
   const newJobData = await JobPost.create(
     {
@@ -242,6 +242,61 @@ const updateApplicationStatusDB = async (payloads) => {
   );
   return updatedData;
 };
+
+const getOpenJobsOfEmployer = async (empId) => {
+  return JobPost.findAndCountAll({
+    where: {
+      [Op.and]: [
+        { empId },
+        {
+          applicationDeadline: {
+            [Op.gt]: Date.now(),
+          },
+        },
+      ],
+    },
+  });
+};
+
+const getClosedJobsOfEmployer = async (empId) => {
+  return JobPost.findAndCountAll({
+    where: {
+      [Op.and]: [
+        { empId },
+        {
+          applicationDeadline: {
+            [Op.lt]: Date.now(),
+          },
+        },
+      ],
+    },
+  });
+};
+
+const getPostedJobsPerMonthOfEmployer = async (empId) => {
+  const currentYear = new Date().getFullYear();
+
+  return JobPost.findAll({
+    where: {
+      empId,
+      [Op.and]: [
+        Sequelize.where(
+          Sequelize.literal('EXTRACT(YEAR FROM "createdAt")'),
+          "=",
+          currentYear
+        ),
+      ],
+    },
+    attributes: [
+      [Sequelize.fn("TO_CHAR", Sequelize.col("createdAt"), "Mon"), "month"],
+      [Sequelize.fn("COUNT", Sequelize.col("id")), "jobCount"],
+    ],
+    group: [Sequelize.fn("TO_CHAR", Sequelize.col("createdAt"), "Mon")],
+    order: [
+      [Sequelize.fn("TO_CHAR", Sequelize.col("createdAt"), "Mon"), "ASC"],
+    ],
+  });
+};
 module.exports = {
   createJobPostDb,
   getAllJobsDB,
@@ -255,4 +310,7 @@ module.exports = {
   applicantOFaJob,
   getAllApplicantsDB,
   updateApplicationStatusDB,
+  getOpenJobsOfEmployer,
+  getClosedJobsOfEmployer,
+  getPostedJobsPerMonthOfEmployer,
 };

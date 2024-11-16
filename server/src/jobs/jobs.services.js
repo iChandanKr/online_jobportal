@@ -13,6 +13,9 @@ const {
   applicantOFaJob,
   getAllApplicantsDB,
   updateApplicationStatusDB,
+  getOpenJobsOfEmployer,
+  getClosedJobsOfEmployer,
+  getPostedJobsPerMonthOfEmployer,
 } = require("./jobs.repo");
 const { sort, limitFields, search, paginate } = require("../utils/apiFeatures");
 
@@ -164,8 +167,22 @@ class JobService {
   };
 
   static updateApplicationStatusService = async (payloads) => {
-    const res =  await updateApplicationStatusDB(payloads);
+    const res = await updateApplicationStatusDB(payloads);
     return res;
+  };
+
+  static getOpenJobsOfEmployerService = async (empId) => {
+    return await getOpenJobsOfEmployer(empId);
+  };
+  static getClosedJobsOfEmployerService = async (empId) => {
+    return await getClosedJobsOfEmployer(empId);
+  };
+  static getJobPostPerMonthOfEmployerService = async (empId) => {
+    const jobs = await getPostedJobsPerMonthOfEmployer(empId);
+    const arr = jobs.map((j) => j.dataValues);
+    const months = arr.map((job) => job.month);
+    const jobCount = arr.map((job) => job.jobCount);
+    return {months,jobCount};
   };
 }
 module.exports = JobService;
