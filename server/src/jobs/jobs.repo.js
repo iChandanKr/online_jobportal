@@ -290,10 +290,14 @@ const getPostedJobsPerMonthOfEmployer = async (empId) => {
     attributes: [
       [Sequelize.fn("TO_CHAR", Sequelize.col("createdAt"), "Mon"), "month"],
       [Sequelize.fn("COUNT", Sequelize.col("id")), "jobCount"],
+      [Sequelize.literal('EXTRACT(MONTH FROM "createdAt")'), "monthNumber"],
     ],
-    group: [Sequelize.fn("TO_CHAR", Sequelize.col("createdAt"), "Mon")],
+    group: [
+      Sequelize.fn("TO_CHAR", Sequelize.col("createdAt"), "Mon"),
+      Sequelize.literal('EXTRACT(MONTH FROM "createdAt")'),
+    ],
     order: [
-      [Sequelize.fn("TO_CHAR", Sequelize.col("createdAt"), "Mon"), "ASC"],
+      [Sequelize.literal('EXTRACT(MONTH FROM "createdAt")'), "ASC"],
     ],
   });
 };
