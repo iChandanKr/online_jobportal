@@ -2,11 +2,10 @@
 
 <div class="dashboard-widgets">
   @for (widget of store.widgets(); track widget.id) {
-
   <app-widget [data]="widget" />
   }
 </div>
 
 <div class="chart-container">
-<canvas #chart></canvas>
+  <canvas #chart></canvas>
 </div>

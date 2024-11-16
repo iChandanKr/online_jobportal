@@ -159,6 +159,41 @@ const updateApplicationStatus = async (req, res, next) => {
   }
 };
 
+const getOpenJobsOfEmployer = async (req, res, next) => {
+  try {
+    const openJobs = await JobService.getOpenJobsOfEmployerService(req.empId);
+
+    if (openJobs) {
+      respondOk(res, 200, "All open jobs", openJobs.count);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getClosedJobsOfEmployer = async (req, res, next) => {
+  try {
+    const openJobs = await JobService.getClosedJobsOfEmployerService(req.empId);
+
+    if (openJobs) {
+      respondOk(res, 200, "All closed jobs", openJobs.count);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getPostedJobPermonthOfEmployer = async (req, res, next) => {
+  try {
+    const jobsPerMonth = await JobService.getJobPostPerMonthOfEmployerService(req.empId);
+    if (jobsPerMonth) {
+      respondOk(res, 200, "Job created per month", jobsPerMonth);
+    }
+  } catch (error) {
+    console.log(error)
+    next(error);
+  }
+};
 module.exports = {
   createJobPost,
   getAllJobs,
@@ -172,4 +207,7 @@ module.exports = {
   applicantOfAJob,
   getAllApplicants,
   updateApplicationStatus,
+  getOpenJobsOfEmployer,
+  getClosedJobsOfEmployer,
+  getPostedJobPermonthOfEmployer,
 };
