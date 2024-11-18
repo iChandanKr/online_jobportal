@@ -16,7 +16,7 @@ export class DashboardService {
       label: 'Open Jobs',
       content: OpenJobsComponent,
       color: '#008000',
-      backgroundColor: '#000401',
+      backgroundColor: '#FAF6E3',
     },
     {
       id: 2,
