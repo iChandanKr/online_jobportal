@@ -114,37 +114,51 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
-<div class="flex flex-1 justify-center mt-10 ">
-  <div class="pagination-controls">
-    <div>
-      <button (click)="previousPage()" [disabled]="pageIndex === 0">
+<div class="w-full max-w-4xl mx-auto px-4">
+  <div
+    class="flex flex-col sm:flex-row items-center justify-between gap-4 py-4"
+  >
+    <!-- Pagination Controls -->
+    <div class="flex items-center space-x-4">
+      <!-- Previous Button -->
+      <button
+        class="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+        [disabled]="pageIndex === 0"
+        (click)="previousPage()"
+      >
         <mat-icon>keyboard_arrow_left</mat-icon>
       </button>
-    </div>
 
-    <div class="text-lg">Page {{ pageIndex + 1 }} of {{ totalPages() }}</div>
-    <div>
+      <!-- Page Information -->
+      <div class="text-sm font-medium">
+        Page {{ pageIndex + 1 }} of {{ totalPages() }}
+      </div>
+
+      <!-- Next Button -->
       <button
-        (click)="nextPage()"
+        class="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
         [disabled]="(pageIndex + 1) * pageSize >= totalRecords"
+        (click)="nextPage()"
       >
         <mat-icon>keyboard_arrow_right</mat-icon>
       </button>
     </div>
-  </div>
-  <div  >
-    <mat-form-field appearance="outline" class="page-size-select">
-      <mat-label>Items per page</mat-label>
-      <mat-select
-        [(value)]="pageSize"
-        (selectionChange)="onPageSizeChange($event)"
-      >
-        @for (size of pageSizeOptions; track size) {
-        <mat-option [value]="size">
-          {{ size }}
-        </mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
+
+    <!-- Page Size Selector -->
+    <div class="w-[180px]">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Items per page</mat-label>
+        <mat-select
+          [(value)]="pageSize"
+          (selectionChange)="onPageSizeChange($event)"
+        >
+          @for (size of pageSizeOptions; track size) {
+          <mat-option [value]="size">
+            {{ size }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
   </div>
 </div>

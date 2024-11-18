@@ -11,6 +11,8 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 export interface Job {
   title: string;
   location: string;
@@ -31,6 +33,8 @@ export interface Job {
     MatDialogModule,
     MatSnackBarModule,
     MatButtonModule,
+    MatOptionModule,
+    MatSelectModule
   ],
   templateUrl: './jobs.component.html',
   styleUrl: './jobs.component.css',
