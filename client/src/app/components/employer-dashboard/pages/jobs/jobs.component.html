@@ -2,8 +2,8 @@
   <h4>Jobs Posted</h4>
 
   <mat-card class="ms-2 me-2">
+    <!-- Card Header with Search -->
     <mat-card-header class="row">
-      <!-- Search Bar -->
       <div class="search-bar">
         <input
           matInput
@@ -12,7 +12,8 @@
         />
       </div>
     </mat-card-header>
-    <!-- Table with Sort -->
+
+    <!-- Card Content with Table -->
     <mat-card-content>
       <div class="inner-table">
         <table
@@ -68,6 +69,8 @@
               </button>
             </td>
           </ng-container>
+
+          <!-- Applicants Column -->
           <ng-container matColumnDef="Applicants">
             <th mat-header-cell *matHeaderCellDef>Applicants</th>
             <td mat-cell *matCellDef="let job">
@@ -82,31 +85,64 @@
             </td>
           </ng-container>
 
-          <!-- Header Row -->
+          <!-- Table Rows -->
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <!-- Data Rows with trackBy function -->
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
       </div>
     </mat-card-content>
-    <mat-card-footer>
-      <!-- Custom Paginator -->
-      <div class="pagination-controls">
-        <button (click)="previousPage()" [disabled]="pageIndex === 0">
-          <mat-icon>keyboard_arrow_left</mat-icon>
-        </button>
-        <div>Page {{ pageIndex + 1 }} of {{ totalPages() }}</div>
 
-        <!-- <span>Page {{ pageIndex + 1 }} of {{ Math.ceil(totalRecords / pageSize) }}</span> -->
-        <button
-          (click)="nextPage()"
-          [disabled]="(pageIndex + 1) * pageSize >= totalRecords"
+    <!-- Card Footer with Pagination -->
+    <mat-card-footer>
+      <div class="w-full max-w-4xl mx-auto px-4">
+        <div
+          class="flex flex-col sm:flex-row items-center justify-between gap-4 py-4"
         >
-          <mat-icon>keyboard_arrow_right</mat-icon>
-        </button>
+          <!-- Pagination Controls -->
+          <div class="flex items-center space-x-4">
+            <button
+              class="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              [disabled]="pageIndex === 0"
+              (click)="previousPage()"
+            >
+              <mat-icon>keyboard_arrow_left</mat-icon>
+            </button>
+
+            <div class="text-sm font-medium">
+              Page {{ pageIndex + 1 }} of {{ totalPages() }}
+            </div>
+
+            <button
+              class="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              [disabled]="(pageIndex + 1) * pageSize >= totalRecords"
+              (click)="nextPage()"
+            >
+              <mat-icon>keyboard_arrow_right</mat-icon>
+            </button>
+          </div>
+
+          <!-- Page Size Selector -->
+          <div class="w-[180px]">
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Items per page</mat-label>
+              <mat-select
+                [(value)]="pageSize"
+                (selectionChange)="onPageSizeChange($event)"
+              >
+                @for (size of pageSizeOptions; track size) {
+                <mat-option [value]="size">
+                  {{ size }}
+                </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
       </div>
     </mat-card-footer>
   </mat-card>
+
+  <!-- Confirmation Dialog Template -->
   <ng-template #confirmDialog>
     <h2 mat-dialog-title>{{ dialogData.title }}</h2>
     <mat-dialog-content>
