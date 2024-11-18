@@ -13,6 +13,9 @@ const {
   applicantOfAJob,
   getAllApplicants,
   updateApplicationStatus,
+  getOpenJobsOfEmployer,
+  getClosedJobsOfEmployer,
+  getPostedJobPermonthOfEmployer,
 } = require("./jobs.controller");
 const authMiddleware = require("../middleware/auth.middleware");
 const checkEduMiddleware = require("../middleware/checkEducation.middleware");
@@ -58,4 +61,16 @@ router
 router
   .route("/application/update")
   .patch(authMiddleware, checkEmployerRole, updateApplicationStatus);
+
+router
+  .route("/open-jobs")
+  .get(authMiddleware, checkEmployerRole, getOpenJobsOfEmployer);
+
+router
+  .route("/closed-jobs")
+  .get(authMiddleware, checkEmployerRole, getClosedJobsOfEmployer);
+
+router
+  .route("/jobs-permonth")
+  .get(authMiddleware, checkEmployerRole, getPostedJobPermonthOfEmployer);
 module.exports = router;

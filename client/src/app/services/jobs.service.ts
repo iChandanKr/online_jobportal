@@ -1,9 +1,10 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { API_URLS } from '../constants/api-urls';
 import { type JobResponse } from '../model/job.model';
 import { type AllApplicants, type Applicant } from '../model/jobseeker.model';
+import { sign } from 'crypto';
 
 @Injectable({
   providedIn: 'root',
@@ -19,15 +20,22 @@ export class JobsService {
   private readonly fetchAllApplicants = API_URLS.fetchAllApplicantOfEmployer;
   private readonly updateApplicationStatusUrl =
     API_URLS.updateApplicationStatus;
+  private readonly getOpenJobsOfEmployerUrl = API_URLS.getOpenJobsOfEmployer;
+  private readonly getClosedJobsOfEmployerUrl =
+    API_URLS.getClodedJobsOfEmployer;
   queryStr = signal('');
+
   private applicantsSubject = new BehaviorSubject<AllApplicants[] | null>(null);
   private allJobsSubject = new BehaviorSubject<JobResponse[] | null>(null);
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   get applicants$() {
     return this.applicantsSubject.asObservable();
   }
 
+  openJobs = signal<number>(0);
+  closedJobs = signal<number>(0);
+  alljobs = computed(() => this.openJobs() + this.closedJobs());
   getJobs(
     search?: string,
     sort?: string,
@@ -54,8 +62,6 @@ export class JobsService {
       withCredentials: true,
     });
   }
-
-
 
   deleteJob(jobId: string): Observable<any> {
     let params = new HttpParams().set('id', jobId);
@@ -117,7 +123,6 @@ export class JobsService {
       message: string;
       data: Applicant[];
     }>(apiUrl, { withCredentials: true });
-
   }
 
   getAllApplicantsOfEmployer() {
@@ -139,7 +144,6 @@ export class JobsService {
     return this.applicants$;
   }
 
-
   updateApplicationStatus(
     payload: {
       userId: string;
@@ -152,5 +156,25 @@ export class JobsService {
       { payload },
       { headers: this.getHeaders(), withCredentials: true }
     );
+  }
+
+  openJobsOfEmployer() {
+    return this.httpClient.get<{
+      status: string;
+      message: string;
+      data: number;
+    }>(this.getOpenJobsOfEmployerUrl, {
+      withCredentials: true,
+    });
+  }
+
+  closedJobsOfEmployer() {
+    return this.httpClient.get<{
+      status: string;
+      message: string;
+      data: number;
+    }>(this.getClosedJobsOfEmployerUrl, {
+      withCredentials: true,
+    });
   }
 }

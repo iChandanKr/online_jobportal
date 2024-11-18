@@ -33,5 +33,8 @@ export const API_URLS = {
   updateApplicationStatus: `${environment.apiUrl}/job/application/update`,
   jobseekerCompleteProfile: `${environment.apiUrl}/users/jobseeker-details`,
   getAllApplicationsJobseeker: `${environment.apiUrl}/users/applications`,
-  searchApplicant: `${environment.apiUrl}/users/getApplicantsbySearch`
+  searchApplicant: `${environment.apiUrl}/users/getApplicantsbySearch`,
+  getOpenJobsOfEmployer: `${environment.apiUrl}/job/open-jobs`,
+  getClodedJobsOfEmployer: `${environment.apiUrl}/job/closed-jobs`,
+  jobsPerMonth: `${environment.apiUrl}/job/jobs-permonth`,
 };
