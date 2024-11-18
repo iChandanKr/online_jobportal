@@ -7,7 +7,6 @@ const {
   stopSessionDB,
   findRefreshTokenDb,
   updatePasswordDB,
-  stopSessionDBforUser,
 } = require("./auth.repo");
 const {
   generateRefreshToken,
@@ -66,31 +65,29 @@ class AuthService {
 
   //  logout service
   static logoutService = async (req, res) => {
-    const { user, currentRefreshToken: refreshToken } = req;
+    const { user } = req;
     const userDetails = await findUserById(user.id);
-    const ans = await stopSessionDB(userDetails.dataValues?.id, refreshToken);
-    if (ans >= 1) {
+    const deleteCount = await stopSessionDB(userDetails.dataValues?.id);
+    if (deleteCount >= 1) {
       res.clearCookie("accessToken");
       res.clearCookie("refreshToken");
-      return ans;
+      return deleteCount;
     } else {
       throw new CustomError("You are not loggedIn", 400);
     }
   };
-  static findRefreshTokenService = async (refreshToken) =>
-    await findRefreshTokenDb(refreshToken);
+  static findRefreshTokenService = async (refreshToken, userId) =>
+    await findRefreshTokenDb(refreshToken, userId);
 
-  static deleteRefreshTokenService = async (id, refreshToken) =>
-    await stopSessionDB(id, refreshToken);
+  static deleteRefreshTokenService = async (id) => await stopSessionDB(id);
 
-  static createSessionService = async (user_id, t) => {
-    // const accessToken = generateAccessToken(user_id);
+  static createSessionService = async (user_id) => {
     const refreshToken = generateRefreshToken(user_id);
 
-    return await createSessionDB(user_id, refreshToken, t);
+    return await createSessionDB(user_id, refreshToken);
   };
 
-  static updatePasswordService = async (req,res) => {
+  static updatePasswordService = async (req, res) => {
     const user = req.user;
     const userInfo = await findUserById(user.id);
     const { password, newPassword, confirmPassword } = req.body;
@@ -110,7 +107,7 @@ class AuthService {
     const updatedRes = await updatePasswordDB(userInfo.id, newPassword);
     if (updatedRes) {
       // stop all the sessions associated with this user
-      await stopSessionDBforUser(userInfo.id);
+      await stopSessionDB(userInfo.id);
       res.clearCookie("accessToken");
       res.clearCookie("refreshToken");
     }

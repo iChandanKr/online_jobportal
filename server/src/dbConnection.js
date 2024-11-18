@@ -259,10 +259,14 @@ const dbConnection = async function () {
 };
 
 // ----- CONNECTION WITH REDIS--------
+const redis = new Redis({
+  port: process.env.REDIS_PORT,
+  host: process.env.REDIS_HOST,
+  password: process.env.REDIS_PASSWORD,
+});
 const redisConnection = () => {
-  const redis = new Redis();
   redis.on("connect", () => {
     console.log("Connected to redis ");
   });
 };
-module.exports = { dbConnection, dataModel, redisConnection };
+module.exports = { dbConnection, dataModel, redisConnection, redis };

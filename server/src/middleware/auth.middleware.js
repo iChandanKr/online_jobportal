@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const util = require("util");
 const { CustomError } = require("../utils/apiResponse");
 const { dataModel } = require("../dbConnection");
-const { User, sequelize } = dataModel;
+const { User } = dataModel;
 const AuthService = require("../auth/auth.services");
 const createSessionHandler = require("../auth/shared/createSessionHandler");
 const recreateSession = async (req, res, next) => {
@@ -27,25 +27,18 @@ const recreateSession = async (req, res, next) => {
       throw new CustomError("The user with the given token doesn't exist", 401);
     }
 
-    // check the incoming refresh token exists in database;
+    // check the incoming refresh token exists in database(redis);
     const existingRefreshToken = await AuthService.findRefreshTokenService(
-      incomingRefreshToken
+      incomingRefreshToken,
+      user.id
     );
+    console.log("inside recreate", user.id, existingRefreshToken);
     if (!existingRefreshToken) {
       throw new CustomError("Access Denied, Invalid Token", 401);
     }
     // create session again
-    const sendRes = await createSessionHandler(
-      sequelize,
-      user.dataValues?.id,
-      next
-    );
+    const sendRes = await createSessionHandler(user.dataValues?.id, next);
 
-    // delete the existing refresh token(session);
-    AuthService.deleteRefreshTokenService(
-      user.dataValues?.id,
-      incomingRefreshToken
-    );
     res.cookie("refreshToken", sendRes.refreshToken);
     res.cookie("accessToken", sendRes.accessToken);
     req.user = user.dataValues;

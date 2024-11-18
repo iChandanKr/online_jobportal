@@ -1,23 +1,20 @@
 const { CustomError } = require("../../utils/apiResponse");
 const AuthService = require("../auth.services");
 const { generateAccessToken } = require("../../utils/tokenGenerator");
-module.exports = async (sequelize, id, next) => {
-  let result;
+module.exports = async (id, next) => {
+  let sessionDetails;
   let accessToken;
 
   try {
-    result = await sequelize.transaction(async (t) => {
-      const sessionDetails = await AuthService.createSessionService(id, t);
-      if (!sessionDetails) {
-        throw new CustomError("Don't able to create session", 500);
-      }
-      return sessionDetails.dataValues;
-    });
+    sessionDetails = await AuthService.createSessionService(id);
+    if (!sessionDetails) {
+      throw new CustomError("Don't able to create session", 500);
+    }
   } catch (error) {
     next(error);
   }
-  if (result) {
+  if (sessionDetails) {
     accessToken = generateAccessToken(id);
   }
-  return { refreshToken: result.refreshToken, accessToken };
+  return { refreshToken: sessionDetails, accessToken };
 };

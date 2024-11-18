@@ -16,13 +16,11 @@ class EmployerService {
       delete response.dataValues.password;
       const userId = response.dataValues?.id;
       const refreshTokenDetails = await AuthService.createSessionService(
-        userId,
-        t
+        userId
       );
       const accessToken = generateAccessToken(userId);
       response.dataValues.accessToken = accessToken;
-      response.dataValues.refreshToken =
-        refreshTokenDetails.dataValues?.refreshToken;
+      response.dataValues.refreshToken = refreshTokenDetails;
       return response;
     });
 

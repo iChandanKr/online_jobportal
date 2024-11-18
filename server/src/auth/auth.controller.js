@@ -1,6 +1,4 @@
 const AuthService = require("./auth.services");
-const { dataModel } = require("../dbConnection");
-const { sequelize } = dataModel;
 const createSessionHandler = require("./shared/createSessionHandler");
 const { respondOk } = require("../utils/apiResponse");
 
@@ -13,11 +11,7 @@ const userLogin = async (req, res, next) => {
       next
     );
     if (userLoginService) {
-      const sendRes = await createSessionHandler(
-        sequelize,
-        userLoginService.id,
-        next
-      );
+      const sendRes = await createSessionHandler(userLoginService.id, next);
       res.cookie("refreshToken", sendRes.refreshToken);
       res.cookie("accessToken", sendRes.accessToken);
       respondOk(res, 200, "You have been loggedin successfully!", {
