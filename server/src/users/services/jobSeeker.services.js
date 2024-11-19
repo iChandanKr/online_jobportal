@@ -10,12 +10,19 @@ const {
   jobSeekerSkills,
   updateJobseekerSkillsDb,
   getAllApplicationsOfUser,
+  getAllApplicationsDb,
 } = require("../repo/jobSeeker.repo");
 const { generateAccessToken } = require("../../utils/tokenGenerator");
 const { dataModel } = require("../../dbConnection");
 const { CustomError } = require("../../utils/apiResponse");
 const AuthService = require("../../auth/auth.services");
 const { sequelize } = dataModel;
+const {
+  sort,
+  limitFields,
+  paginate,
+  search,
+} = require("../../utils/apiFeatures");
 class JobseekerService {
   static createUserService = async (userData) => {
     const result = sequelize.transaction(async (t) => {
@@ -85,6 +92,60 @@ class JobseekerService {
 
   static getAllApplicationsOfUserService = async (userId) => {
     return await getAllApplicationsOfUser(userId);
+  };
+
+  static getAllApplicationsService = async (req) => {
+    let orderBy;
+    let visibleAttributes;
+    let searchFields = req.query.search || "%";
+    const limit = req.query.limit || 5;
+
+    let offset;
+    if (req.query.sort) {
+      orderBy = sort(req.query.sort);
+    } else {
+      orderBy = sort("-updatedAt");
+    }
+
+    if (req.query.fields) {
+      visibleAttributes = limitFields(req.query.fields);
+    }
+
+    if (req.query.search) {
+      searchFields = search(searchFields);
+    }
+
+    if (req.query.page) {
+      offset = paginate(req.query.page, limit);
+    }
+
+    console.log(orderBy);
+
+    const attributes = visibleAttributes
+      ? visibleAttributes
+      : [
+          "id",
+          "title",
+          "role",
+          "location",
+          "city",
+          "minSalary",
+          "maxSalary",
+          "applicationDeadline",
+          "jobType",
+          "companyName",
+        ];
+    const jobs = await getAllApplicationsDb(
+      req.user.id,
+      orderBy,
+      attributes,
+      searchFields,
+      limit,
+      offset
+    );
+    // console.log(jobs);
+
+    return jobs;
   };
 }
 

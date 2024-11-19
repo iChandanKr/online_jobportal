@@ -181,6 +181,15 @@ const getAllApplicationOfUser = async (req, res, next) => {
   }
 };
 
+const getAllApplications=async(req,res,next)=>{
+  try {
+    const applications=await JobseekerService.getAllApplicationsService(req)
+    respondOk(res,200,"Fteched applications",applications)
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   registerJobseeker,
   findJobseeker,
@@ -193,4 +202,5 @@ module.exports = {
   updateEducationDetails,
   updateJobseekerSkills,
   getAllApplicationOfUser,
+  getAllApplications
 };

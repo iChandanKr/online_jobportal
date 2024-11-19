@@ -9,6 +9,7 @@ const {
   JobPost,
   Application,
 } = dataModel;
+const { Op } = require("sequelize");
 
 const createJobseekerDb = async (userData, t) => {
   const role = await Role.findOne({
@@ -144,8 +145,8 @@ const updateJobseekerSkillsDb = async (userId, skills) => {
 };
 
 const getAllApplicationsOfUser = async (id) => {
- return await User.findByPk(id, {
-    attributes:[],
+  return await User.findByPk(id, {
+    attributes: [],
     include: [
       {
         model: JobPost,
@@ -158,6 +159,41 @@ const getAllApplicationsOfUser = async (id) => {
         },
       },
     ],
+  });
+};
+
+const getAllApplicationsDb = async (
+  id,
+  order,
+  attributes,
+  searchFields,
+  limit,
+  offset
+) => {
+  
+  return await Application.findAll({
+    where: {
+      UserId:id,
+    },
+    attributes: [],
+    include: [
+      {
+        model: JobPost,
+        as:"JobPosts",
+        where: {
+          [Op.or]: [
+            { title: { [Op.iLike]: searchFields } },
+            { role: { [Op.iLike]: searchFields } },
+            { city: { [Op.iLike]: searchFields } },
+            { companyName: { [Op.iLike]: searchFields } },
+          ],
+        },
+        attributes,
+        order,
+      },
+    ],
+    limit,
+    offset,
   });
 };
 
@@ -174,4 +210,5 @@ module.exports = {
   updateEducationDetailsDb,
   updateJobseekerSkillsDb,
   getAllApplicationsOfUser,
+  getAllApplicationsDb,
 };

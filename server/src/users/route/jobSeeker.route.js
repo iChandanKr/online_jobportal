@@ -10,7 +10,7 @@ const {
   getJobseekerDetails,
   getJobseekerSkills,
   updateJobseekerSkills,
-  getAllApplicationOfUser,
+  getAllApplications,
 } = require("../controller/jobSeeker.controller");
 const {
   registerJobseekerValidation,
@@ -66,6 +66,9 @@ router
   .get(getJobseekerProfileValidation, authMiddleware, getJobseekerDetails);
 router
   .route("/applications")
-  .get(authMiddleware, checkJobseekerRole, getAllApplicationOfUser);
+  .get(authMiddleware, checkJobseekerRole, getAllApplications);
 
+// router?
+  // .route("/job-applications")
+  // .get(authMiddleware,checkJobseekerRole,getAllApplications)
 module.exports = router;

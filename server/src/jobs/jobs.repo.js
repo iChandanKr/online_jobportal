@@ -197,7 +197,7 @@ const applicantOFaJob = async (id, orderBy) => {
         attributes: ["updatedAt", "status"],
       },
     },
-    order: sorting, // to produce [ [ User, 'firstName', 'ASC' ], [ User, 'lastName', 'ASC' ] ]
+    order: sorting,
   });
 };
 const getAllApplicantsDB = async (empId) => {
@@ -205,15 +205,15 @@ const getAllApplicantsDB = async (empId) => {
     include: [
       {
         model: JobPost,
-        attributes: ["title"], // Fetches job post titles for which the user has applied
+        attributes: ["title"],
         through: {
-          attributes: [], // No additional fields are needed from the join table
+          attributes: [], 
         },
         include: [
           {
             model: Employer,
             where: { empId },
-            attributes: [], // Exclude Employer attributes as only the empId filter is needed
+            attributes: [], 
           },
         ],
       },

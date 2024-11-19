@@ -14,7 +14,7 @@ const createJobPost = async (req, res, next) => {
 };
 
 const getAllJobs = async (req, res, next) => {
-  try {
+  try {    
     const jobs = await JobService.getAllJobsService(req);
     respondOk(res, 200, "Here are the posted jobs", jobs);
   } catch (error) {
