@@ -1,6 +1,6 @@
-const { dataModel } = require("../dbConnection");
-const { RefreshToken, User, UserRole, Role } = dataModel;
-
+const { dataModel, redis } = require("../dbConnection");
+const { User, UserRole, Role } = dataModel;
+redis;
 const findUserByEmail = async (email) => {
   return await User.findOne({
     where: {
@@ -23,35 +23,44 @@ const verifyUserRoleDB = async (roleId, userId) => {
   });
 };
 
-const createSessionDB = async (user_id, refreshToken, t) => {
-  return await RefreshToken.create(
-    { userId: user_id, refreshToken },
-    {
-      transaction: t,
-    }
+const createSessionDB = async (user_id, refreshToken) => {
+  // return await RefreshToken.create(
+  //   { userId: user_id, refreshToken },
+  //   {
+  //     transaction: t,
+  //   }
+  // );
+  await redis.setex(
+    `refreshToken:${user_id}`,
+    process.env.REFRESH_TOKEN_EXPIRESIN,
+    refreshToken
   );
+  return await redis.get(`refreshToken:${user_id}`);
 };
 
-const stopSessionDB = async (id, refreshToken) => {
-  return await RefreshToken.destroy({
-    where: {
-      userId: id,
-      refreshToken,
-    },
-  });
+const stopSessionDB = async (id) => {
+  // return await RefreshToken.destroy({
+  //   where: {
+  //     userId: id,
+  //     refreshToken,
+  //   },
+  // });
+  return await redis.del(`refreshToken:${id}`);
 };
 
 // for the case user update password
-const stopSessionDBforUser = async (id) => {
-  return await RefreshToken.destroy({
-    where: {
-      userId: id,
-    },
-  });
-};
+// const stopSessionDBforUser = async (id) => {
+//   return await RefreshToken.destroy({
+//     where: {
+//       userId: id,
+//     },
+//   });
+// };
 
-const findRefreshTokenDb = async (refreshToken) => {
-  return await RefreshToken.findOne({ where: { refreshToken } });
+const findRefreshTokenDb = async (refreshToken, userId) => {
+  // return await RefreshToken.findOne({ where: { refreshToken } });
+  const existingRefreshToken = await redis.get(`refreshToken:${userId}`);
+  return existingRefreshToken === refreshToken;
 };
 
 const updatePasswordDB = async (id, newPassword) => {
@@ -74,5 +83,5 @@ module.exports = {
   stopSessionDB,
   findRefreshTokenDb,
   updatePasswordDB,
-  stopSessionDBforUser,
+  // stopSessionDBforUser,
 };

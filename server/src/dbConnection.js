@@ -1,3 +1,4 @@
+const Redis = require("ioredis");
 const { Sequelize, DataTypes } = require("sequelize");
 const database = process.env.DB_NAME;
 const user = process.env.DB_USER;
@@ -256,4 +257,16 @@ const dbConnection = async function () {
     console.error("Unable to connect to the database:", error);
   }
 };
-module.exports = { dbConnection, dataModel };
+
+// ----- CONNECTION WITH REDIS--------
+const redis = new Redis({
+  port: process.env.REDIS_PORT,
+  host: process.env.REDIS_HOST,
+  password: process.env.REDIS_PASSWORD,
+});
+const redisConnection = () => {
+  redis.on("connect", () => {
+    console.log("Connected to redis ");
+  });
+};
+module.exports = { dbConnection, dataModel, redisConnection, redis };
