@@ -179,9 +179,8 @@ class JobService {
   };
   static getJobPostPerMonthOfEmployerService = async (empId) => {
     const jobs = await getPostedJobsPerMonthOfEmployer(empId);
-    const arr = jobs.map((j) => j.dataValues);
-    const months = arr.map((job) => job.month);
-    const jobCount = arr.map((job) => job.jobCount);
+    const months = jobs.map((job) => job.month);
+    const jobCount = jobs.map((job) => job.jobCount);
     return {months,jobCount};
   };
 }
