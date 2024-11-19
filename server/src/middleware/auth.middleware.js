@@ -32,7 +32,6 @@ const recreateSession = async (req, res, next) => {
       incomingRefreshToken,
       user.id
     );
-    console.log("inside recreate", user.id, existingRefreshToken);
     if (!existingRefreshToken) {
       throw new CustomError("Access Denied, Invalid Token", 401);
     }
@@ -87,7 +86,6 @@ module.exports = async (req, res, next) => {
       attributes: { exclude: ["password"] },
     });
     if (!user) {
-      // ------ will do later for frontend =-----------------
       const error = new CustomError(
         "The user with the given token doesn't exist",
         401

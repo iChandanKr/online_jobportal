@@ -1,5 +1,7 @@
 const { dataModel } = require("../dbConnection");
-const { JobPost, JobSkills, Application, Skill, User, Employer } = dataModel;
+const { JobPost, JobSkills, Application, Skill, User, Employer, sequelize } =
+  dataModel;
+// eslint-disable-next-line no-unused-vars
 const { Op, Sequelize } = require("sequelize");
 const createJobPostDb = async (jobPostData, t) => {
   const newJobData = await JobPost.create(
@@ -276,30 +278,55 @@ const getClosedJobsOfEmployer = async (empId) => {
 const getPostedJobsPerMonthOfEmployer = async (empId) => {
   const currentYear = new Date().getFullYear();
 
-  return JobPost.findAll({
-    where: {
-      empId,
-      [Op.and]: [
-        Sequelize.where(
-          Sequelize.literal('EXTRACT(YEAR FROM "createdAt")'),
-          "=",
-          currentYear
-        ),
-      ],
-    },
-    attributes: [
-      [Sequelize.fn("TO_CHAR", Sequelize.col("createdAt"), "Mon"), "month"],
-      [Sequelize.fn("COUNT", Sequelize.col("id")), "jobCount"],
-      [Sequelize.literal('EXTRACT(MONTH FROM "createdAt")'), "monthNumber"],
-    ],
-    group: [
-      Sequelize.fn("TO_CHAR", Sequelize.col("createdAt"), "Mon"),
-      Sequelize.literal('EXTRACT(MONTH FROM "createdAt")'),
-    ],
-    order: [
-      [Sequelize.literal('EXTRACT(MONTH FROM "createdAt")'), "ASC"],
-    ],
-  });
+  // return JobPost.findAll({
+  //   where: {
+  //     empId,
+  //     [Op.and]: [
+  //       Sequelize.where(
+  //         Sequelize.literal('EXTRACT(YEAR FROM "createdAt")'),
+  //         "=",
+  //         currentYear
+  //       ),
+  //     ],
+  //   },
+  //   attributes: [
+  //     [Sequelize.fn("TO_CHAR", Sequelize.col("createdAt"), "Mon"), "month"],
+  //     [Sequelize.fn("COUNT", Sequelize.col("id")), "jobCount"],
+  //     [Sequelize.literal('EXTRACT(MONTH FROM "createdAt")'), "monthNumber"],
+  //   ],
+  //   group: [
+  //     Sequelize.fn("TO_CHAR", Sequelize.col("createdAt"), "Mon"),
+  //     Sequelize.literal('EXTRACT(MONTH FROM "createdAt")'),
+  //   ],
+  //   order: [
+  //     [Sequelize.literal('EXTRACT(MONTH FROM "createdAt")'), "ASC"],
+  //   ],
+  // });
+
+  const { QueryTypes } = require("sequelize");
+
+  const result = await sequelize.query(
+    `
+  SELECT
+    TO_CHAR("createdAt", 'Mon') AS "month",
+    COUNT("id") AS "jobCount",
+    EXTRACT(MONTH FROM "createdAt") AS "monthNumber"
+  FROM "jobPosts"
+  WHERE "empId" = :empId
+    AND EXTRACT(YEAR FROM "createdAt") = :currentYear
+    AND "deletedAt" IS NULL
+  GROUP BY
+    EXTRACT(MONTH FROM "createdAt"),
+    TO_CHAR("createdAt", 'Mon')
+  ORDER BY
+    EXTRACT(MONTH FROM "createdAt") ASC;
+  `,
+    {
+      replacements: { empId, currentYear }, // Dynamic replacement of the parameters
+      type: QueryTypes.SELECT, // Ensures the query returns results as a list
+    }
+  );
+  return result;
 };
 module.exports = {
   createJobPostDb,
