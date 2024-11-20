@@ -63,17 +63,6 @@ module.exports = {
           },
         },
       },
-      confirmPassword: {
-        type: Sequelize.VIRTUAL,
-        allowNull: false,
-        validate: {
-          isConfirmed(value) {
-            if (this.password !== value) {
-              throw new Error("Password and Confirm Password does not match!");
-            }
-          },
-        },
-      },
       contact: {
         type: Sequelize.STRING(10),
         allowNull: false,
