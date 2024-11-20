@@ -1,0 +1,93 @@
+.breadcrumb-container {
+    background-color:transparent;
+    padding: 0.75rem 1rem;
+    /* border-radius: 0.25rem; */
+    margin: 1rem 0;
+    /* box-shadow: 0 2px 4px rgba(0,0,0,0.05); */
+  }
+  
+  .breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    background-color: transparent;
+  }
+  
+  .breadcrumb-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+  }
+  
+  .breadcrumb-item + .breadcrumb-item::before {
+    content: "›";
+    padding: 0 0.5rem;
+    color: #6c757d;
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+  
+  .breadcrumb-link {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .breadcrumb-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+  
+  .home-link {
+    color: #007bff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  .home-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+  
+  .current-page {
+    color: #6c757d;
+    font-weight: 500;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 576px) {
+    .breadcrumb-container {
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+    }
+  
+    .breadcrumb-item {
+      font-size: 0.875rem;
+    }
+  }
+  
+  /* Optional: Add animation for smoother transitions */
+  .breadcrumb-item {
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .breadcrumb-item.ng-enter {
+    opacity: 0;
+  }
+  
+  .breadcrumb-item.ng-enter-active {
+    opacity: 1;
+  }
+
+  .breadcrumb-container .horizontal-line {
+    border: none; 
+    border-top: 2px solid #e0e0e0;
+    margin: 0.5rem 0;
+    width: 100%; 
+    opacity: 0.8;
+  }

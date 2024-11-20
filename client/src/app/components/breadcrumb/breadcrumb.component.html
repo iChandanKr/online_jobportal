@@ -1,0 +1,21 @@
+<nav aria-label="breadcrumb" class="breadcrumb-container">
+    @if (breadcrumbs.length > 0) {
+      <ol class="breadcrumb">
+        
+        
+        <!-- Dynamic Breadcrumbs -->
+        @for (breadcrumb of breadcrumbs; track breadcrumb; let last = $last) {
+          <li class="breadcrumb-item" [ngClass]="{'active': last}">
+            @if (!last) {
+              <a [routerLink]="[breadcrumb.url]" class="breadcrumb-link">
+                {{breadcrumb.label}}
+              </a>
+            } @else {
+              <span class="current-page">{{breadcrumb.label}}</span>
+            }
+          </li>
+        }
+      </ol>
+    }
+    <hr class="horizontal-line">
+  </nav>

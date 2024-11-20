@@ -10,6 +10,7 @@ import { LogoutService } from '../../services/logout.service';
 import { response } from 'express';
 import { error } from 'console';
 import { JobseekerSidenavComponent } from "./jobseeker-sidenav/jobseeker-sidenav.component";
+import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 
 @Component({
   selector: 'app-jobseeker-dashboard',
@@ -19,6 +20,7 @@ import { JobseekerSidenavComponent } from "./jobseeker-sidenav/jobseeker-sidenav
     MatIconModule,
     MatSidenavModule,
     CustomSidenavComponent,
+    BreadcrumbComponent,
     RouterOutlet,
     JobseekerSidenavComponent
 ],

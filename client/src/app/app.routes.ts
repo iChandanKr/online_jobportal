@@ -14,7 +14,9 @@ import { JobseekerDashboardComponent } from './components/jobseeker-dashboard/jo
 import { ApplyJobComponent } from './components/jobseeker-dashboard/pages/apply-job/apply-job.component';
 import { JobseekerProfileComponent } from './components/jobseeker-dashboard/pages/jobseeker-profile/jobseeker-profile.component';
 import { JobApplicationsComponent } from './components/jobseeker-dashboard/pages/job-applications/job-applications.component';
+
 export const routes: Routes = [
+  // Landing Page
   {
     path: 'landing-page',
     component: LandingPageComponent,
@@ -24,90 +26,98 @@ export const routes: Routes = [
     redirectTo: 'landing-page',
     pathMatch: 'full',
   },
+  // Auth Routes
   {
     path: 'login',
     component: LoginComponent,
+    data: { breadcrumb: 'Login' },
   },
   {
     path: 'signup',
     component: SignupComponent,
+    data: { breadcrumb: 'Signup' },
   },
   {
     path: 'employersignup',
     component: EmployerSignupComponent,
+    data: { breadcrumb: 'Employer Signup' },
   },
+  // Employer Dashboard
   {
     path: 'employer',
-    title: 'employer',
     component: EmployerDashboardComponent,
     canActivate: [authGuard],
+    data: { breadcrumb: 'Employer Dashboard' },
     children: [
       {
         path: 'dashboard',
-        title: 'Employer-Dashboard',
         component: DashboardComponent,
+        data: { breadcrumb: 'Overview' },
       },
       {
         path: 'post-job',
-        title: 'Creat-Job',
         component: PostJobComponent,
+        data: { breadcrumb: 'Post Job' },
+      },
+      {
+        path: 'post-job/:id',
+        component: PostJobComponent,
+        data: { breadcrumb: 'Edit Job' },
       },
       {
         path: 'jobs',
-        title: 'Jobs',
         component: JobsComponent,
-      },
-      {
-        path: 'profile',
-        title: 'Profile',
-        component: ProfileComponent,
+        data: { breadcrumb: 'Manage Jobs' },
       },
       {
         path: 'applications',
-        title: 'Applications',
         component: ApplicationsComponent,
+        data: { breadcrumb: 'Job Applications' },
+      },
+      {
+        path: 'applications/:jobId',
+        component: ApplicationsComponent,
+        data: { breadcrumb: 'Application Details' },
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        data: { breadcrumb: 'Profile Settings' },
       },
       {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full',
       },
-      {
-        path: 'post-job/:id',
-        component: PostJobComponent
-      },
-      {
-        path: 'applications/:jobId',
-        component: ApplicationsComponent,
-      },
     ],
   },
+  // Jobseeker Dashboard
   {
     path: 'jobseeker',
-    title: 'jobseeker',
     component: JobseekerDashboardComponent,
     canActivate: [authGuard],
+    data: { breadcrumb: 'Jobseeker Dashboard' },
     children: [
       {
         path: 'apply-job',
-        title: 'ApplyJob',
-        component: ApplyJobComponent
+        component: ApplyJobComponent,
+        data: { breadcrumb: 'Apply for Jobs' },
       },
       {
         path: 'profile',
-        title: 'Profile',
-        component: JobseekerProfileComponent
+        component: JobseekerProfileComponent,
+        data: { breadcrumb: 'My Profile' },
       },
       {
         path: 'job-applications',
-        title: 'JobApplications',
-        component: JobApplicationsComponent
+        component: JobApplicationsComponent,
+        data: { breadcrumb: 'My Applications' },
       },
       {
         path: '',
         redirectTo: 'apply-job',
         pathMatch: 'full',
       },
-    ]
-  }
+    ],
+  },
 ];

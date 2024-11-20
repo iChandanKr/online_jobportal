@@ -16,7 +16,7 @@ import { withComponentInputBinding } from '@angular/router';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes,withComponentInputBinding()),
+    provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideClientHydration(),
     provideAnimations(),

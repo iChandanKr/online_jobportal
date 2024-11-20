@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { type CurrentUser } from '../../model/loginResponse.model';
 import { PostJobService } from '../../services/post-job.service';
 import { log } from 'console';
+import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 @Component({
   selector: 'app-employer-dashboard',
   standalone: true,
@@ -23,6 +24,7 @@ import { log } from 'console';
     RouterOutlet,
     CustomSidenavComponent,
     MatTooltipModule,
+    BreadcrumbComponent
   ],
   templateUrl: './employer-dashboard.component.html',
   styleUrl: './employer-dashboard.component.css',
