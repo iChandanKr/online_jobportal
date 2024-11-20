@@ -62,7 +62,7 @@ export class JobsComponent implements OnInit {
   sortOrder = '';
   searchQuery = '';
   pageSizeOptions = [5, 10, 20, 50];
-  private searchSubject: Subject<string> = new Subject<string>();
+  private searchSubject = new Subject<string>();
   private jobIdToDelete!: string;
   private currentDialog: MatDialogRef<any> | null = null;
   constructor(
@@ -177,7 +177,7 @@ export class JobsComponent implements OnInit {
   }
 
   onPageSizeChange(event: any): void {
-    this.pageSize = event.value; 
+    this.pageSize = event.value;
     this.pageIndex = 0;
     this.getJobs();
   }

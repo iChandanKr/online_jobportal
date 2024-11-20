@@ -1,62 +1,147 @@
 <div class="job-applications-table">
-    <table mat-table [dataSource]="datasource" class="mat-elevation-z8">
-  
-      <!-- Title Column -->
-      <ng-container matColumnDef="title">
-        <th mat-header-cell *matHeaderCellDef> Title </th>
-        <td mat-cell *matCellDef="let application"> {{ application.title }} </td>
-      </ng-container>
-  
-      <!-- Role Column -->
-      <ng-container matColumnDef="role">
-        <th mat-header-cell *matHeaderCellDef> Role </th>
-        <td mat-cell *matCellDef="let application"> {{ application.role }} </td>
-      </ng-container>
-  
-      <!-- Company Name Column -->
-      <ng-container matColumnDef="companyName">
-        <th mat-header-cell *matHeaderCellDef> Company Name </th>
-        <td mat-cell *matCellDef="let application"> {{ application.companyName }} </td>
-      </ng-container>
-  
-      <!-- Location Column -->
-      <ng-container matColumnDef="location">
-        <th mat-header-cell *matHeaderCellDef> Location </th>
-        <td mat-cell *matCellDef="let application"> {{ application.location }} </td>
-      </ng-container>
-  
-      <!-- City Column -->
-      <ng-container matColumnDef="city">
-        <th mat-header-cell *matHeaderCellDef> City </th>
-        <td mat-cell *matCellDef="let application"> {{ application.city }} </td>
-      </ng-container>
-  
-      <!-- Min Salary Column -->
-      <ng-container matColumnDef="minSalary">
-        <th mat-header-cell *matHeaderCellDef> Min Salary </th>
-        <td mat-cell *matCellDef="let application"> {{ application.minSalary }} </td>
-      </ng-container>
-  
-      <!-- Max Salary Column -->
-      <ng-container matColumnDef="maxSalary">
-        <th mat-header-cell *matHeaderCellDef> Max Salary </th>
-        <td mat-cell *matCellDef="let application"> {{ application.maxSalary }} </td>
-      </ng-container>
-  
-      <!-- Job Type Column -->
-      <ng-container matColumnDef="jobType">
-        <th mat-header-cell *matHeaderCellDef> Job Type </th>
-        <td mat-cell *matCellDef="let application"> {{ application.jobType }} </td>
-      </ng-container>
+  <mat-card class="ms-2 me-2">
+    <!-- Card Header -->
+    <mat-card-header>
+      <div class="search-bar">
+        <input
+          matInput
+          (keyup)="applySearch($event)"
+          placeholder="Search Jobs"
+        />
+      </div>
+    </mat-card-header>
 
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef>Status</th>
-        <td mat-cell *matCellDef="let row">{{ row.status  }}</td>
-      </ng-container>
-  
-      <!-- Header and Row Definitions -->
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  </div>
-  
+    <!-- Card Content -->
+    <mat-card-content>
+      <table
+        mat-table
+        [dataSource]="datasource"
+        matSort
+        (matSortChange)="sortData($event)"
+        class="mat-elevation-z8"
+      >
+        <!-- Title Column -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+          <td mat-cell *matCellDef="let application">
+            {{ application.title }}
+          </td>
+        </ng-container>
+
+        <!-- Role Column -->
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
+          <td mat-cell *matCellDef="let application">{{ application.role }}</td>
+        </ng-container>
+
+        <!-- Company Name Column -->
+        <ng-container matColumnDef="companyName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Company Name
+          </th>
+          <td mat-cell *matCellDef="let application">
+            {{ application.companyName }}
+          </td>
+        </ng-container>
+
+        <!-- Location Column -->
+        <ng-container matColumnDef="location">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+          <td mat-cell *matCellDef="let application">
+            {{ application.location }}
+          </td>
+        </ng-container>
+
+        <!-- City Column -->
+        <ng-container matColumnDef="city">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>City</th>
+          <td mat-cell *matCellDef="let application">{{ application.city }}</td>
+        </ng-container>
+
+        <!-- Min Salary Column -->
+        <ng-container matColumnDef="minSalary">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Min Salary</th>
+          <td mat-cell *matCellDef="let application">
+            {{ application.minSalary }}
+          </td>
+        </ng-container>
+
+        <!-- Max Salary Column -->
+        <ng-container matColumnDef="maxSalary">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Max Salary</th>
+          <td mat-cell *matCellDef="let application">
+            {{ application.maxSalary }}
+          </td>
+        </ng-container>
+
+        <!-- Job Type Column -->
+        <ng-container matColumnDef="jobType">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Job Type</th>
+          <td mat-cell *matCellDef="let application">
+            {{ application.jobType }}
+          </td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let row">{{ row.status }}</td>
+        </ng-container>
+
+        <!-- Header and Row Definitions -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </mat-card-content>
+
+    <!-- Card Footer -->
+    <!-- Card Footer with Pagination -->
+    <mat-card-footer>
+      <div class="w-full max-w-4xl mx-auto px-4">
+        <div
+          class="flex flex-col sm:flex-row items-center justify-between gap-4 py-4"
+        >
+          <!-- Pagination Controls -->
+          <div class="flex items-center space-x-4">
+            <button
+              class="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              [disabled]="pageIndex === 0"
+              (click)="previousPage()"
+            >
+              <mat-icon>keyboard_arrow_left</mat-icon>
+            </button>
+
+            <div class="text-sm font-medium">
+              Page {{ pageIndex + 1 }} of {{ totalPages() }}
+            </div>
+
+            <button
+              class="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              [disabled]="(pageIndex + 1) * pageSize >= totalRecords"
+              (click)="nextPage()"
+            >
+              <mat-icon>keyboard_arrow_right</mat-icon>
+            </button>
+          </div>
+
+          <!-- Page Size Selector -->
+          <div class="w-[180px]">
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Items per page</mat-label>
+              <mat-select
+                [(value)]="pageSize"
+                (selectionChange)="onPageSizeChange($event)"
+              >
+                @for (size of pageSizeOptions; track size) {
+                <mat-option [value]="size">
+                  {{ size }}
+                </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </mat-card-footer>
+  </mat-card>
+</div>

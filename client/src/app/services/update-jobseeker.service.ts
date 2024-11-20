@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { API_URLS } from '../constants/api-urls';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { type jobseekerProfile, type Education } from '../model/jobseeker.model';
 import { type JobSeekerDetails } from '../model/jobseeker.model';
@@ -140,21 +140,27 @@ export class UpdateJobseekerService {
   }
 
 
-  getAllApplications(): Observable<any> {
-    if (!this.applicationsSubject.value) {
-      this.httpClient
-        .get<{ status: string; message: string; data: Applications[] }>(this.getAllApplicationsJobseeker, {
-          withCredentials: true,
-        })
-        .subscribe({
-          next: (response) => {
-            this.applicationsSubject.next(response.data);
-          },
-          error: (err) => {
-            console.error('Failed to fetch applications', err);
-          },
-        });
+  getAllApplications(search?: string, sort?: string, page?: number, limit?: number): Observable<any> {
+
+    let params = new HttpParams();
+
+    if (search) {
+      params = params.set('search', search)
     }
-    return this.applications$;
+
+    if (sort) {
+      params = params.set('sort', sort)
+    }
+
+    if (page) {
+      params = params.set('page', page)
+    }
+
+    if (limit) {
+      params = params.set('limit', limit)
+    }
+
+    return this.httpClient.get(this.getAllApplicationsJobseeker, { params, withCredentials: true });
   }
+
 }

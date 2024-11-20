@@ -161,7 +161,6 @@ const getAllApplicationsOfUser = async (id) => {
     ],
   });
 };
-
 const getAllApplicationsDb = async (
   id,
   order,
@@ -170,28 +169,28 @@ const getAllApplicationsDb = async (
   limit,
   offset
 ) => {
-  
-  return await Application.findAll({
+  return await JobPost.findAndCountAll({
+    distinct: true,
     where: {
-      UserId:id,
+      [Op.or]: [
+        { title: { [Op.iLike]: searchFields } },
+        { role: { [Op.iLike]: searchFields } },
+        { city: { [Op.iLike]: searchFields } },
+        { companyName: { [Op.iLike]: searchFields } },
+      ],
     },
-    attributes: [],
+    attributes,
     include: [
       {
-        model: JobPost,
-        as:"JobPosts",
+        model: Application,
+        as: "Applications",
         where: {
-          [Op.or]: [
-            { title: { [Op.iLike]: searchFields } },
-            { role: { [Op.iLike]: searchFields } },
-            { city: { [Op.iLike]: searchFields } },
-            { companyName: { [Op.iLike]: searchFields } },
-          ],
+          UserId: id,
         },
-        attributes,
-        order,
+        attributes: ["status"],
       },
     ],
+    order,
     limit,
     offset,
   });

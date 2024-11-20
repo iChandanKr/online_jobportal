@@ -119,8 +119,6 @@ class JobseekerService {
       offset = paginate(req.query.page, limit);
     }
 
-    console.log(orderBy);
-
     const attributes = visibleAttributes
       ? visibleAttributes
       : [
@@ -134,6 +132,7 @@ class JobseekerService {
           "applicationDeadline",
           "jobType",
           "companyName",
+          "updatedAt",
         ];
     const jobs = await getAllApplicationsDb(
       req.user.id,

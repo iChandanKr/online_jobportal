@@ -76,10 +76,7 @@ export class ApplicationsComponent implements OnInit {
     this.employerService.searchApplicant(this.searchQuery, this.sortOrder, this.pageIndex + 1, this.pageSize)
       .subscribe((response: any) => {
 
-        this.totalRecords = response.data.count
-        console.log(this.totalRecords);
-
-
+        this.totalRecords = response.data.count;
         const applicantWithJobs = response.data.rows.map((applicant: SearchApplicant) => ({
           ...applicant,
           appliedJobs: applicant.JobPosts
@@ -129,7 +126,6 @@ export class ApplicationsComponent implements OnInit {
     });
   }
   columnDetails() {
-    console.log("coufjknsjldf");
 
     this.allApplicants() === false
       ? (this.displayedColumns = [
@@ -264,8 +260,8 @@ export class ApplicationsComponent implements OnInit {
   }
 
   onPageSizeChange(event: any): void {
-    this.pageSize = event.value; 
+    this.pageSize = event.value;
     this.pageIndex = 0;
-    this.getApplicants(); 
+    this.getApplicants();
   }
 }
