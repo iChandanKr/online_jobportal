@@ -1,8 +1,8 @@
 <h2 mat-dialog-title>Jobseeker Complete Profile</h2>
 <mat-dialog-content>
-  <div class="grid grid-cols-2 gap-2 ">
+  <div class="grid grid-cols-2 gap-2">
     <div>
-      <p >
+      <p>
         Name:
         {{
           (jobseekerProfile()?.firstName || "") +
@@ -28,21 +28,17 @@
 
     <div>
       <p>10th : {{ jobseekerProfile()?.tenthMarksPercent }}%</p>
-      <p>
-        10th passing year: {{ jobseekerProfile()?.tenthPassingYear | date }}
-      </p>
+      <p>10th passing year: {{ jobseekerProfile()?.tenthPassingYear }}</p>
     </div>
     <div>
       <p>12th : {{ jobseekerProfile()?.twelfthMarksPercent }}%</p>
-      <p>
-        12th passing year : {{ jobseekerProfile()?.twelfthPassingYear | date }}
-      </p>
+      <p>12th passing year : {{ jobseekerProfile()?.twelfthPassingYear }}</p>
       <p>UG Stream : {{ jobseekerProfile()?.ugStream | titlecase }}</p>
     </div>
     <div>
       <p>UG Branch : {{ jobseekerProfile()?.ugBranch | titlecase }}</p>
       <p>UG CGPA : {{ jobseekerProfile()?.ugCGPA }}</p>
-      <p>UG PassingYear : {{ jobseekerProfile()?.ugPassingYear | date }}</p>
+      <p>UG PassingYear : {{ jobseekerProfile()?.ugPassingYear }}</p>
     </div>
     <div>
       <p>
@@ -50,7 +46,7 @@
       </p>
       <p>
         PG PassingYear :
-        {{ (jobseekerProfile()?.pgPassingYear | date) || "NA" }}
+        {{ jobseekerProfile()?.pgPassingYear || "NA" }}
       </p>
     </div>
   </div>

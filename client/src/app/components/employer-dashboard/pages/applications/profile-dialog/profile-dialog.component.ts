@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { DatePipe, CurrencyPipe, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
@@ -12,13 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-profile-dialog',
   standalone: true,
-  imports: [
-    MatDialogModule,
-    MatButtonModule,
-    DatePipe,
-    CurrencyPipe,
-    TitleCasePipe,
-  ],
+  imports: [MatDialogModule, MatButtonModule, TitleCasePipe],
   templateUrl: './profile-dialog.component.html',
   styleUrl: './profile-dialog.component.css',
 })
