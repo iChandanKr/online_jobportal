@@ -1,6 +1,6 @@
 const Redis = require("ioredis");
 const { Sequelize, DataTypes } = require("sequelize");
-const database = process.env.DB_NAME;
+const database = process.env.DB_MIGRATION;
 const user = process.env.DB_USER;
 const password = process.env.DB_PASSWORD;
 const sequelize = new Sequelize(database, user, password, {
@@ -8,8 +8,8 @@ const sequelize = new Sequelize(database, user, password, {
   dialect: "postgres",
   logging: false,
 });
-const insertDefaultRoles = require("./users/model/insertDefaultData");
-const insertDefaultSkills = require("./users/model/insertDefaultskills.js");
+// const insertDefaultRoles = require("./users/model/insertDefaultData");
+// const insertDefaultSkills = require("./users/model/insertDefaultskills.js");
 const dataModel = {};
 dataModel.Sequelize = Sequelize;
 dataModel.sequelize = sequelize;
@@ -249,10 +249,10 @@ const dbConnection = async function () {
   try {
     await sequelize.authenticate();
     console.log("Connection has been established successfully.");
-    await dataModel.sequelize.sync({ force: false });
-    console.log("All models has been synchronized successfully.");
-    await insertDefaultRoles(dataModel.Role);
-    await insertDefaultSkills(dataModel.Skill);
+    // await dataModel.sequelize.sync({ force: true });
+    // console.log("All models has been synchronized successfully.");
+    // await insertDefaultRoles(dataModel.Role);
+    // await insertDefaultSkills(dataModel.Skill);
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
