@@ -8,8 +8,8 @@ const sequelize = new Sequelize(database, user, password, {
   dialect: "postgres",
   logging: false,
 });
-const insertDefaultRoles = require("./users/model/insertDefaultData");
-const insertDefaultSkills = require("./users/model/insertDefaultskills.js");
+// const insertDefaultRoles = require("./users/model/insertDefaultData");
+// const insertDefaultSkills = require("./users/model/insertDefaultskills.js");
 const dataModel = {};
 dataModel.Sequelize = Sequelize;
 dataModel.sequelize = sequelize;
