@@ -144,6 +144,9 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
       },
+      deletedAt: {
+        type: Sequelize.DATE,
+      },
     });
   },
 
