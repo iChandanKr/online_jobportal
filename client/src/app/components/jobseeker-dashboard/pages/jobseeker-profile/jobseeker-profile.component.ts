@@ -102,19 +102,19 @@ export class JobseekerProfileComponent implements OnInit {
     );
 
 
-   
+
     this.populateJobSeekerProfile();
 
   }
 
-  onTabChange(event:MatTabChangeEvent){
-    if(event.index===0){
+  onTabChange(event: MatTabChangeEvent) {
+    if (event.index === 0) {
       this.populateJobSeekerProfile();
     }
-    else if(event.index===1){
+    else if (event.index === 1) {
       this.populateEducationDetails();
     }
-    else if(event.index===2){
+    else if (event.index === 2) {
       this.populateSkills();
       this.postJobService.fetchExistingSkills().subscribe({
         next: data => {
@@ -123,7 +123,7 @@ export class JobseekerProfileComponent implements OnInit {
         },
         error: err => {
           console.log(err);
-  
+
         }
       })
     }

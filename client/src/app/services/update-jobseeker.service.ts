@@ -50,12 +50,10 @@ export class UpdateJobseekerService {
 
   getJobseeker(): Observable<any> {
     if (!this.jobSeekerSubject.value) {
-      console.log("hello");
 
       this.httpClient.get<{ status: string; message: string; data: JobSeekerDetails[] }>(this.getJobseekerUrl, { withCredentials: true })
         .subscribe({
           next: (response) => {
-            console.log(response);
 
             this.jobSeekerSubject.next(response.data);
           },

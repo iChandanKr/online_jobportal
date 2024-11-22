@@ -60,9 +60,7 @@ export class JobApplicationsComponent implements OnInit {
         next: (res) => {
           //  console.log(res?.JobPosts);
 
-          console.log(res);
           this.totalRecords = res.data.count;
-          console.log("totalrecords", this.totalRecords);
 
           const applications = res.data.rows.map((applicant: any) => {
             return {
