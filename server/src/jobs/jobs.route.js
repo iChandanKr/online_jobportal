@@ -21,15 +21,18 @@ const authMiddleware = require("../middleware/auth.middleware");
 const checkEduMiddleware = require("../middleware/checkEducation.middleware");
 const checkSkillMiddleware = require("../middleware/checkSkill.middleware");
 const checkEmployerRole = require("../middleware/checkEmployerRole.middleware");
-const {
-  jobPostValidation,
-  applyJobValidation,
-} = require("../middleware/joiValidation.middleware");
+const { validateRequest } = require("../middleware/joiValidation.middleware");
+const apiSchema = require("../utils/apiSchema");
 const checkJobseekerRole = require("../middleware/checkJobseeker.middleware");
 
 router
   .route("/add-jobpost")
-  .post(jobPostValidation, authMiddleware, checkEmployerRole, createJobPost);
+  .post(
+    validateRequest(apiSchema.jobPostSchema),
+    authMiddleware,
+    checkEmployerRole,
+    createJobPost
+  );
 router.route("/jobs").get(authMiddleware, checkEmployerRole, getAllJobs);
 router
   .route("/delete-job/:id")
@@ -42,7 +45,7 @@ router.route("/job-details/:id").get(getJobDetails);
 router
   .route("/apply-job")
   .post(
-    applyJobValidation,
+    validateRequest(apiSchema.applyJob),
     authMiddleware,
     checkJobseekerRole,
     checkEduMiddleware,

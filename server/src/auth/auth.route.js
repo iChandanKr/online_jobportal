@@ -6,20 +6,23 @@ const {
   updateUserPassword,
 } = require("./auth.controller");
 const authMiddleware = require("../middleware/auth.middleware");
-const {
-  loginValidation,
-  logoutValidator,
-  updatePasswordValidation,
-} = require("../middleware/joiValidation.middleware");
-router.route("/login").post(loginValidation, userLogin);
+const apiSchema = require("../utils/apiSchema");
+const { validateRequest } = require("../middleware/joiValidation.middleware");
+router.route("/login").post(validateRequest(apiSchema.loginSchema), userLogin);
 router.route("/auth/check").get(authMiddleware, (req, res) => {
   res.status(200).json({ authenticated: true, user: req.user });
 });
 
 // protected routes
-router.route("/logout").post(logoutValidator, authMiddleware, logoutUser);
+router
+  .route("/logout")
+  .post(validateRequest(apiSchema.logoutSchema), authMiddleware, logoutUser);
 router
   .route("/password-update")
-  .patch(updatePasswordValidation, authMiddleware, updateUserPassword);
+  .patch(
+    validateRequest(apiSchema.updatePasswordSchema),
+    authMiddleware,
+    updateUserPassword
+  );
 
 module.exports = router;

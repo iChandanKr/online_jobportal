@@ -3,22 +3,22 @@ const {
   registerEmployer,
   updateEmployer,
   getSpecificEmployeer,
-  getApplicantsbySearch
+  getApplicantsbySearch,
 } = require("../controller/employer.controller");
 const authMiddleware = require("../../middleware/auth.middleware");
 const {
-  registerEmployerValidation,
-  updateEmployerValidation,
+  validateRequest,
 } = require("../../middleware/joiValidation.middleware");
+const apiSchema = require("../../utils/apiSchema");
 const checkEmployerRole = require("../../middleware/checkEmployerRole.middleware");
 const router = express.Router();
 router
   .route("/register-employer")
-  .post(registerEmployerValidation, registerEmployer);
+  .post(validateRequest(apiSchema.registerEmployerSchema), registerEmployer);
 router
   .route("/update-employer")
   .put(
-    updateEmployerValidation,
+    validateRequest(apiSchema.updateEmployerSchema),
     authMiddleware,
     checkEmployerRole,
     updateEmployer
@@ -26,8 +26,8 @@ router
 router
   .route("/employer")
   .get(authMiddleware, checkEmployerRole, getSpecificEmployeer);
-router 
+router
   .route("/getApplicantsbySearch")
-  .get(authMiddleware,checkEmployerRole,getApplicantsbySearch)
+  .get(authMiddleware, checkEmployerRole, getApplicantsbySearch);
 
 module.exports = router;

@@ -13,25 +13,22 @@ const {
   getAllApplications,
 } = require("../controller/jobSeeker.controller");
 const {
-  registerJobseekerValidation,
-  updateJobseekerValidation,
-  addEducationValidation,
-  addSkillValidation,
-  getJobseekerProfileValidation,
+  validateRequest,
 } = require("../../middleware/joiValidation.middleware");
 const checkJobseekerRole = require("../../middleware/checkJobseeker.middleware");
+const apiSchema = require("../../utils/apiSchema");
 const authMiddleware = require("../../middleware/auth.middleware");
 const router = express.Router();
 router
   .route("/register-jobseeker")
-  .post(registerJobseekerValidation, registerJobseeker);
+  .post(validateRequest(apiSchema.registerJobSeekerSchema), registerJobseeker);
 router
   .route("/jobseeker")
   .get(authMiddleware, checkJobseekerRole, findJobseeker);
 router
   .route("/update-jobseeker")
   .put(
-    updateJobseekerValidation,
+    validateRequest(apiSchema.updateJobseekerSchema),
     authMiddleware,
     checkJobseekerRole,
     updateJobseeker
@@ -39,14 +36,19 @@ router
 router
   .route("/add-educationDetails")
   .post(
-    addEducationValidation,
+    validateRequest(apiSchema.addEducationSchema),
     authMiddleware,
     checkJobseekerRole,
     addEducationDetails
   );
 router
   .route("/add-skills")
-  .post(addSkillValidation, authMiddleware, checkJobseekerRole, addSkills);
+  .post(
+    validateRequest(apiSchema.addSkillSchema),
+    authMiddleware,
+    checkJobseekerRole,
+    addSkills
+  );
 
 router
   .route("/update-skills")
@@ -63,12 +65,13 @@ router
 
 router
   .route("/jobseeker-details/:id")
-  .get(getJobseekerProfileValidation, authMiddleware, getJobseekerDetails);
+  .get(
+    validateRequest(apiSchema.getJobseekerProfileSchema),
+    authMiddleware,
+    getJobseekerDetails
+  );
 router
   .route("/applications")
   .get(authMiddleware, checkJobseekerRole, getAllApplications);
 
-// router?
-  // .route("/job-applications")
-  // .get(authMiddleware,checkJobseekerRole,getAllApplications)
 module.exports = router;

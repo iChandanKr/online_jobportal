@@ -85,7 +85,6 @@ export class ApplicationsComponent implements OnInit {
         }))
 
         this.datasource.data = applicantWithJobs
-        console.log(this.datasource.data);
         this.allApplicants.set(true)
         this.columnDetails()
 
