@@ -196,6 +196,77 @@ const getAllApplicationsDb = async (
   });
 };
 
+const getAllUsersDB = async (
+  userId,
+  orderBy,
+  searchFields,
+  status,
+  role,
+  limit,
+  offset
+) => {
+  return await User.findAndCountAll({
+    where: {
+      id: {
+        [Op.ne]: userId,
+      },
+      [Op.or]: [
+        {
+          firstName: {
+            [Op.iLike]: searchFields,
+          },
+        },
+        {
+          lastName: {
+            [Op.iLike]: searchFields,
+          },
+        },
+        {
+          email: {
+            [Op.iLike]: searchFields,
+          },
+        },
+        {
+          city: {
+            [Op.iLike]: searchFields,
+          },
+        },
+      ],
+      isLocked: {
+        [Op.in]: status,
+      },
+    },
+
+    include: [
+      {
+        model: Role,
+        where: {
+          role: {
+            [Op.in]: role,
+          },
+        },
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+    order: orderBy,
+    limit,
+    offset,
+    attributes: {
+      exclude: ["password", "createdAt", "passwordChangedAt"],
+    },
+  });
+};
+
+const deleteUser = async (userId) => {
+  return await User.destroy({
+    where: {
+      id: userId,
+    },
+  });
+};
+
 module.exports = {
   createJobseekerDb,
   findJobseekerDB,
@@ -210,4 +281,6 @@ module.exports = {
   updateJobseekerSkillsDb,
   getAllApplicationsOfUser,
   getAllApplicationsDb,
+  getAllUsersDB,
+  deleteUser
 };

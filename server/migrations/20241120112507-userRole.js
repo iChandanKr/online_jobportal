@@ -11,6 +11,7 @@ module.exports = {
           model: "user",
           key: "id",
         },
+        onDelete: "CASCADE",
       },
 
       RoleId: {
@@ -20,6 +21,7 @@ module.exports = {
           model: "role",
           key: "id",
         },
+        onDelete: "CASCADE",
       },
     });
   },

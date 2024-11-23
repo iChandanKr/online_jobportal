@@ -181,14 +181,38 @@ const getAllApplicationOfUser = async (req, res, next) => {
   }
 };
 
-const getAllApplications=async(req,res,next)=>{
+const getAllApplications = async (req, res, next) => {
   try {
-    const applications=await JobseekerService.getAllApplicationsService(req)
-    respondOk(res,200,"Fteched applications",applications)
+    const applications = await JobseekerService.getAllApplicationsService(req);
+    respondOk(res, 200, "Fteched applications", applications);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
+
+const getAllUsers = async (req, res, next) => {
+  try {
+    const users = await JobseekerService.getAllUserService(req);
+    if (users) {
+      respondOk(res, 200, "All Users of Application", users);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteUser = async (req, res, next) => {
+  try {
+    const deletedUser = await JobseekerService.deleteUserService(req.params.id);
+    if (deletedUser >= 1) {
+      respondOk(res, 200, "user has been deleted successfully");
+    } else {
+      throw new CustomError("User not found", 404);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   registerJobseeker,
@@ -202,5 +226,7 @@ module.exports = {
   updateEducationDetails,
   updateJobseekerSkills,
   getAllApplicationOfUser,
-  getAllApplications
+  getAllApplications,
+  getAllUsers,
+  deleteUser,
 };

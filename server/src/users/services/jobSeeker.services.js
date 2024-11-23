@@ -11,6 +11,8 @@ const {
   updateJobseekerSkillsDb,
   getAllApplicationsOfUser,
   getAllApplicationsDb,
+  getAllUsersDB,
+  deleteUser,
 } = require("../repo/jobSeeker.repo");
 const { generateAccessToken } = require("../../utils/tokenGenerator");
 const { dataModel } = require("../../dbConnection");
@@ -145,6 +147,49 @@ class JobseekerService {
     // console.log(jobs);
 
     return jobs;
+  };
+
+  static getAllUserService = async (req) => {
+    let orderBy;
+    let searchFields = req.query.search || "%";
+    let status = [];
+    let role = [];
+    const limit = req.query.limit || 5;
+    let offset;
+    if (req.query.sort) {
+      orderBy = sort(req.query.sort);
+    } else {
+      orderBy = sort("-updatedAt");
+    }
+    if (req.query.search) {
+      searchFields = search(searchFields);
+    }
+    if (!req.query.status) {
+      status = [true, false];
+    } else {
+      status = req.query.status === "locked" ? [true] : [false];
+    }
+    if (!req.query.role) {
+      role = ["jobseeker", "employer"];
+    } else {
+      role = [req.query.role];
+    }
+    if (req.query.page) {
+      offset = paginate(req.query.page, limit);
+    }
+    return await getAllUsersDB(
+      req.user.id,
+      orderBy,
+      searchFields,
+      status,
+      role,
+      limit,
+      offset
+    );
+  };
+
+  static deleteUserService = async (userId) => {
+    return await deleteUser(userId);
   };
 }
 

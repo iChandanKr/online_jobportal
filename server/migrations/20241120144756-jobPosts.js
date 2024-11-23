@@ -133,6 +133,7 @@ module.exports = {
           model: "employer",
           key: "empId",
         },
+        onDelete: "CASCADE",
       },
       createdAt: {
         allowNull: false,

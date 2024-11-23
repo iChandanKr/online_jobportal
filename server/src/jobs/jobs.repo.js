@@ -207,13 +207,13 @@ const getAllApplicantsDB = async (empId) => {
         model: JobPost,
         attributes: ["title"],
         through: {
-          attributes: [], 
+          attributes: [],
         },
         include: [
           {
             model: Employer,
             where: { empId },
-            attributes: [], 
+            attributes: [],
           },
         ],
       },

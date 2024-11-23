@@ -6,6 +6,7 @@ const jobSeekerRoute = require("./users/route/jobSeeker.route");
 const employerRoute = require("./users/route/employer.route");
 const skillsRoute = require("./skills/skills.route");
 const authRoute = require("./auth/auth.route");
+const adminRoute = require("./users/route/admin.route");
 const globalErrorHandler = require("./utils/globalErrorHandler");
 const jobs = require("./jobs/jobs.route");
 
@@ -20,6 +21,7 @@ app.use(
 app.use(cookieParser());
 app.use("/api/v1/users", jobSeekerRoute);
 app.use("/api/v1/users", employerRoute);
+app.use("/api/v1/users", adminRoute);
 app.use("/api/v1/users", authRoute);
 app.use("/api/v1/job", jobs);
 app.use("/api/v1/skills", skillsRoute);
