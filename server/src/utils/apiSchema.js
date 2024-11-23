@@ -72,10 +72,13 @@ const loginSchema = Joi.object({
     "string.empty": "please Enter your Password",
     "any.required": "please Enter your Password",
   }),
-  role: Joi.string().valid("jobseeker", "employer").required().messages({
-    "any.only": "Role must be either jobseeker or employer",
-    "any.required": "Role is required",
-  }),
+  role: Joi.string()
+    .valid("jobseeker", "employer", "admin")
+    .required()
+    .messages({
+      "any.only": "Role must be either jobseeker or employer",
+      "any.required": "Role is required",
+    }),
 });
 
 // ---LOGOUT SCHEMA---------

@@ -16,6 +16,7 @@ module.exports = {
           model: "jobPosts",
           key: "id",
         },
+        onDelete: "CASCADE",
       },
 
       UserId: {
@@ -25,6 +26,7 @@ module.exports = {
           model: "user",
           key: "id",
         },
+        onDelete: "CASCADE",
       },
       status: {
         type: Sequelize.ENUM("under review", "accepted", "rejected"),
