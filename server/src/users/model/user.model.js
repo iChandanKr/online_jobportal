@@ -128,6 +128,11 @@ module.exports = (sequelize, DataTypes) => {
       passwordChangedAt: {
         type: DataTypes.DATE,
       },
+      is_locked: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
+      },
     },
     {
       tableName: "user",

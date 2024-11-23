@@ -7,7 +7,9 @@ const {
   stopSessionDB,
   findRefreshTokenDb,
   updatePasswordDB,
+  updateLockedStatus,
 } = require("./auth.repo");
+const { redis } = require("../dbConnection");
 const {
   generateRefreshToken,
   // generateAccessToken,
@@ -30,6 +32,12 @@ class AuthService {
         user.dataValues?.password
       );
       if (isPasswordMatched) {
+        if (req.failedAttempts !== 0) {
+          await redis.del(`failed_attempts:${user.email}`);
+          if (user.is_locked) {
+            await updateLockedStatus(user.id, false);
+          }
+        }
         const userRoleDetails = await roleDetails(role);
         if (userRoleDetails) {
           const verifyUserRole = await verifyUserRoleDB(
@@ -56,7 +64,39 @@ class AuthService {
           new CustomError("Pleae Enter the correct credentials...", 400);
         }
       } else {
-        throw new CustomError("Invalid login credentials", 400);
+        let failedAttempts = req.failedAttempts;
+        const maxFailedAttempts = parseInt(process.env.MAX_FAILED_ATTEMPTS);
+        failedAttempts += 1;
+
+        if (failedAttempts === 1) {
+          await redis.setex(
+            `failed_attempts:${email}`,
+            failedAttempts,
+            process.env.LOCKOUT_TIME
+          );
+        } else {
+          await redis.incr(`failed_attempts:${email}`);
+        }
+
+        if (failedAttempts === maxFailedAttempts) {
+          // call repo to change is_locked
+          console.log("trying to lock user in repo", user);
+          await updateLockedStatus(user.id, true);
+          console.log("locking user", user.is_locked);
+
+          throw new CustomError(
+            `Oops, you are locked out, please try after ${
+              parseInt(process.env.LOCKOUT_TIME) / 60
+            } minutes`,
+            403
+          );
+        }
+        throw new CustomError(
+          `Please Enter the correct credentials. Attempts remaining:${
+            maxFailedAttempts - failedAttempts
+          }`,
+          400
+        );
       }
     } else {
       throw new CustomError("Invalid login credentials", 400);
