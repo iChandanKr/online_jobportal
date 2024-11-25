@@ -14,6 +14,8 @@ import { JobseekerDashboardComponent } from './components/jobseeker-dashboard/jo
 import { ApplyJobComponent } from './components/jobseeker-dashboard/pages/apply-job/apply-job.component';
 import { JobseekerProfileComponent } from './components/jobseeker-dashboard/pages/jobseeker-profile/jobseeker-profile.component';
 import { JobApplicationsComponent } from './components/jobseeker-dashboard/pages/job-applications/job-applications.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { UsersComponent } from './components/admin-dashboard/pages/users/users.component';
 
 export const routes: Routes = [
   // Landing Page
@@ -116,6 +118,25 @@ export const routes: Routes = [
       {
         path: '',
         redirectTo: 'apply-job',
+        pathMatch: 'full',
+      },
+    ],
+  },
+  // Admin
+  {
+    path: 'admin',
+    component: AdminDashboardComponent,
+    data: { breadcrumb: 'Admin Dashboard' },
+
+    children: [
+      {
+        path: 'users',
+        component: UsersComponent,
+        data:{breadcrumb:'Users'}
+      },
+      {
+        path: '',
+        redirectTo: 'users',
         pathMatch: 'full',
       },
     ],

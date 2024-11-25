@@ -37,4 +37,6 @@ export const API_URLS = {
   getOpenJobsOfEmployer: `${environment.apiUrl}/job/open-jobs`,
   getClodedJobsOfEmployer: `${environment.apiUrl}/job/closed-jobs`,
   jobsPerMonth: `${environment.apiUrl}/job/jobs-permonth`,
+  getAllUsers: `${environment.apiUrl}/users/get-all-user`,
+  deleteUser: `${environment.apiUrl}/users/user-delete`,
 };

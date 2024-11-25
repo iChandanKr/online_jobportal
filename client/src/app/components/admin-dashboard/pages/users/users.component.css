@@ -1,0 +1,21 @@
+.search-bar {
+  display: flex;
+  justify-content: left;
+  margin-bottom: 20px;
+  width: 100%;
+}
+.search-bar input {
+  width: 25%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  outline: none;
+}
+
+.search-bar input:focus {
+  border-color: cadetblue;
+}
+
+mat-icon{
+  cursor: pointer;
+}

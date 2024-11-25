@@ -1,49 +1,26 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
+import { MenuItem } from '../../employer-dashboard/custom-sidenav/custom-sidenav.component';
+import { UserDataSharingService } from '../../../services/user-data-sharing.service';
+import { CurrentUser } from '../../../model/loginResponse.model';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
-import { type CurrentUser } from '../../../model/loginResponse.model';
-import { UserDataSharingService } from '../../../services/user-data-sharing.service';
-export type MenuItem = {
-  icon: string;
-  label: string;
-  route?: string;
-};
+
 @Component({
-  selector: 'app-custom-sidenav',
+  selector: 'app-admin-sidenav',
   standalone: true,
   imports: [MatListModule, MatIconModule, RouterModule],
-  templateUrl: './custom-sidenav.component.html',
-  styleUrl: './custom-sidenav.component.css',
+  templateUrl: './admin-sidenav.component.html',
+  styleUrl: './admin-sidenav.component.css',
 })
-export class CustomSidenavComponent {
+export class AdminSidenavComponent {
   sideNavCollapsed = input<boolean>(false);
   profilePicSize = computed(() => (this.sideNavCollapsed() ? '40' : '100'));
   menuItem = signal<MenuItem[]>([
     {
-      icon: 'dashboard',
-      label: 'Dashboard',
-      route: 'dashboard',
-    },
-    {
-      icon: 'add',
-      label: 'Post Jobs',
-      route: 'post-job',
-    },
-    {
-      icon: 'work',
-      label: 'Jobs',
-      route: 'jobs',
-    },
-    {
-      icon: 'person',
-      label: 'Profile',
-      route: 'profile',
-    },
-    {
-      icon: 'check_circle',
-      label: 'Applications',
-      route: 'applications',
+      icon: 'group',
+      label: 'Users',
+      route: 'users',
     },
   ]);
   public userDataSharingService = inject(UserDataSharingService);
