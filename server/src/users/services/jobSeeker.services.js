@@ -177,7 +177,7 @@ class JobseekerService {
     if (req.query.page) {
       offset = paginate(req.query.page, limit);
     }
-    return await getAllUsersDB(
+    const users = await getAllUsersDB(
       req.user.id,
       orderBy,
       searchFields,
@@ -186,6 +186,13 @@ class JobseekerService {
       limit,
       offset
     );
+    const parsedUsers = JSON.parse(JSON.stringify(users));
+    const finalRes = parsedUsers.rows.map((user) => ({
+      ...user,
+      Roles: user.Roles[0].role,
+    }));
+    parsedUsers.rows = finalRes;
+    return parsedUsers;
   };
 
   static deleteUserService = async (userId) => {
