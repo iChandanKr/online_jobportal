@@ -267,6 +267,18 @@ const deleteUser = async (userId) => {
   });
 };
 
+const lockMultipleUsersDB=async (userIds)=>{
+  return await User.update({
+    isLocked:true
+  },
+  {
+    where:{
+      id:userIds
+    }
+  }
+)
+}
+
 module.exports = {
   createJobseekerDb,
   findJobseekerDB,
@@ -282,5 +294,6 @@ module.exports = {
   getAllApplicationsOfUser,
   getAllApplicationsDb,
   getAllUsersDB,
-  deleteUser
+  deleteUser,
+  lockMultipleUsersDB
 };

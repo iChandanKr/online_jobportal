@@ -3,6 +3,7 @@ const authMiddleware = require("../../middleware/auth.middleware");
 const {
   getAllUsers,
   deleteUser,
+  lockMultipleUsers
 } = require("../controller/jobSeeker.controller");
 const checkAdminRole = require("../../middleware/checkAdmin.middleware");
 
@@ -12,4 +13,7 @@ router.route("/get-all-user").get(authMiddleware, checkAdminRole, getAllUsers);
 router
   .route("/user-delete/:id")
   .get(authMiddleware, checkAdminRole, deleteUser);
+router
+  .route("/lock-users")
+  .put(authMiddleware,checkAdminRole,lockMultipleUsers)
 module.exports = router;

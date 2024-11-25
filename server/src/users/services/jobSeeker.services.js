@@ -13,6 +13,7 @@ const {
   getAllApplicationsDb,
   getAllUsersDB,
   deleteUser,
+  lockMultipleUsersDB
 } = require("../repo/jobSeeker.repo");
 const { generateAccessToken } = require("../../utils/tokenGenerator");
 const { dataModel } = require("../../dbConnection");
@@ -191,6 +192,14 @@ class JobseekerService {
   static deleteUserService = async (userId) => {
     return await deleteUser(userId);
   };
+
+  static lockUsersService=async (userIds)=>{
+    const updateResult=await lockMultipleUsersDB(userIds)
+    if (!updateResult || updateResult[0] === 0) {
+      throw new CustomError("No users were locked. Please check the user IDs.", 404);
+    }
+    return { lockedUsers: userIds.length };
+  }
 }
 
 module.exports = JobseekerService;

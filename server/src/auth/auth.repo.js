@@ -77,7 +77,7 @@ const updatePasswordDB = async (id, newPassword) => {
 
 const updateLockedStatus = async (id, lockedStatus) => {
   return await User.update(
-    { is_locked: lockedStatus },
+    { isLocked: lockedStatus },
     {
       where: {
         id,
