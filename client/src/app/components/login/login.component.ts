@@ -37,19 +37,24 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      
       this.loginService.loginByRole(this.loginForm.value).subscribe({
-        
         next: (response) => {
           const user = response.body?.data;
-          
+
           if (user) {
             this.userDataSharingService.setLoginUserData(user);
           }
           this.toastr.success(response.body?.message, 'success');
-          user?.role === 'employer'
-            ? this.router.navigate(['/employer'])
-            : this.router.navigate(['/jobseeker']);
+          // user?.role === 'employer'
+          //   ? this.router.navigate(['/employer'])
+          //   : this.router.navigate(['/jobseeker']);
+          if (user?.role === 'employer') {
+            this.router.navigate(['/employer']);
+          } else if (user?.role === 'jobseeker') {
+            this.router.navigate(['/jobseeker']);
+          } else {
+            this.router.navigate(['/admin']);
+          }
           this.loginForm.reset();
         },
         error: (err) => {

@@ -14,26 +14,25 @@ export interface Breadcrumb {
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './breadcrumb.component.html',
-  styleUrls: ['./breadcrumb.component.css']
+  styleUrls: ['./breadcrumb.component.css'],
 })
 export class BreadcrumbComponent implements OnInit, OnDestroy {
   breadcrumbs: Breadcrumb[] = [];
   subscription: Subscription = new Subscription();
 
-  constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.subscription = this.router.events
       .pipe(
-        filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd),
-        distinctUntilChanged(),
+        filter(
+          (event: Event): event is NavigationEnd =>
+            event instanceof NavigationEnd
+        ),
+        distinctUntilChanged()
       )
       .subscribe(() => {
         this.breadcrumbs = this.buildBreadcrumbs(this.activatedRoute.root);
-
       });
 
     this.breadcrumbs = this.buildBreadcrumbs(this.activatedRoute.root);
@@ -51,7 +50,7 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
     breadcrumbs: Breadcrumb[] = []
   ): Breadcrumb[] {
     const label = route.snapshot.data['breadcrumb'];
-    const path = route.snapshot.url.map(segment => segment.path).join('/');
+    const path = route.snapshot.url.map((segment) => segment.path).join('/');
 
     const params = route.snapshot.params;
     let paramLabel = '';
@@ -65,7 +64,7 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
     if (label) {
       breadcrumbs.push({
         label: label,
-        url: nextUrl
+        url: nextUrl,
       });
     }
 
