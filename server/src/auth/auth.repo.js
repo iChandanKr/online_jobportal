@@ -74,6 +74,17 @@ const updatePasswordDB = async (id, newPassword) => {
     }
   );
 };
+
+const updateLockedStatus = async (id, lockedStatus) => {
+  return await User.update(
+    { is_locked: lockedStatus },
+    {
+      where: {
+        id,
+      },
+    }
+  );
+};
 module.exports = {
   createSessionDB,
   findUserByEmail,
@@ -83,5 +94,6 @@ module.exports = {
   stopSessionDB,
   findRefreshTokenDb,
   updatePasswordDB,
+  updateLockedStatus
   // stopSessionDBforUser,
 };
