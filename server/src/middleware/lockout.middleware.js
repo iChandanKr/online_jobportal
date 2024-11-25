@@ -11,9 +11,9 @@ const lockoutMiddleware = async (req, res, next) => {
       const ttl = await redis.ttl(`failed_attempts:${email}`);
       return next(
         new CustomError(
-          `Oops, you are locked out, please try after ${
+          `Oops, you are locked out, please try after ${Math.floor(
             parseInt(ttl) / 60
-          } minutes`,
+          )}  minutes`,
           403
         )
       );

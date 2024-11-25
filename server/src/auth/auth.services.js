@@ -65,29 +65,27 @@ class AuthService {
         }
       } else {
         let failedAttempts = req.failedAttempts;
+
         const maxFailedAttempts = parseInt(process.env.MAX_FAILED_ATTEMPTS);
         failedAttempts += 1;
 
         if (failedAttempts === 1) {
           await redis.setex(
             `failed_attempts:${email}`,
-            failedAttempts,
-            process.env.LOCKOUT_TIME
+            parseInt(process.env.LOCKOUT_TIME),
+            failedAttempts
           );
         } else {
           await redis.incr(`failed_attempts:${email}`);
         }
 
         if (failedAttempts === maxFailedAttempts) {
-          // call repo to change is_locked
-          console.log("trying to lock user in repo", user);
           await updateLockedStatus(user.id, true);
-          console.log("locking user", user.is_locked);
 
           throw new CustomError(
-            `Oops, you are locked out, please try after ${
+            `Oops, you are locked out, please try after ${Math.floor(
               parseInt(process.env.LOCKOUT_TIME) / 60
-            } minutes`,
+            )} minutes.`,
             403
           );
         }
