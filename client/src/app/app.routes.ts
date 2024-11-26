@@ -126,13 +126,14 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminDashboardComponent,
+    canActivate: [authGuard],
     data: { breadcrumb: 'Admin Dashboard' },
 
     children: [
       {
         path: 'users',
         component: UsersComponent,
-        data:{breadcrumb:'Users'}
+        data: { breadcrumb: 'Users' },
       },
       {
         path: '',
