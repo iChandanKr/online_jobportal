@@ -13,7 +13,8 @@ const {
   getAllApplicationsDb,
   getAllUsersDB,
   deleteUser,
-  lockMultipleUsersDB
+  lockMultipleUsersDB,
+  unlockMultipleUsersDB,
 } = require("../repo/jobSeeker.repo");
 const { generateAccessToken } = require("../../utils/tokenGenerator");
 const { dataModel } = require("../../dbConnection");
@@ -193,13 +194,27 @@ class JobseekerService {
     return await deleteUser(userId);
   };
 
-  static lockUsersService=async (userIds)=>{
-    const updateResult=await lockMultipleUsersDB(userIds)
+  static lockUsersService = async (userIds) => {
+    const updateResult = await lockMultipleUsersDB(userIds);
     if (!updateResult || updateResult[0] === 0) {
-      throw new CustomError("No users were locked. Please check the user IDs.", 404);
+      throw new CustomError(
+        "No users were locked. Please check the user IDs.",
+        404
+      );
     }
     return { lockedUsers: userIds.length };
-  }
+  };
+
+  static unlockUsersService = async (userIds) => {
+    const updateResult = await unlockMultipleUsersDB(userIds);
+    if (!updateResult || updateResult[0] === 0) {
+      throw new CustomError(
+        "No users were unlocked. Please check the user IDs.",
+        404
+      );
+    }
+    return { unlockedUsers: userIds.length };
+  };
 }
 
 module.exports = JobseekerService;
