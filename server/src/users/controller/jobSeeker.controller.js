@@ -216,6 +216,38 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
+const lockMultipleUsers = async (req, res, next) => {
+  try {
+    const { userIds } = req.body;
+    if (!Array.isArray(userIds) || userIds.length === 0) {
+      throw new CustomError(
+        "User IDs must be an array and cannot be empty",
+        400
+      );
+    }
+    const result = await JobseekerService.lockUsersService(userIds);
+    respondOk(res, 200, "Users locked successfully", result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const unlockMultipleUsers = async (req, res, next) => {
+  try {
+    const { userIds } = req.body;
+    if (!Array.isArray(userIds) || userIds.length === 0) {
+      throw new CustomError(
+        "User IDs must be an array and cannot be empty",
+        400
+      );
+    }
+    const result = await JobseekerService.unlockUsersService(userIds);
+    respondOk(res, 200, "Users unlocked successfully", result);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registerJobseeker,
   findJobseeker,
@@ -231,4 +263,6 @@ module.exports = {
   getAllApplications,
   getAllUsers,
   deleteUser,
+  lockMultipleUsers,
+  unlockMultipleUsers,
 };
