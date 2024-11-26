@@ -259,12 +259,17 @@ const getAllUsersDB = async (
   });
 };
 
-const deleteUser = async (userId) => {
-  return await User.destroy({
-    where: {
-      id: userId,
+const deleteUser = async (userIds, t) => {
+  return await User.destroy(
+    {
+      where: {
+        id: userIds,
+      },
     },
-  });
+    {
+      transaction: t,
+    }
+  );
 };
 
 module.exports = {
@@ -282,5 +287,5 @@ module.exports = {
   getAllApplicationsOfUser,
   getAllApplicationsDb,
   getAllUsersDB,
-  deleteUser
+  deleteUser,
 };

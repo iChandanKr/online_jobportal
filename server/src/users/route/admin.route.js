@@ -10,6 +10,6 @@ const router = express.Router();
 
 router.route("/get-all-user").get(authMiddleware, checkAdminRole, getAllUsers);
 router
-  .route("/user-delete/:id")
-  .get(authMiddleware, checkAdminRole, deleteUser);
+  .route("/user-delete")
+  .delete(authMiddleware, checkAdminRole, deleteUser);
 module.exports = router;

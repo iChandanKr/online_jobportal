@@ -195,8 +195,11 @@ class JobseekerService {
     return parsedUsers;
   };
 
-  static deleteUserService = async (userId) => {
-    return await deleteUser(userId);
+  static deleteUserService = async (userIds) => {
+    const result = sequelize.transaction(async (t) => {
+      return await deleteUser(userIds, t);
+    });
+    return result;
   };
 }
 

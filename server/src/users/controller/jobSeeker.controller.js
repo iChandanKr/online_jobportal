@@ -203,7 +203,9 @@ const getAllUsers = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
   try {
-    const deletedUser = await JobseekerService.deleteUserService(req.params.id);
+    const deletedUser = await JobseekerService.deleteUserService(
+      req.body.userIds
+    );
     if (deletedUser >= 1) {
       respondOk(res, 200, "user has been deleted successfully");
     } else {

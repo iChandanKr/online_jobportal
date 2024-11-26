@@ -9,6 +9,7 @@ import { type User } from '../model/user.model';
 })
 export class UserDataSharingService {
   private readonly getAllUsersUrl = API_URLS.getAllUsers;
+  private readonly deleteUsersUrl = API_URLS.deleteUser;
   private userInfo = signal<CurrentUser | undefined>(undefined);
   private httpClient = inject(HttpClient);
 
@@ -57,5 +58,16 @@ export class UserDataSharingService {
       msg: string;
       data: { count: number; rows: User[] };
     }>(finalApiUrl, { withCredentials: true });
+  }
+
+  deleteUsers(userIds: string[]) {
+    return this.httpClient.request<{ status: string; message: string }>(
+      'DELETE',
+      this.deleteUsersUrl,
+      {
+        body: { userIds },
+        withCredentials: true,
+      }
+    );
   }
 }
