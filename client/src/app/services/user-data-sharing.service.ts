@@ -10,6 +10,8 @@ import { type User } from '../model/user.model';
 export class UserDataSharingService {
   private readonly getAllUsersUrl = API_URLS.getAllUsers;
   private readonly deleteUsersUrl = API_URLS.deleteUser;
+  private readonly lockUsersUrl = API_URLS.lockUser;
+  private readonly unlockUsersUrl = API_URLS.unlockUser;
   private userInfo = signal<CurrentUser | undefined>(undefined);
   private httpClient = inject(HttpClient);
 
@@ -69,5 +71,21 @@ export class UserDataSharingService {
         withCredentials: true,
       }
     );
+  }
+
+  lockUsers(userIds: string[]) {
+    return this.httpClient.put<{ status: string; message: string }>(
+      this.lockUsersUrl,
+      { userIds },
+      { withCredentials: true }
+    );
+  }
+
+  unlockUsers(userIds: string[]) {
+    return this.httpClient.put<{ status: string; message: string }>(
+      this.unlockUsersUrl,
+      { userIds },
+      { withCredentials: true }
+    )
   }
 }

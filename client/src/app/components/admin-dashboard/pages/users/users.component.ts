@@ -202,14 +202,42 @@ export class UsersComponent implements OnInit {
   }
   onLock() {
     const userIds = this.getSelectedUsers().map((user) => user.id);
-    console.log(userIds);
+
+    this.userService.lockUsers(userIds).subscribe({
+      next: (res) => {
+        this.datasource.data = this.datasource.data.map((user) => {
+
+          if (userIds.includes(user.id)) {
+            return { ...user, isLocked: true };
+          }
+          return user;
+        });
+        this.toaster.success(res.message, 'success')
+      },
+      error: (err) => {
+        this.toaster.error(err.message, 'error')
+      }
+    })
 
     this.selection.clear();
   }
   onUnLock() {
     const userIds = this.getSelectedUsers().map((user) => user.id);
-    console.log(userIds);
 
+    this.userService.unlockUsers(userIds).subscribe({
+      next: (res) => {
+        this.datasource.data = this.datasource.data.map((user) => {
+          if (userIds.includes(user.id)) {
+            return { ...user, isLocked: false };
+          }
+          return user;
+        })
+        this.toaster.success(res.message, 'success')
+      },
+      error: (err) => {
+        this.toaster.error(err.message, 'error')
+      }
+    })
     this.selection.clear();
   }
 }

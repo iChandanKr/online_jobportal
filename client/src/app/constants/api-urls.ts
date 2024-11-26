@@ -39,4 +39,6 @@ export const API_URLS = {
   jobsPerMonth: `${environment.apiUrl}/job/jobs-permonth`,
   getAllUsers: `${environment.apiUrl}/users/get-all-user`,
   deleteUser: `${environment.apiUrl}/users/user-delete`,
+  lockUser: `${environment.apiUrl}/users/lock-users`,
+  unlockUser: `${environment.apiUrl}/users/unlock-users`
 };
