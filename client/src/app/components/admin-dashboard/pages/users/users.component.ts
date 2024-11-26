@@ -1,5 +1,12 @@
 import { type User } from './../../../../model/user.model';
-import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { UserDataSharingService } from '../../../../services/user-data-sharing.service';
 import { TitleCasePipe } from '@angular/common';
@@ -11,8 +18,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { dir } from 'console';
-import { sign } from 'crypto';
+import { MatButtonModule } from '@angular/material/button';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-users',
   standalone: true,
@@ -27,6 +34,7 @@ import { sign } from 'crypto';
     FormsModule,
     ReactiveFormsModule,
     MatSort,
+    MatButtonModule,
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',
@@ -44,6 +52,7 @@ export class UsersComponent implements OnInit {
   page = signal<any>(undefined);
   limit = signal<any>(undefined);
   @ViewChild(MatSort) sorting!: MatSort;
+  private toaster = inject(ToastrService);
 
   displayedColumns: string[] = [
     'select',
@@ -53,6 +62,7 @@ export class UsersComponent implements OnInit {
     'city',
     'Role',
     'status',
+    'actions',
   ];
   ngOnInit(): void {
     this.fetchAllUser();
@@ -101,7 +111,9 @@ export class UsersComponent implements OnInit {
     const numRows = this.datasource.data.length;
     return numSelected == numRows;
   }
-
+  isAnyItemSelected() {
+    return this.selection.selected.length > 0;
+  }
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows() {
     this.isAllSelected()
@@ -166,5 +178,37 @@ export class UsersComponent implements OnInit {
       this.page(),
       this.limit()
     );
+  }
+
+  getSelectedUsers(): User[] {
+    return this.selection.selected;
+  }
+
+  onDelete() {
+    const userIds = this.getSelectedUsers().map((user) => user.id);
+    this.userService.deleteUsers(userIds).subscribe({
+      next: (res) => {
+        this.datasource.data = this.datasource.data.filter(
+          (users: User) => !userIds.includes(users.id)
+        );
+        this.toaster.success(res.message, 'success');
+      },
+      error: (err) => {
+        this.toaster.error(err.error.message, 'error');
+      },
+    });
+    this.selection.clear();
+  }
+  onLock() {
+    const userIds = this.getSelectedUsers().map((user) => user.id);
+    console.log(userIds);
+
+    this.selection.clear();
+  }
+  onUnLock() {
+    const userIds = this.getSelectedUsers().map((user) => user.id);
+    console.log(userIds);
+
+    this.selection.clear();
   }
 }
