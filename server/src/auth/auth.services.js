@@ -27,6 +27,9 @@ class AuthService {
     // check if user exists
     const user = await findUserByEmail(email);
     if (user) {
+      if (user.isLocked) {
+        throw new CustomError("Sorry you are locked! Please contact admin");
+      }
       const isPasswordMatched = await user.comparePassword(
         password,
         user.dataValues?.password
@@ -34,7 +37,7 @@ class AuthService {
       if (isPasswordMatched) {
         if (req.failedAttempts !== 0) {
           await redis.del(`failed_attempts:${user.email}`);
-          if (user.is_locked) {
+          if (user.isLocked) {
             await updateLockedStatus(user.id, false);
           }
         }
