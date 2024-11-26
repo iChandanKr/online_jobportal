@@ -191,6 +191,7 @@ export class UsersComponent implements OnInit {
         this.datasource.data = this.datasource.data.filter(
           (users: User) => !userIds.includes(users.id)
         );
+        this.totalCount.set(this.datasource.data.length);
         this.toaster.success(res.message, 'success');
       },
       error: (err) => {
