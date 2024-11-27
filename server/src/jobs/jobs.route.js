@@ -1,5 +1,20 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+const path = require("path");
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadPath = path.resolve(__dirname, "my-uploads");
+    console.log(uploadPath);
+    cb(null, uploadPath);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, file.fieldname + "-" + uniqueSuffix);
+  },
+});
+const upload = multer({ storage: storage });
+
 const {
   createJobPost,
   getAllJobs,
@@ -16,6 +31,7 @@ const {
   getOpenJobsOfEmployer,
   getClosedJobsOfEmployer,
   getPostedJobPermonthOfEmployer,
+  bulkCreateJobs,
 } = require("./jobs.controller");
 const authMiddleware = require("../middleware/auth.middleware");
 const checkEduMiddleware = require("../middleware/checkEducation.middleware");
@@ -76,4 +92,6 @@ router
 router
   .route("/jobs-permonth")
   .get(authMiddleware, checkEmployerRole, getPostedJobPermonthOfEmployer);
+
+router.route("/jobs-bulkCreate").post(upload.single("file"), bulkCreateJobs);
 module.exports = router;
