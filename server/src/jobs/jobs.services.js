@@ -1,5 +1,6 @@
 const { dataModel } = require("../dbConnection");
 const { sequelize } = dataModel;
+const { ValidationError, SequelizeDatabaseError } = require("sequelize");
 const fs = require("fs");
 const csv = require("csv-parser");
 const {
@@ -20,6 +21,7 @@ const {
   getPostedJobsPerMonthOfEmployer,
 } = require("./jobs.repo");
 const { sort, limitFields, search, paginate } = require("../utils/apiFeatures");
+const { CustomError } = require("../utils/apiResponse");
 
 class JobService {
   static createJobPostService = async (jobpostdata) => {
@@ -185,24 +187,79 @@ class JobService {
     const jobCount = jobs.map((job) => job.jobCount);
     return { months, jobCount };
   };
-  static bulkCreateJobService = async (req) => {
+  // eslint-disable-next-line no-unused-vars
+  static bulkCreateJobService = async (req, res, next) => {
     const result = [];
-
-    return new Promise((resolve, reject) => {
-      fs.createReadStream(req.file.path)
-        .pipe(csv())
-        .on("data", (data) => {
-          if (Object.keys(data).length > 0) {
-            result.push(data);
+    const errorsOccured = [];
+    const validRows = [];
+    let insertedRows;
+    try {
+      const rows = await new Promise((resolve, reject) => {
+        fs.createReadStream(req.file.path)
+          .pipe(csv())
+          .on("data", (data) => {
+            if (Object.keys(data).length > 0) {
+              if (data.skillId.startsWith("[") && data.skillId.endsWith("]")) {
+                let temp = data.skillId
+                  .substring(1, data.skillId.length - 1)
+                  .split(",")
+                  .map((id) => `"${id.trim()}"`)
+                  .join(",");
+                data.skillId = JSON.parse(`[${temp}]`);
+              }
+              result.push(data);
+            }
+          })
+          .on("end", () => {
+            resolve(result);
+          })
+          .on("error", (err) => {
+            reject(err);
+          });
+      });
+      if (rows) {
+        const Model = sequelize.models["JobPost"];
+        if (!Model) {
+          throw new CustomError(`Table not found`, 404);
+        }
+        for (let i = 0; i < rows.length; i++) {
+          const row = rows[i];
+          try {
+            const instance = Model.build(row);
+            await instance.validate();
+            validRows.push(row);
+          } catch (validationError) {
+            if (
+              validationError instanceof ValidationError ||
+              validationError instanceof SequelizeDatabaseError
+            ) {
+              errorsOccured.push({
+                row: i + 1,
+                errors: validationError.errors.map((e) => e.message),
+              });
+            } else {
+              throw validationError;
+            }
           }
-        })
-        .on("end", () => {
-          resolve(result);
-        })
-        .on("error", (err) => {
-          reject(err);
-        });
-    });
+        }
+        if (validRows.length > 0) {
+          insertedRows = await Model.bulkCreate(validRows, {
+            validate: true,
+          });
+        }
+        return {
+          success: validRows.length,
+          errorsOccured,
+          insertedRows,
+        };
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({
+        status: "fail",
+        message: errorsOccured,
+      });
+    }
   };
 }
 module.exports = JobService;

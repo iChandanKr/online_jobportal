@@ -1,3 +1,4 @@
+const { validate: isValidUUID } = require("uuid");
 module.exports = (sequelize, DataTypes) => {
   const jobpost = sequelize.define(
     "JobPost",
@@ -46,6 +47,14 @@ module.exports = (sequelize, DataTypes) => {
       location: {
         type: DataTypes.ENUM("remote", "onsite"),
         allowNull: false,
+        validate: {
+          isValidLocation(value) {
+            const validLocations = ["remote", "onsite"];
+            if (!validLocations.includes(value)) {
+              throw new Error("Location must be either 'remote' or 'onsite'");
+            }
+          },
+        },
       },
       city: {
         type: DataTypes.STRING(100),
@@ -73,10 +82,38 @@ module.exports = (sequelize, DataTypes) => {
           "construction"
         ),
         allowNull: false,
+        validate: {
+          isValidIndustry(value) {
+            const validIndustries = [
+              "software",
+              "finance",
+              "accounting",
+              "manufacturing",
+              "construction",
+            ];
+            if (!validIndustries.includes(value)) {
+              throw new Error(
+                "Industry must be one of 'software', 'finance', 'accounting', 'manufacturing', or 'construction'"
+              );
+            }
+          },
+        },
       },
       skillId: {
         type: DataTypes.ARRAY(DataTypes.UUID),
-        allowNull: true,
+        allowNull: false,
+        validate: {
+          isArray(value) {
+            if (value && !Array.isArray(value)) {
+              throw new Error("skillId must be an array");
+            }
+          },
+          isUUIDArray(value) {
+            if (value && !value.every((v) => isValidUUID(v))) {
+              throw new Error("Each element in skillId must be a valid UUID");
+            }
+          },
+        },
       },
       minSalary: {
         type: DataTypes.INTEGER,
@@ -119,10 +156,28 @@ module.exports = (sequelize, DataTypes) => {
       jobType: {
         type: DataTypes.ENUM("full-time", "part-time", "internship"),
         allowNull: false,
+        validate: {
+          isValidJobType(value) {
+            const validJobType = ["full-time", "part-time", "internship"];
+            if (!validJobType.includes(value)) {
+              throw new Error(
+                "JobType must be either 'full-time' or 'part-time' or 'internship'"
+              );
+            }
+          },
+        },
       },
       shift: {
         type: DataTypes.ENUM("morning", "evening"),
         allowNull: false,
+        validate: {
+          isValidShift(value) {
+            const validShifts = ["morning", "evening"];
+            if (!validShifts.includes(value)) {
+              throw new Error("Shift must be either 'morning' or 'evening'");
+            }
+          },
+        },
       },
     },
     {
