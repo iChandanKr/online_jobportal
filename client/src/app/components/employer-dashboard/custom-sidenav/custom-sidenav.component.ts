@@ -45,6 +45,11 @@ export class CustomSidenavComponent {
       label: 'Applications',
       route: 'applications',
     },
+    {
+      icon:'file_upload',
+      label:'Bulk Insert Jobs',
+      route:'bulk-insert'
+    }
   ]);
   public userDataSharingService = inject(UserDataSharingService);
   user = signal<CurrentUser | undefined>(undefined);

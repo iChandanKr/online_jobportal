@@ -16,6 +16,7 @@ import { JobseekerProfileComponent } from './components/jobseeker-dashboard/page
 import { JobApplicationsComponent } from './components/jobseeker-dashboard/pages/job-applications/job-applications.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { UsersComponent } from './components/admin-dashboard/pages/users/users.component';
+import { BulkInsertComponent } from './components/employer-dashboard/bulk-insert/bulk-insert.component';
 
 export const routes: Routes = [
   // Landing Page
@@ -91,6 +92,11 @@ export const routes: Routes = [
         redirectTo: 'dashboard',
         pathMatch: 'full',
       },
+      {
+        path:'bulk-insert',
+        component:BulkInsertComponent,
+        data:{breadcrumb:'Bulk Insert Jobs'}
+      }
     ],
   },
   // Jobseeker Dashboard
