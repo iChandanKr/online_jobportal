@@ -198,17 +198,14 @@ const getPostedJobPermonthOfEmployer = async (req, res, next) => {
 };
 
 const bulkCreateJobs = async (req, res, next) => {
-  const bulkData = await JobService.bulkCreateJobService(req, res, next);
-  if (bulkData?.success) {
-    respondOk(res, 200, "file uploaded and parsed successfully", bulkData);
-  } 
-  
-  // else {
-  //   res.status(400).json({
-  //     status: "fail",
-  //     message: bulkData?.errorsOccured,
-  //   });
-  // }
+  try {
+    const bulkData = await JobService.bulkCreateJobService(req, res, next);
+    if (bulkData) {
+      respondOk(res, 200, "file uploaded and parsed successfully", bulkData);
+    }
+  } catch (error) {
+    next(error);
+  }
 };
 module.exports = {
   createJobPost,
