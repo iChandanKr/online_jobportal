@@ -201,12 +201,14 @@ const bulkCreateJobs = async (req, res, next) => {
   const bulkData = await JobService.bulkCreateJobService(req, res, next);
   if (bulkData?.success) {
     respondOk(res, 200, "file uploaded and parsed successfully", bulkData);
-  } else {
-    res.status(400).json({
-      status: "fail",
-      message: bulkData?.errorsOccured,
-    });
-  }
+  } 
+  
+  // else {
+  //   res.status(400).json({
+  //     status: "fail",
+  //     message: bulkData?.errorsOccured,
+  //   });
+  // }
 };
 module.exports = {
   createJobPost,
