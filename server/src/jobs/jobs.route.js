@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require("multer");
 const router = express.Router();
 const {
   createJobPost,
@@ -16,6 +17,7 @@ const {
   getOpenJobsOfEmployer,
   getClosedJobsOfEmployer,
   getPostedJobPermonthOfEmployer,
+  bulkCreateJobs,
 } = require("./jobs.controller");
 const authMiddleware = require("../middleware/auth.middleware");
 const checkEduMiddleware = require("../middleware/checkEducation.middleware");
@@ -24,7 +26,20 @@ const checkEmployerRole = require("../middleware/checkEmployerRole.middleware");
 const { validateRequest } = require("../middleware/joiValidation.middleware");
 const apiSchema = require("../utils/apiSchema");
 const checkJobseekerRole = require("../middleware/checkJobseeker.middleware");
+const path = require("path");
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); // Directory for file storage
+  },
+  filename: (req, file, cb) => {
+    const timestamp = Date.now();
+    const ext = path.extname(file.originalname); // Extract the file extension
+    const baseName = path.basename(file.originalname, ext);
 
+    cb(null, `${timestamp}-${baseName}${ext}`);
+  },
+});
+const upload = multer({ storage: storage });
 router
   .route("/add-jobpost")
   .post(
@@ -76,4 +91,5 @@ router
 router
   .route("/jobs-permonth")
   .get(authMiddleware, checkEmployerRole, getPostedJobPermonthOfEmployer);
+router.route("/jobs-bulk-create").post(upload.single("file"), bulkCreateJobs);
 module.exports = router;
