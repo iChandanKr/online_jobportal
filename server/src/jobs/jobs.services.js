@@ -18,6 +18,7 @@ const {
   getOpenJobsOfEmployer,
   getClosedJobsOfEmployer,
   getPostedJobsPerMonthOfEmployer,
+  bulkImportJobDb,
 } = require("./jobs.repo");
 const { sort, limitFields, search, paginate } = require("../utils/apiFeatures");
 
@@ -190,15 +191,20 @@ class JobService {
     let validRows = [];
     let insertedRows;
     let Model;
-    const rows = await fileData(req);
+    let rows = await fileData(req);
+    const tableName = req.body.tableName;
+    if (tableName === "jobPosts") {
+      rows = rows.map((row) => ({ ...row, empId: req.empId }));
+    }
     if (rows) {
-      const validation = await validateBulkData(rows, "jobPosts");
+      const validation = await validateBulkData(rows, tableName);
       validRows = validation?.validRows;
       Model = validation?.Model;
     }
+
     if (validRows?.length === rows.length) {
-      insertedRows = await Model.bulkCreate(validRows, {
-        validate: true,
+      insertedRows = await sequelize.transaction(async (t) => {
+        return bulkImportJobDb(Model,tableName, validRows, t);
       });
     }
     return insertedRows;

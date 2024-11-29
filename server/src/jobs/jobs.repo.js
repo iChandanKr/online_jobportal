@@ -328,6 +328,27 @@ const getPostedJobsPerMonthOfEmployer = async (empId) => {
   );
   return result;
 };
+
+const bulkImportJobDb = async (Model, tableName, validRows, t) => {
+  const newJobPosts = await Model.bulkCreate(validRows, {
+    validate: true,
+    transaction: t,
+  });
+  if (tableName === "jobPosts") {
+    let jobSkillsData = [];
+    newJobPosts.forEach((newJobPost) => {
+      newJobPost.skillId.map((skillId) =>
+        jobSkillsData.push({
+          JobPostId: newJobPost.id,
+          SkillId: skillId,
+        })
+      );
+    });
+    await JobSkills.bulkCreate(jobSkillsData, { transaction: t });
+  }
+  return newJobPosts;
+};
+
 module.exports = {
   createJobPostDb,
   getAllJobsDB,
@@ -344,4 +365,5 @@ module.exports = {
   getOpenJobsOfEmployer,
   getClosedJobsOfEmployer,
   getPostedJobsPerMonthOfEmployer,
+  bulkImportJobDb,
 };
