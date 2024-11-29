@@ -1,7 +1,9 @@
 class CustomError extends Error {
   constructor(message, statusCode) {
-    super(message);
     // this.message=message
+    super(message);
+    this.message =
+    typeof message === "object" ? JSON.stringify(message) : message;
     this.statusCode = statusCode;
     this.status = statusCode >= 400 && statusCode < 500 ? "Fail" : "Error";
     // this.isOperational = true;

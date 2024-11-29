@@ -1,6 +1,5 @@
+/* eslint-disable no-unused-vars */
 const { CustomError } = require("./apiResponse");
-
-// eslint-disable-next-line no-unused-vars
 module.exports = (error, req, res, next) => {
   error.statusCode = error.statusCode || 500;
   error.status = error.status || "error";
@@ -10,6 +9,19 @@ module.exports = (error, req, res, next) => {
 
   if (error.name === "SequelizeUniqueConstraintError") {
     error = new CustomError(`${error.errors[0].message}`, 400);
+  }
+
+  if (error instanceof CustomError) {
+    let message = error.message;
+
+    if (typeof message === "string") {
+      try {
+        message = JSON.parse(message);
+      } catch (e) {
+        message = error.message;
+      }
+    }
+    error.message = message;
   }
 
   res.status(error.statusCode).json({

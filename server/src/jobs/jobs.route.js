@@ -92,5 +92,12 @@ router
   .route("/jobs-permonth")
   .get(authMiddleware, checkEmployerRole, getPostedJobPermonthOfEmployer);
 
-router.route("/jobs-bulkCreate").post(upload.single("file"), bulkCreateJobs);
+router
+  .route("/jobs-bulkCreate")
+  .post(
+    upload.single("file"),
+    authMiddleware,
+    checkEmployerRole,
+    bulkCreateJobs
+  );
 module.exports = router;
