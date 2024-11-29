@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>User Profile</h2>
+<form>
+  <mat-dialog-content>
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>First Name</mat-label>
+      <input matInput type="text" placeholder="First Name" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Last Name</mat-label>
+      <input matInput type="text" placeholder="Last Name" />
+    </mat-form-field>
+    <p>{{ data.id }}</p>
+  </mat-dialog-content>
+</form>
+<mat-dialog-actions>
+  <button mat-button>Cancel</button>
+  <button mat-button>Update</button>
+</mat-dialog-actions>

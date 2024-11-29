@@ -37,7 +37,6 @@ function comparePasswords(
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    NgClass,
   ],
   templateUrl: './change-password-dialog.component.html',
   styleUrl: './change-password-dialog.component.css',

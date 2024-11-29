@@ -20,6 +20,8 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { ToastrService } from 'ngx-toastr';
+import { MatDialog } from '@angular/material/dialog';
+import { ProfileDialogComponent } from './profile-dialog/profile-dialog.component';
 @Component({
   selector: 'app-users',
   standalone: true,
@@ -53,6 +55,7 @@ export class UsersComponent implements OnInit {
   limit = signal<any>(undefined);
   @ViewChild(MatSort) sorting!: MatSort;
   private toaster = inject(ToastrService);
+  private dialog = inject(MatDialog);
 
   displayedColumns: string[] = [
     'select',
@@ -206,18 +209,17 @@ export class UsersComponent implements OnInit {
     this.userService.lockUsers(userIds).subscribe({
       next: (res) => {
         this.datasource.data = this.datasource.data.map((user) => {
-
           if (userIds.includes(user.id)) {
             return { ...user, isLocked: true };
           }
           return user;
         });
-        this.toaster.success(res.message, 'success')
+        this.toaster.success(res.message, 'success');
       },
       error: (err) => {
-        this.toaster.error(err.message, 'error')
-      }
-    })
+        this.toaster.error(err.message, 'error');
+      },
+    });
 
     this.selection.clear();
   }
@@ -231,13 +233,28 @@ export class UsersComponent implements OnInit {
             return { ...user, isLocked: false };
           }
           return user;
-        })
-        this.toaster.success(res.message, 'success')
+        });
+        this.toaster.success(res.message, 'success');
       },
       error: (err) => {
-        this.toaster.error(err.message, 'error')
-      }
-    })
+        this.toaster.error(err.message, 'error');
+      },
+    });
     this.selection.clear();
+  }
+
+  onUpdateIcon(
+    enterAnimationDuration: string,
+    exitAnimationDuration: string,
+    id: string
+  ) {
+    const dialogRef = this.dialog.open(ProfileDialogComponent, {
+      width: '500px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: {
+        id,
+      },
+    });
   }
 }
