@@ -2,13 +2,15 @@
   <div>
     <input matInput [formControl]="searchUser" placeholder="Search Users..." />
   </div>
-  @if (isAnyItemSelected()) {
   <div>
-    <button mat-flat-button [matMenuTriggerFor]="bulkActions">
+    <button
+      [disabled]="!isAnyItemSelected()"
+      mat-flat-button
+      [matMenuTriggerFor]="bulkActions"
+    >
       Bulk Actions
     </button>
   </div>
-  }
 </div>
 
 <mat-menu #bulkActions="matMenu">
@@ -131,10 +133,12 @@
     <th mat-header-cell *matHeaderCellDef>Actions</th>
     <td mat-cell *matCellDef="let user">
       <div class="flex gap-2">
-        <button mat-icon-button>
+        <button
+          mat-icon-button
+          (click)="onUpdateIcon('300mx', '300ms', user?.id)"
+        >
           <mat-icon class="text-gray-700">edit</mat-icon>
         </button>
-
       </div>
     </td>
   </ng-container>
@@ -151,4 +155,3 @@
   aria-label="Select page"
 >
 </mat-paginator>
-
