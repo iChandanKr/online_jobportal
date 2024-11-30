@@ -29,7 +29,13 @@ const findJobseekerDB = async (id) => {
   return await User.findOne({
     where: { id },
     attributes: {
-      exclude: ["password", "passwordChangedAt", "createdAt", "updatedAt"],
+      exclude: [
+        "password",
+        "passwordChangedAt",
+        "createdAt",
+        "updatedAt",
+        "deletedAt",
+      ],
     },
   });
 };
@@ -271,7 +277,6 @@ const deleteUser = async (userIds, t) => {
     }
   );
 };
-
 
 const lockMultipleUsersDB = async (userIds) => {
   return await User.update(

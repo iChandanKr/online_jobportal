@@ -2,13 +2,15 @@
   <div>
     <input matInput [formControl]="searchUser" placeholder="Search Users..." />
   </div>
-  @if (isAnyItemSelected()) {
   <div>
-    <button mat-flat-button [matMenuTriggerFor]="bulkActions">
+    <button
+      [disabled]="!isAnyItemSelected()"
+      mat-flat-button
+      [matMenuTriggerFor]="bulkActions"
+    >
       Bulk Actions
     </button>
   </div>
-  }
 </div>
 
 <mat-menu #bulkActions="matMenu">
