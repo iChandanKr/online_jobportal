@@ -192,7 +192,6 @@ const getPostedJobPermonthOfEmployer = async (req, res, next) => {
       respondOk(res, 200, "Job created per month", jobsPerMonth);
     }
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };

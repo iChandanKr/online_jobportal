@@ -2,6 +2,7 @@ const { dataModel } = require("../dbConnection");
 const { sequelize } = dataModel;
 const fileData = require("../utils/readCsvFile");
 const validateBulkData = require("../utils/validateBulkData");
+const tempJobPostModel = require("../utils/temporaryTable/tempJobPostTable");
 const {
   createJobPostDb,
   getAllJobsDB,
@@ -18,7 +19,7 @@ const {
   getOpenJobsOfEmployer,
   getClosedJobsOfEmployer,
   getPostedJobsPerMonthOfEmployer,
-  bulkImportJobDb,
+  // bulkImportJobDb,
 } = require("./jobs.repo");
 const { sort, limitFields, search, paginate } = require("../utils/apiFeatures");
 
@@ -189,7 +190,7 @@ class JobService {
   // eslint-disable-next-line no-unused-vars
   static bulkCreateJobService = async (req, res, next) => {
     let validRows = [];
-    let insertedRows;
+    // let insertedRows;
     let Model;
     let rows = await fileData(req);
     const tableName = req.body.tableName;
@@ -203,11 +204,20 @@ class JobService {
     }
 
     if (validRows?.length === rows.length) {
-      insertedRows = await sequelize.transaction(async (t) => {
-        return bulkImportJobDb(Model,tableName, validRows, t);
+      // creating temporary table to strore valid rows.
+      const TempJobPostModel = await tempJobPostModel(req.empId);
+      // insert data temporarily
+      await TempJobPostModel.bulkCreate(validRows, {
+        validate: true,
       });
+
+      // insertedRows = await sequelize.transaction(async (t) => {
+      //   return bulkImportJobDb(Model, tableName, validRows, t);
+      // });
+      // console.log(insertedRows)
     }
-    return insertedRows;
+
+    return Model;
   };
 }
 
