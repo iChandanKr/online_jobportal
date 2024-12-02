@@ -1,0 +1,22 @@
+<div class="bulk-insertion-container">
+  <h4>Bulk Insertion of Jobs</h4>
+
+  <mat-form-field appearance="fill" class="file-format-dropdown">
+    <mat-label>Select File Format</mat-label>
+    <mat-select [(value)]="selectedFileFormat">
+      @for (format of fileFormats; track format) {
+      <mat-option [value]="format">
+        {{ format }}
+      </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <div class="file-upload-section">
+    <input
+      type="file"
+      (change)="onFileSelected($event)"
+      [accept]="selectedFileFormat === 'XLSX' ? '.xlsx' : '.csv'"
+    />
+  </div>
+</div>

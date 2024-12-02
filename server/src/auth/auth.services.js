@@ -83,7 +83,7 @@ class AuthService {
         }
 
         if (failedAttempts === maxFailedAttempts) {
-          await updateLockedStatus(user.id, true);
+          // await updateLockedStatus(user.id, true);
 
           throw new CustomError(
             `Oops, you are locked out, please try after ${Math.floor(
