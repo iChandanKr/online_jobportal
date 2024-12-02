@@ -2,7 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { CurrentUser } from '../model/loginResponse.model';
 import { API_URLS } from '../constants/api-urls';
 import { HttpClient } from '@angular/common/http';
-import { type User } from '../model/user.model';
+import { type UserRes, type User } from '../model/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +12,8 @@ export class UserDataSharingService {
   private readonly deleteUsersUrl = API_URLS.deleteUser;
   private readonly lockUsersUrl = API_URLS.lockUser;
   private readonly unlockUsersUrl = API_URLS.unlockUser;
+  private readonly findUserUrl = API_URLS.findUserById;
+  private readonly updateUserUrl = API_URLS.updateUserById;
   private userInfo = signal<CurrentUser | undefined>(undefined);
   private httpClient = inject(HttpClient);
 
@@ -86,6 +88,25 @@ export class UserDataSharingService {
       this.unlockUsersUrl,
       { userIds },
       { withCredentials: true }
-    )
+    );
+  }
+
+  findUser(userId: string) {
+    const url = `${this.findUserUrl}/${userId}`;
+    return this.httpClient.get<{
+      status: string;
+      message: string;
+      data: UserRes;
+    }>(url, { withCredentials: true });
+  }
+
+  updateUser(userId: string, userDetails: object) {
+    console.log(userDetails);
+    const url = `${this.updateUserUrl}/${userId}`;
+    return this.httpClient.patch<{
+      status: string;
+      message: string;
+      data: object;
+    }>(url, userDetails, { withCredentials: true });
   }
 }

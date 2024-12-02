@@ -7,6 +7,10 @@ const {
   unlockMultipleUsers,
 } = require("../controller/jobSeeker.controller");
 const checkAdminRole = require("../../middleware/checkAdmin.middleware");
+const {
+  updateUser,
+  findJobseekerById,
+} = require("../controller/admin.controller");
 
 const router = express.Router();
 
@@ -19,4 +23,11 @@ router
 router
   .route("/unlock-users")
   .put(authMiddleware, checkAdminRole, unlockMultipleUsers);
+
+router
+  .route("/admin/app-user/:id")
+  .get(authMiddleware, checkAdminRole, findJobseekerById);
+router
+  .route("/admin/app-user/update/:id")
+  .patch(authMiddleware, checkAdminRole, updateUser);
 module.exports = router;

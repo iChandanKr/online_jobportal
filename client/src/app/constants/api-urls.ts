@@ -10,7 +10,6 @@ export const API_URLS = {
   postJob: `${environment.apiUrl}/job/add-jobpost`,
   fetchEmployer: `${environment.apiUrl}/users/employer`,
   getJobs: `${environment.apiUrl}/job/jobs`,
-
   updateEmployer: `${environment.apiUrl}/users/update-employer`,
   updatePassword: `${environment.apiUrl}/users/password-update`,
   jobOpenings: `${environment.apiUrl}/job/jobs-opening`,
@@ -40,5 +39,7 @@ export const API_URLS = {
   getAllUsers: `${environment.apiUrl}/users/get-all-user`,
   deleteUser: `${environment.apiUrl}/users/user-delete`,
   lockUser: `${environment.apiUrl}/users/lock-users`,
-  unlockUser: `${environment.apiUrl}/users/unlock-users`
+  unlockUser: `${environment.apiUrl}/users/unlock-users`,
+  findUserById: `${environment.apiUrl}/users/admin/app-user`,
+  updateUserById: `${environment.apiUrl}/users/admin/app-user/update`,
 };
