@@ -4,8 +4,8 @@ const { dataModel } = require("../../dbConnection");
 const { CustomError } = require("../apiResponse");
 const { jobPostSchema } = require("../shcema/jobs.schema");
 
-// creating unique table name
 const sequelize = dataModel.sequelize;
+// creating unique table name
 const createTableName = (empId) => {
   const time = new Date()
     .toISOString()
@@ -18,7 +18,6 @@ const tempJobPostModel = async (empId) => {
   const options = {
     tableName: createTableName(empId),
     timestamps: true,
-    paranoid: true,
   };
   const model = sequelize.define("TempJobPostModel", jobPostSchema, options);
   try {
@@ -29,6 +28,7 @@ const tempJobPostModel = async (empId) => {
       500
     );
   }
+  dataModel.tempTableName = options?.tableName;
   return model;
 };
 module.exports = tempJobPostModel;

@@ -30,6 +30,7 @@ const {
   getOpenJobsOfEmployer,
   getClosedJobsOfEmployer,
   getPostedJobPermonthOfEmployer,
+  bulkValidateJobs,
   bulkCreateJobs,
 } = require("./jobs.controller");
 const authMiddleware = require("../middleware/auth.middleware");
@@ -93,11 +94,15 @@ router
   .get(authMiddleware, checkEmployerRole, getPostedJobPermonthOfEmployer);
 
 router
-  .route("/jobs-bulkCreate")
+  .route("/jobs-bulkValidate")
   .post(
     upload.single("file"),
     authMiddleware,
     checkEmployerRole,
-    bulkCreateJobs
+    bulkValidateJobs
   );
+
+router
+  .route("/jobs-bulkCreate")
+  .post(authMiddleware, checkEmployerRole, bulkCreateJobs);
 module.exports = router;

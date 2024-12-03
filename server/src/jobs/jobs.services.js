@@ -19,9 +19,10 @@ const {
   getOpenJobsOfEmployer,
   getClosedJobsOfEmployer,
   getPostedJobsPerMonthOfEmployer,
-  // bulkImportJobDb,
+  bulkImportJobDb,
 } = require("./jobs.repo");
 const { sort, limitFields, search, paginate } = require("../utils/apiFeatures");
+const { CustomError } = require("../utils/apiResponse");
 
 class JobService {
   static createJobPostService = async (jobpostdata) => {
@@ -188,15 +189,14 @@ class JobService {
     return { months, jobCount };
   };
   // eslint-disable-next-line no-unused-vars
-  static bulkCreateJobService = async (req, res, next) => {
+  static bulkValidateJobService = async (req, res, next) => {
     let validRows = [];
     // let insertedRows;
+    let TempJobPostModel;
     let Model;
     let rows = await fileData(req);
     const tableName = req.body.tableName;
-    if (tableName === "jobPosts") {
-      rows = rows.map((row) => ({ ...row, empId: req.empId }));
-    }
+
     if (rows) {
       const validation = await validateBulkData(rows, tableName);
       validRows = validation?.validRows;
@@ -205,19 +205,61 @@ class JobService {
 
     if (validRows?.length === rows.length) {
       // creating temporary table to strore valid rows.
-      const TempJobPostModel = await tempJobPostModel(req.empId);
+      TempJobPostModel = await tempJobPostModel(req.empId);
+      dataModel.TempJobPostModel = TempJobPostModel;
+      dataModel.OriginalModel = Model;
       // insert data temporarily
       await TempJobPostModel.bulkCreate(validRows, {
         validate: true,
       });
 
-      // insertedRows = await sequelize.transaction(async (t) => {
-      //   return bulkImportJobDb(Model, tableName, validRows, t);
-      // });
       // console.log(insertedRows)
     }
+    return "Temporary Table has been created";
+  };
 
-    return Model;
+  static bulkCreateService = async (req) => {
+    let insertedRows;
+    const tableName = req.body.tableName;
+    if (dataModel.TempJobPostModel && dataModel.OriginalModel) {
+      const rowsToInsert = await dataModel.TempJobPostModel.findAll();
+      const parsedData = JSON.parse(JSON.stringify(rowsToInsert));
+      let insertableData = parsedData.map((data) => {
+        delete data.id;
+        delete data.createdAt;
+        delete data.updatedAt;
+        return data;
+      });
+      if (tableName === "jobPosts") {
+        insertableData = insertableData.map((row) => ({
+          ...row,
+          empId: req.empId,
+        }));
+      }
+      if (rowsToInsert) {
+        insertedRows = await sequelize.transaction(async (t) => {
+          return bulkImportJobDb(
+            dataModel.OriginalModel,
+            tableName,
+            insertableData,
+            t
+          );
+        });
+        if (insertedRows) {
+          await sequelize.query(
+            `DROP TABLE IF EXISTS "${dataModel.tempTableName}" CASCADE`
+          );
+        }
+        return insertedRows;
+      } else {
+        throw new CustomError("Data not found in temporary table", 500);
+      }
+    } else {
+      throw new CustomError(
+        "Temporary table not found, Validate file first",
+        400
+      );
+    }
   };
 }
 
