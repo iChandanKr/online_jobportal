@@ -36,7 +36,7 @@ export class DashboardService {
     return this.httpClient.get<{
       status: string;
       message: string;
-      data: { months: string[]; jobCount: string[] };
+      data: { months: string[]; jobCount: number[] };
     }>(this.jobsPerMonthUrl, { withCredentials: true });
   }
 }

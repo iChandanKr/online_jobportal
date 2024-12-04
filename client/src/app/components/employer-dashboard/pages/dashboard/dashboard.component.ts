@@ -21,7 +21,22 @@ export class DashboardComponent implements OnInit {
   store = inject(DashboardService);
   chart = viewChild.required<ElementRef>('chart');
   months = signal<string[]>([]);
-  jobCount = signal<string[]>([]);
+  jobCount = signal<number[]>([]);
+  chart_month = [
+    'Jan',
+    'Feb',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
   ngOnInit(): void {
     this.store.fetchJobsPerMonth().subscribe({
       next: (res) => {
@@ -30,26 +45,13 @@ export class DashboardComponent implements OnInit {
         new Chart(this.chart().nativeElement, {
           type: 'line',
           data: {
-            // labels: [
-            //   'Jan',
-            //   'Feb',
-            //   'March',
-            //   'April',
-            //   'May',
-            //   'June',
-            //   'July',
-            //   'Aug',
-            //   'Sep',
-            //   'Oct',
-            //   'Nov',
-            //   'Dec',
-            // ],
-            labels: this.months(),
+            labels: this.chart_month,
+            // labels: this.months(),
             datasets: [
               {
                 label: 'Jobs',
-                // data: ['2', '10', 34, 29, 40, 50, 5, 5, 8, 0, 34, 5],
-                data: this.jobCount(),
+                data: this.monthVsJobPosts(this.jobCount(), this.months()),
+                // data: this.jobCount(),
                 borderColor: 'rgb(255,99,132)',
                 backgroundColor: 'rgb(255,99,132,0.5)',
                 fill: 'start',
@@ -67,5 +69,18 @@ export class DashboardComponent implements OnInit {
         });
       },
     });
+  }
+
+  monthVsJobPosts(jobPosts: number[], months: string[]) {
+    const arr: number[] = [];
+    for (let i of this.chart_month) {
+      if (months.includes(i)) {
+        const index = months.indexOf(i);
+        arr.push(+jobPosts[index]);
+      } else {
+        arr.push(0);
+      }
+    }
+    return arr;
   }
 }
