@@ -42,4 +42,6 @@ export const API_URLS = {
   unlockUser: `${environment.apiUrl}/users/unlock-users`,
   findUserById: `${environment.apiUrl}/users/admin/app-user`,
   updateUserById: `${environment.apiUrl}/users/admin/app-user/update`,
+  bulkValidate: `${environment.apiUrl}/job/jobs-bulkValidate`,
+  bulkInsert: `${environment.apiUrl}/job/jobs-bulkCreate`,
 };

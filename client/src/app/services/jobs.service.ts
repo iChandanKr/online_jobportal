@@ -4,7 +4,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { API_URLS } from '../constants/api-urls';
 import { type JobResponse } from '../model/job.model';
 import { type AllApplicants, type Applicant } from '../model/jobseeker.model';
-import { sign } from 'crypto';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +22,8 @@ export class JobsService {
   private readonly getOpenJobsOfEmployerUrl = API_URLS.getOpenJobsOfEmployer;
   private readonly getClosedJobsOfEmployerUrl =
     API_URLS.getClodedJobsOfEmployer;
+  private readonly bulkValidateJobsUrl = API_URLS.bulkValidate;
+  private readonly bulkInsertJobsUrl = API_URLS.bulkInsert;
   queryStr = signal('');
 
   private applicantsSubject = new BehaviorSubject<AllApplicants[] | null>(null);
@@ -176,5 +177,32 @@ export class JobsService {
     }>(this.getClosedJobsOfEmployerUrl, {
       withCredentials: true,
     });
+  }
+
+  bulkValiateJobPosts(file: File) {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    formData.append('tableName', 'jobPosts');
+    return this.httpClient.post<{
+      status: string;
+      message: string;
+      data: string;
+    }>(this.bulkValidateJobsUrl, formData, {
+      withCredentials: true,
+    });
+  }
+
+  bulkInsertJobs() {
+    return this.httpClient.post<{
+      status: string;
+      message: string;
+      data: object;
+    }>(
+      this.bulkInsertJobsUrl,
+      { tableName: 'jobPosts' },
+      {
+        withCredentials: true,
+      }
+    );
   }
 }

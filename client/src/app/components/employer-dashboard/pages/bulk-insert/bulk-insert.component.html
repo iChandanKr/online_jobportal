@@ -1,7 +1,7 @@
 <div class="bulk-insertion-container">
   <h4>Bulk Insertion of Jobs</h4>
 
-  <mat-form-field appearance="fill" class="file-format-dropdown">
+  <mat-form-field appearance="outline" class="file-format-dropdown">
     <mat-label>Select File Format</mat-label>
     <mat-select [(value)]="selectedFileFormat">
       @for (format of fileFormats; track format) {
@@ -18,5 +18,37 @@
       (change)="onFileSelected($event)"
       [accept]="selectedFileFormat === 'XLSX' ? '.xlsx' : '.csv'"
     />
+    @if (errorMessage) {
+    <p class="text-red-600">{{ errorMessage }}</p>
+    }
+
+    <div class="mt-5 w-48 flex flex-1 justify-between">
+      <button
+        mat-flat-button
+        [disabled]="!isFileSelected()"
+        (click)="onUpload()"
+      >
+        Upload
+      </button>
+      <button
+        mat-flat-button
+        color="warn"
+        [disabled]="!isValidate()"
+        (click)="onInsert()"
+      >
+        Insert
+      </button>
+    </div>
+    @if (errorArray.length>0) {
+    <div class="dataError">
+      <p class="text-lg text-red-700">
+        These are the error occured in your file
+      </p>
+      @for (err of errorArray; track $index) {
+      <p>Row Number:- {{ err.row }} {{ err.errors }}</p>
+      <hr class="text-black" />
+      }
+    </div>
+    }
   </div>
 </div>
