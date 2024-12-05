@@ -1,3 +1,4 @@
+const { dataModel } = require("../dbConnection");
 const { respondOk } = require("../utils/apiResponse");
 const JobService = require("./jobs.services");
 
@@ -192,16 +193,30 @@ const getPostedJobPermonthOfEmployer = async (req, res, next) => {
       respondOk(res, 200, "Job created per month", jobsPerMonth);
     }
   } catch (error) {
-    console.log(error);
+    next(error);
+  }
+};
+
+const bulkValidateJobs = async (req, res, next) => {
+  try {
+    const bulkData = await JobService.bulkValidateJobService(req, res, next);
+    if (bulkData) {
+      respondOk(res, 200, "file uploaded and parsed successfully", bulkData);
+    }
+  } catch (error) {
     next(error);
   }
 };
 
 const bulkCreateJobs = async (req, res, next) => {
   try {
-    const bulkData = await JobService.bulkCreateJobService(req, res, next);
+    const bulkData = await JobService.bulkCreateService(req);
     if (bulkData) {
-      respondOk(res, 200, "file uploaded and parsed successfully", bulkData);
+      // deleting temporary table
+      delete dataModel.TempJobPostModel;
+      delete dataModel.OriginalModel;
+      delete dataModel.tempTableName;
+      respondOk(res, 200, "Data has been inserted successfully", bulkData);
     }
   } catch (error) {
     next(error);
@@ -223,5 +238,6 @@ module.exports = {
   getOpenJobsOfEmployer,
   getClosedJobsOfEmployer,
   getPostedJobPermonthOfEmployer,
+  bulkValidateJobs,
   bulkCreateJobs,
 };

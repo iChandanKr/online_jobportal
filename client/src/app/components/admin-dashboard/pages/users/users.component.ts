@@ -107,6 +107,11 @@ export class UsersComponent implements OnInit {
           this.page.set(undefined);
           this.limit.set(undefined);
         },
+        complete: () => {
+          if (this.selection.selected) {
+            this.selection.clear();
+          }
+        },
       });
   }
   isAllSelected() {

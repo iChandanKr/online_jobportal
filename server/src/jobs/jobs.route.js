@@ -12,7 +12,16 @@ const storage = multer.diskStorage({
     cb(null, file.fieldname + "-" + uniqueSuffix);
   },
 });
-const upload = multer({ storage: storage });
+
+// file filter function to only allow CSV files.
+const filterFile = (req, file, cb) => {
+  const extName = path.extname(file.originalname).toLocaleLowerCase();
+  if (extName !== ".csv") {
+    return cb(new CustomError("Only csv files are allowed", 400), false);
+  }
+  return cb(null, true);
+};
+const upload = multer({ storage: storage, fileFilter: filterFile });
 
 const {
   createJobPost,
@@ -30,6 +39,7 @@ const {
   getOpenJobsOfEmployer,
   getClosedJobsOfEmployer,
   getPostedJobPermonthOfEmployer,
+  bulkValidateJobs,
   bulkCreateJobs,
 } = require("./jobs.controller");
 const authMiddleware = require("../middleware/auth.middleware");
@@ -39,6 +49,7 @@ const checkEmployerRole = require("../middleware/checkEmployerRole.middleware");
 const { validateRequest } = require("../middleware/joiValidation.middleware");
 const apiSchema = require("../utils/apiSchema");
 const checkJobseekerRole = require("../middleware/checkJobseeker.middleware");
+const { CustomError } = require("../utils/apiResponse");
 
 router
   .route("/add-jobpost")
@@ -93,11 +104,15 @@ router
   .get(authMiddleware, checkEmployerRole, getPostedJobPermonthOfEmployer);
 
 router
-  .route("/jobs-bulkCreate")
+  .route("/jobs-bulkValidate")
   .post(
     upload.single("file"),
     authMiddleware,
     checkEmployerRole,
-    bulkCreateJobs
+    bulkValidateJobs
   );
+
+router
+  .route("/jobs-bulkCreate")
+  .post(authMiddleware, checkEmployerRole, bulkCreateJobs);
 module.exports = router;

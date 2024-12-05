@@ -32,11 +32,13 @@ module.exports = async (rows, tableName) => {
           row: i + 1,
           errors: validationError.errors.map((e) => e.message),
         });
-        throw new CustomError(errorsOccured,400);
       } else {
-        throw validationError;
+        throw new CustomError(validationError.message, 400);
       }
     }
+  }
+  if (errorsOccured.length > 0) {
+    throw new CustomError(errorsOccured, 400);
   }
   return { validRows, Model };
 };
