@@ -19,6 +19,8 @@ const {
   getClosedJobsOfEmployer,
   getPostedJobsPerMonthOfEmployer,
   bulkImportJobDb,
+  bulkInsertIntoTable,
+  createTemporaryTable,
 } = require("./jobs.repo");
 const { sort, limitFields, search, paginate } = require("../utils/apiFeatures");
 
@@ -187,12 +189,13 @@ class JobService {
     return { months, jobCount };
   };
   // eslint-disable-next-line no-unused-vars
-  static bulkCreateJobService = async (req, res, next) => {
+  static bulkCreateJobTempService = async (req, res, next) => {
     let validRows = [];
-    let insertedRows;
     let Model;
+
     let rows = await fileData(req);
     const tableName = req.body.tableName;
+
     if (tableName === "jobPosts") {
       rows = rows.map((row) => ({ ...row, empId: req.empId }));
     }
@@ -203,11 +206,27 @@ class JobService {
     }
 
     if (validRows?.length === rows.length) {
-      insertedRows = await sequelize.transaction(async (t) => {
-        return bulkImportJobDb(Model,tableName, validRows, t);
+      await sequelize.transaction(async (t) => {
+        const tempTableName = await createTemporaryTable(tableName);
+
+        return bulkInsertIntoTable(tempTableName, validRows, t);
       });
     }
-    return insertedRows;
+
+    return validRows;
+  };
+
+  // eslint-disable-next-line no-unused-vars
+  static bulkCreateJobUpload = async (req, res, next) => {
+    let rows = await fileData(req);
+    const tableName = req.body.tempTableName;
+    if (tableName === "jobPosts") {
+      rows = rows.map((row) => ({ ...row, empId: req.empId }));
+      await sequelize.transaction(async (t) => {
+        return bulkInsertIntoTable(tableName, rows, t);
+      });
+      return rows;
+    }
   };
 }
 

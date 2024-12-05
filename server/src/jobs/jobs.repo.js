@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require("uuid");
 const { dataModel } = require("../dbConnection");
 const { JobPost, JobSkills, Application, Skill, User, Employer, sequelize } =
   dataModel;
@@ -329,24 +330,104 @@ const getPostedJobsPerMonthOfEmployer = async (empId) => {
   return result;
 };
 
-const bulkImportJobDb = async (Model, tableName, validRows, t) => {
-  const newJobPosts = await Model.bulkCreate(validRows, {
-    validate: true,
-    transaction: t,
-  });
-  if (tableName === "jobPosts") {
-    let jobSkillsData = [];
-    newJobPosts.forEach((newJobPost) => {
-      newJobPost.skillId.map((skillId) =>
-        jobSkillsData.push({
-          JobPostId: newJobPost.id,
-          SkillId: skillId,
-        })
+// const bulkImportJobDb = async (Model, tableName, validRows, t) => {
+//   const newJobPosts = await Model.bulkCreate(validRows, {
+//     validate: true,
+//     transaction: t,
+//   });
+//   if (tableName === "jobPosts") {
+//     let jobSkillsData = [];
+//     newJobPosts.forEach((newJobPost) => {
+//       newJobPost.skillId.map((skillId) =>
+//         jobSkillsData.push({
+//           JobPostId: newJobPost.id,
+//           SkillId: skillId,
+//         })
+//       );
+//     });
+//     await JobSkills.bulkCreate(jobSkillsData, { transaction: t });
+//   }
+//   return newJobPosts;
+// };
+
+const createTemporaryTable = async (baseTableName) => {
+  const tempTableName = `${baseTableName}_temp_${Date.now()}`;
+  console.log(`Base table name: ${baseTableName}`);
+
+  try {
+    // Check if the base table exists
+    const [results] = await sequelize.query(
+      `SELECT EXISTS (
+        SELECT 1 
+        FROM information_schema.tables 
+        WHERE table_name = '${baseTableName}'
+      ) AS table_exists;`
+    );
+
+    // Extract the result and verify existence
+    const tableExists = results[0].table_exists;
+
+    if (!tableExists) {
+      throw new Error(
+        `Base table "${baseTableName}" does not exist in the database.`
       );
-    });
-    await JobSkills.bulkCreate(jobSkillsData, { transaction: t });
+    }
+
+    // Create the temporary table
+    await sequelize.query(
+      `CREATE TABLE "${tempTableName}" (
+        LIKE "${baseTableName}" INCLUDING ALL
+      );`
+    );
+
+    console.log(`Temporary table ${tempTableName} created successfully.`);
+    return tempTableName;
+  } catch (error) {
+    console.error("Error creating temporary table:", error.message);
+    throw error;
   }
-  return newJobPosts;
+};
+const bulkInsertIntoTable = async (tableName, rows, transaction) => {
+  const processedRows = rows.map((row) => {
+    if (!row.id) {
+      row.id = uuidv4();
+      const currentTimestamp = new Date().toISOString();
+      row.createdAt = currentTimestamp;
+      row.updatedAt = currentTimestamp;
+    }
+
+    if (typeof row.skillId === "string") {
+      row.skillId = `{${row.skillId}}`;
+    } else if (Array.isArray(row.skillId)) {
+      row.skillId = `{${row.skillId.join(",")}}`;
+    }
+
+    return row;
+  });
+
+  const columns = Object.keys(processedRows[0])
+    .map((col) => `"${col}"`)
+    .join(", ");
+
+  const placeholders = processedRows
+    .map(
+      () =>
+        `(${Object.keys(processedRows[0])
+          .map(() => "?")
+          .join(", ")})`
+    )
+    .join(", ");
+
+  const values = processedRows.flatMap((row) => Object.values(row));
+  console.log(values);
+
+  const query = `INSERT INTO "${tableName}" (${columns}) VALUES ${placeholders};`;
+
+  const result = await sequelize.query(query, {
+    replacements: values,
+    transaction,
+  });
+  return result;
 };
 
 module.exports = {
@@ -365,5 +446,7 @@ module.exports = {
   getOpenJobsOfEmployer,
   getClosedJobsOfEmployer,
   getPostedJobsPerMonthOfEmployer,
-  bulkImportJobDb,
+  // bulkImportJobDb,
+  createTemporaryTable,
+  bulkInsertIntoTable,
 };

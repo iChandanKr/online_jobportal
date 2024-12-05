@@ -31,6 +31,8 @@ const {
   getClosedJobsOfEmployer,
   getPostedJobPermonthOfEmployer,
   bulkCreateJobs,
+  bulkCreateJobsTemp,
+  bulkCreateJobsUpload,
 } = require("./jobs.controller");
 const authMiddleware = require("../middleware/auth.middleware");
 const checkEduMiddleware = require("../middleware/checkEducation.middleware");
@@ -98,6 +100,15 @@ router
     upload.single("file"),
     authMiddleware,
     checkEmployerRole,
-    bulkCreateJobs
+    bulkCreateJobsTemp
+  );
+
+router
+  .route("/jobs-uploadBulkInsert")
+  .post(
+    upload.single("file"),
+    authMiddleware,
+    checkEmployerRole,
+    bulkCreateJobsUpload
   );
 module.exports = router;

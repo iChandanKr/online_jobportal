@@ -59,6 +59,11 @@ module.exports = (sequelize, DataTypes) => {
       city: {
         type: DataTypes.STRING(100),
         allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Please enter the city",
+          },
+        },
       },
       companyName: {
         type: DataTypes.STRING(100),

@@ -13,7 +13,9 @@ module.exports = async (rows, tableName) => {
   const errorsOccured = [];
 
   const modelName = modelWithTable.get(tableName);
+
   const Model = sequelize.models[modelName];
+
   if (!Model) {
     throw new CustomError(`Table not found`, 404);
   }
@@ -32,7 +34,7 @@ module.exports = async (rows, tableName) => {
           row: i + 1,
           errors: validationError.errors.map((e) => e.message),
         });
-        throw new CustomError(errorsOccured,400);
+        throw new CustomError(errorsOccured, 400);
       } else {
         throw validationError;
       }

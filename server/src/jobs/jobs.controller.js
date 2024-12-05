@@ -197,9 +197,21 @@ const getPostedJobPermonthOfEmployer = async (req, res, next) => {
   }
 };
 
-const bulkCreateJobs = async (req, res, next) => {
+const bulkCreateJobsTemp = async (req, res, next) => {
   try {
-    const bulkData = await JobService.bulkCreateJobService(req, res, next);
+    const bulkData = await JobService.bulkCreateJobTempService(req, res, next);
+
+    if (bulkData) {
+      respondOk(res, 200, "file uploaded and parsed successfully", bulkData);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const bulkCreateJobsUpload = async (req, res, next) => {
+  try {
+    const bulkData = await JobService.bulkCreateJobUpload(req, res, next);
     if (bulkData) {
       respondOk(res, 200, "file uploaded and parsed successfully", bulkData);
     }
@@ -223,5 +235,6 @@ module.exports = {
   getOpenJobsOfEmployer,
   getClosedJobsOfEmployer,
   getPostedJobPermonthOfEmployer,
-  bulkCreateJobs,
+  bulkCreateJobsTemp,
+  bulkCreateJobsUpload,
 };
