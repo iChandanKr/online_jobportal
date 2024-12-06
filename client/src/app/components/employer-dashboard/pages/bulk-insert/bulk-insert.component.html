@@ -18,8 +18,9 @@
       (change)="onFileSelected($event)"
       [accept]="selectedFileFormat === 'XLSX' ? '.xlsx' : '.csv'"
     />
-    @if (errorMessage) {
-    <p class="text-red-600">{{ errorMessage }}</p>
+
+    @if (errorMessage()) {
+    <p class="text-red-600">{{ errorMessage() }}</p>
     }
 
     <div class="mt-5 w-48 flex flex-1 justify-between">
@@ -28,8 +29,9 @@
         [disabled]="!isFileSelected()"
         (click)="onUpload()"
       >
-        Upload
+        Verify
       </button>
+
       <button
         mat-flat-button
         color="warn"
@@ -39,15 +41,31 @@
         Insert
       </button>
     </div>
-    @if (errorArray.length>0) {
-    <div class="dataError">
-      <p class="text-lg text-red-700">
-        These are the error occured in your file
-      </p>
-      @for (err of errorArray; track $index) {
-      <p>Row Number:- {{ err.row }} {{ err.errors }}</p>
-      <hr class="text-black" />
-      }
+
+    @if (errorArray().length > 0) {
+    <div class="error-table-container mt-4">
+      <table class="w-full border-collapse border border-gray-300">
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="border border-gray-300 p-2">Row Number</th>
+            <th class="border border-gray-300 p-2">Errors</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (err of errorArray(); track $index) {
+          <tr class="hover:bg-gray-50">
+            <td class="border border-gray-300 p-2 text-center">
+              {{ err.row }}
+            </td>
+            <td class="border border-gray-300 p-2">
+              @for (errorMsg of err.errors; track errorMsg) {
+              <p class="text-red-500 mb-1">{{ errorMsg }}</p>
+              }
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
     </div>
     }
   </div>

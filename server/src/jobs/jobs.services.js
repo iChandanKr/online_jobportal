@@ -195,6 +195,8 @@ class JobService {
     let TempJobPostModel;
     let Model;
     let rows = await fileData(req);
+    // console.log(rows);
+
     const tableName = req.body.tableName;
 
     if (rows) {
@@ -261,6 +263,24 @@ class JobService {
       );
     }
   };
+  // static validateFirstRow = (row) => {
+  //   const errors = [];
+  //   row.forEach((column, index) => {
+  //     if (column.trim() !== JobService.EXPECTED_HEADERS[index]) {
+  //       errors.push(
+  //         `Expected "${
+  //           JobService.EXPECTED_HEADERS[index]
+  //         }", but found "${column.trim()}"`
+  //       );
+  //     }
+  //   });
+  //   return {
+  //     isValid:
+  //       errors.length === 0 &&
+  //       row.length === JobService.EXPECTED_HEADERS.length,
+  //     errors,
+  //   };
+  // };
 }
 
 module.exports = JobService;
