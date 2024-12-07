@@ -90,7 +90,7 @@ export class BulkInsertComponent {
               }))
             );
           } else {
-            console.log(err.error.message);
+            this.toaster.error(err.error.message, 'Error');
           }
         },
         complete: () => {
