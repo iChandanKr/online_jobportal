@@ -3,7 +3,7 @@ const { CustomError } = require("./apiResponse");
 const generateAccessToken = (id) => {
   try {
     const accessToken = jwt.sign({ id }, process.env.ACCESS_SECRET_KEY, {
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRESIN,
+      expiresIn: 5000,
     });
     if (!accessToken) {
       throw new CustomError(500, "Error while generating access Token ");
@@ -21,7 +21,7 @@ const generateAccessToken = (id) => {
 const generateRefreshToken = (id) => {
   try {
     const refreshToken = jwt.sign({ id }, process.env.REFRESH_SECRET_KEY, {
-      expiresIn: process.env.REFRESH_TOKEN_EXPIRESIN * 1000,
+      expiresIn: 9 * 1000,
     });
 
     if (!refreshToken) {

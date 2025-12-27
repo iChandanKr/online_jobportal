@@ -32,7 +32,7 @@ const createSessionDB = async (user_id, refreshToken) => {
   // );
   await redis.setex(
     `refreshToken:${user_id}`,
-    process.env.REFRESH_TOKEN_EXPIRESIN,
+    8000,
     refreshToken
   );
   return await redis.get(`refreshToken:${user_id}`);

@@ -13,7 +13,7 @@ const jobs = require("./jobs/jobs.route");
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:4200",
+    origin: ["http://localhost:4200", "http://localhost:8080"],
     credentials: true,
     // exposedHeaders: ["Authorization"],
   })
